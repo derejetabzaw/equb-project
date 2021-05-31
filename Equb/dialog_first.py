@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file 'C:\Users\dereje\Desktop\Equb_Project_New\dialogue_first.ui'
@@ -135,31 +136,24 @@ class Ui_Dialog(object):
         self.label.setText(_translate("Dialog", "Equb Amount:", None))
         self.label_2.setText(_translate("Dialog", "Total Rounds:", None))
     def month_changed(self):
-        # self.date_box.clear()
-        if self.month_box.currentText() == "February":
-            for i in range(1,29):
-                self.date_box.addItem(str(i))
-        if (self.month_box.currentText()) in ("April","June","September","November"):
-            for i in range(1,31):
-                self.date_box.addItem(str(i))
-        if (self.month_box.currentText()) in ("January","March","May","July","August","October","December"):
-            for i in range(1,32):
-                self.date_box.addItem(str(i))
         day_index = calendar.weekday(int(self.year_box.currentText()),int(self.month_box.currentIndex() + 1),int(self.date_box.currentIndex() + 1))
         self.day_box.setCurrentIndex(day_index)
 
-    def year_changed(self):
-
-        if calendar.isleap(int(self.year_box.currentText())) and self.month_box.currentText() == "February" :
-            self.date_box.clear()
-
-            for i in range(1,30):
-                self.date_box.addItem(str(i))
+        if self.month_box.currentText() == "February":
+            self.date_box.removeItem(30)
+            self.date_box.removeItem(29)
+            self.date_box.removeItem(28)
+        if (self.month_box.currentText()) in ("April","June","September","November"):
+            self.date_box.removeItem(30)
         
+
+
+    def year_changed(self):
+        if calendar.isleap(int(self.year_box.currentText())) and self.month_box.currentText() == "February" :
+            self.date_box.addItem(str(29))        
         day_index = calendar.weekday(int(self.year_box.currentText()),int(self.month_box.currentIndex() + 1),int(self.date_box.currentIndex() + 1))
         self.day_box.setCurrentIndex(day_index)
     def date_changed(self):
-        
         day_index = calendar.weekday(int(self.year_box.currentText()),int(self.month_box.currentIndex() + 1),int(self.date_box.currentIndex() + 1))
         self.day_box.setCurrentIndex(day_index)
         

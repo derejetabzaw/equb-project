@@ -31,7 +31,6 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow,grand_total_amount,rounds,date):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(1150, 575)
-        self.date = date
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.tabWidget = QtGui.QTabWidget(self.centralwidget)
@@ -42,41 +41,45 @@ class Ui_MainWindow(object):
         self.tableWidget = QtGui.QTableWidget(self.tab)
         self.tableWidget.setGeometry(QtCore.QRect(0, 0, 960, 500))
         self.tableWidget.setObjectName(_fromUtf8("tableWidget"))
-        self.tableWidget.setColumnCount(2 + rounds)
+
+
+        # self.tableWidget.setVerticalHeaderLabels(['t-1', 't-2', 't-3', 't-4', 't-5'])
+
+        self.tableWidget.setColumnCount(3 + rounds)
         self.tableWidget.setRowCount(0)
         item = QtGui.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(0, item)
+
+
+        # model = QtGui.QStandardItemModel()
+        # model.setHorizontalHeaderLabels(['Name', 'Age', 'Sex', 'Add'])
+        # table = QtGui.QTableView()
+        # table.setModel(model)
+        
+        # item = QtGui.QTableWidgetItem()
+        # self.tableWidget.verticalHeader().setVisible(False)
+        # self.tableWidget.setVerticalHeaderItem(0,item)
+        # item = self.tableWidget.verticalHeaderItem(0)
+        # item.setText(_translate("MainWindow", "Commitment", None))
+
+
+
         item = QtGui.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(1, item)
         item = QtGui.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(2, item)
         
         item = QtGui.QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(0, item)
 
 
-
-
-
-
-        # cal.clicked[QtCore.QDate].connect(self.showDate)
-        
-        # self.lbl = QtGui.QLabel(MainWindow)
-        # date = cal.selectedDate()
-        # self.lbl.setText(date.toString())
-        # cal = QtGui.QCalendarWidget(MainWindow)
         indx = 1
         for i in range(3,rounds + 3):
             item = QtGui.QTableWidgetItem()
             self.tableWidget.setHorizontalHeaderItem(i, item)
-
-
-            
-            # cal.setGridVisible(True)
-            # cal.setGeometry(20,20,300,300)
             item.setText(_translate("MainWindow", "Week-"+ str(indx), None))
             indx +=1 
 
+        
 
 
 
@@ -179,15 +182,13 @@ class Ui_MainWindow(object):
         self.tab_debt = QtGui.QWidget()
         self.tab_debt.setObjectName(_fromUtf8("tab_debit"))
 
-        # self.tabWidget_debt = QtGui.QTabWidget(self.centralwidget)
-        # self.tabWidget_debt.setGeometry(QtCore.QRect(0, 0, 1150, 575))
-        # self.tabWidget_debt.setObjectName(_fromUtf8("tabWidget_debt"))
+
 
 
         self.tableWidget_debt = QtGui.QTableWidget(self.tab_debt)
         self.tableWidget_debt.setGeometry(QtCore.QRect(0, 0, 960, 500))
         self.tableWidget_debt.setObjectName(_fromUtf8("tableWidget_debit"))
-        self.tableWidget_debt.setColumnCount(2 + rounds)
+        self.tableWidget_debt.setColumnCount(3 + rounds)
         self.tableWidget_debt.setRowCount(0)
         item = QtGui.QTableWidgetItem()
         self.tableWidget_debt.setHorizontalHeaderItem(0, item)
@@ -224,7 +225,7 @@ class Ui_MainWindow(object):
         self.pushButton_3.clicked.connect(lambda x: self.delete_button_function(MainWindow))
 
         self.pushButton_4.clicked.connect(lambda x: self.clear_all_button_function(MainWindow))
-
+        self.count = 0
 
         self.tabWidget.setCurrentIndex(0)
         self.tabWidget_2.setCurrentIndex(0)
@@ -241,7 +242,6 @@ class Ui_MainWindow(object):
 
         item = self.tableWidget.horizontalHeaderItem(3)
 
-        item = self.tableWidget.verticalHeaderItem(0)
 
 
         #  item.setText(_translate("MainWindow", "List", None))
@@ -299,9 +299,10 @@ class Ui_MainWindow(object):
 
 
     def add_button_function(self,MainWindow,tablewidget,rounds):
+        self.count +=1
         add_menu_ui = dialog_name.Ui_Dialog()
         Dialog = QtGui.QDialog(MainWindow)
-        add_menu_ui.setupUi(Dialog,tablewidget,rounds)
+        add_menu_ui.setupUi(Dialog,tablewidget,rounds,self.count)
         Dialog.exec_()
     def delete_button_function(self,MainWindow):
         password_access = admin_access.Admin_Access()
@@ -325,7 +326,6 @@ class Ui_MainWindow(object):
         '''if currentcolumn > 2 and self.date inside current-week 
         current week has an age of a week
         '''
-
         if (currentColumn > 2 and self.date=='May'):
             add_menu_ui = dialog_amount.Ui_Dialog()
             Dialog = QtGui.QDialog(MainWindow)
@@ -337,16 +337,21 @@ class Ui_MainWindow(object):
             # Dialog = QtGui.QDialog(MainWindow)
             # password_access.setupUi(Dialog)
             # Dialog.exec_()
+            print "Admin Access"
             print str(self.tableWidget.currentItem())
             # self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
 
 
-        if (currentColumn <=2):
-
-            add_menu_ui = dialog_name.Ui_Dialog()
-            Dialog = QtGui.QDialog(MainWindow)
-            add_menu_ui.setupUi(Dialog,tablewidget,rounds)
-            Dialog.exec_()
+        # if (currentColumn <=2):
+        #     if (tablewidget.item(currentRow,2).text()) == "H":
+        #         pass 
+        #     if tablewidget.item(currentRow,2).text()== "Q":
+        #         pass
+        #     else:
+        #         add_menu_ui = dialog_name.Ui_Dialog()
+        #         Dialog = QtGui.QDialog(MainWindow)
+        #         add_menu_ui.setupUi(Dialog,tablewidget,rounds)
+        #         Dialog.exec_()
     def clicked_cell(self,MainWindow,tablewidget,rounds):
         currentRow, currentColumn = self.tableWidget1.currentRow(), self.tableWidget1.currentColumn()
         rowPosition = self.tableWidget1.currentRow()

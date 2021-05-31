@@ -26,9 +26,10 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_Dialog(object):
-    def setupUi(self, Dialog,tablewidget,rounds):
+    def setupUi(self, Dialog,tablewidget,rounds,count):
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(262, 191)
+        self.count = count
         self.okay_button = QtGui.QPushButton(Dialog)
         self.okay_button.setGeometry(QtCore.QRect(90, 150, 75, 20))
         self.okay_button.setObjectName(_fromUtf8("okay_button"))
@@ -75,7 +76,6 @@ class Ui_Dialog(object):
         self.formLayout.setLayout(2, QtGui.QFormLayout.LabelRole, self.horizontalLayout)
 
 
-
         # self.cancel_button.clicked.connect(lambda x: self.cancel_button_function(Dialog))
 
         self.retranslateUi(Dialog)
@@ -86,7 +86,6 @@ class Ui_Dialog(object):
 
 
         self.okay_button.clicked.connect(lambda x: self.okay_button_function(Dialog,tablewidget,str(self.lineEdit_2.text()),str(self.lineEdit_3.text()),[str(self.checkBox.isChecked()),str(self.checkBox_2.isChecked()),str(self.checkBox_3.isChecked())],rounds))
-
 
         
 
@@ -107,30 +106,44 @@ class Ui_Dialog(object):
         
         rowPosition = tablewidget.rowCount()
         currentRow = tablewidget.currentRow()
-        print rowPosition
-        print currentRow
+        
+        if (currentRow > -1):
+            rowPosition = rowPosition - 1
+            tablewidget.removeRow(rowPosition)
         tablewidget.insertRow(rowPosition)
         tablewidget.setItem(rowPosition , 0, QtGui.QTableWidgetItem(str(Name)))
         tablewidget.setItem(rowPosition , 1, QtGui.QTableWidgetItem(str(Lastname)))
-        if (checkboxes[0] == 'True'):
+        
 
+        
+        if (checkboxes[0] == 'True'):
+            currentRow = rowPosition + 1
+            tablewidget.setRowCount(currentRow)
+            tablewidget.setVerticalHeaderItem(rowPosition,QtGui.QTableWidgetItem("SEED-" + str(self.count)))
             tablewidget.setItem(rowPosition , 2, QtGui.QTableWidgetItem("F"))
             tablewidget.item(rowPosition,2).setBackground(QtGui.QColor(0,0,255))
+
+        
         if (checkboxes[1] == 'True'):
             currentRow = rowPosition + 2
             tablewidget.setRowCount(currentRow)
             for i in range(2):
+                tablewidget.setVerticalHeaderItem(rowPosition + i,QtGui.QTableWidgetItem("SEED-" + str(self.count)))
                 tablewidget.setItem(rowPosition + i , 2, QtGui.QTableWidgetItem("H"))
                 tablewidget.item(rowPosition + i,2).setBackground(QtGui.QColor(255,255,0))
                 
-
         if (checkboxes[2] == 'True'):
             currentRow = rowPosition + 4
             tablewidget.setRowCount(currentRow)
             for i in range(4):
+                tablewidget.setVerticalHeaderItem(rowPosition + i,QtGui.QTableWidgetItem("SEED-" + str(self.count)))
                 tablewidget.setItem(rowPosition + i, 2, QtGui.QTableWidgetItem("Q"))
                 tablewidget.item(rowPosition + i,2).setBackground(QtGui.QColor(100,100,150))
-        # self.tableWidget.setItem(rowPosition , 2, QtGui.QTableWidgetItem("text3"))
+        
+        tablewidget.insertRow(currentRow)
+        tablewidget.setVerticalHeaderItem(currentRow,QtGui.QTableWidgetItem("SUM"))
+
+
         MainWindow.close()
         Dialog = QtGui.QDialog(MainWindow)
         add_menu_ui = dialog_amount.Ui_Dialog()
@@ -138,8 +151,6 @@ class Ui_Dialog(object):
         Dialog.exec_()
 
         
-
-
         # MainWindow.close()
 
 
