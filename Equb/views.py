@@ -31,6 +31,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow,grand_total_amount,rounds,date):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(1150, 575)
+        self.date = date
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.tabWidget = QtGui.QTabWidget(self.centralwidget)

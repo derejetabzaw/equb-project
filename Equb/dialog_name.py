@@ -86,7 +86,7 @@ class Ui_Dialog(object):
 
 
         self.okay_button.clicked.connect(lambda x: self.okay_button_function(Dialog,tablewidget,str(self.lineEdit_2.text()),str(self.lineEdit_3.text()),[str(self.checkBox.isChecked()),str(self.checkBox_2.isChecked()),str(self.checkBox_3.isChecked())],rounds))
-
+        tablewidget.cellChanged.connect(lambda x: self.sum_function(Dialog,tablewidget))
         
 
 
@@ -152,7 +152,26 @@ class Ui_Dialog(object):
 
         
         # MainWindow.close()
+    def sum_function(self,MainWindow,tablewidget):
+        currentRow, currentColumn = tablewidget.currentRow(), tablewidget.currentColumn()
+        self.cell_sum = 0
 
+        if currentColumn < 0:
+            tablewidget.setItem(4,3, QtGui.QTableWidgetItem(str(tablewidget.item(0,3).text())))
+        if (currentColumn > 2):
+            for i in range(currentColumn):
+                cell_data = tablewidget.item(i,3)
+                if cell_data is not None and cell_data.text() !='':
+                    self.cell_sum += int(cell_data.text())
+
+
+                # num4 = tablewidget.item(0 + 3, 3).text()
+                # add = int(num) + int(num2) + int(num3) + int(num4)
+                # add = int(num) + int(num2) 
+            tablewidget.setItem(4,3, QtGui.QTableWidgetItem(str(self.cell_sum)))
+
+
+            # print "cellchanged"
 
 
 if __name__ == "__main__":
