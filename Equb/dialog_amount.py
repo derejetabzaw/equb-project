@@ -315,12 +315,13 @@ class Ui_Dialog(object):
             tablewidget.setItem(rowPosition , 3, QtGui.QTableWidgetItem(str(Amount)))
             tablewidget.setItem(currentRow - 1,3, QtGui.QTableWidgetItem(str(tablewidget.item(0,3).text())))
         else:
-            tablewidget.setItem(rowPosition , 3, QtGui.QTableWidgetItem(str(Amount)))
+            print "Here",rowPosition,columnPosition
+            tablewidget.setItem(rowPosition , columnPosition, QtGui.QTableWidgetItem(str(Amount)))
             for i in range(currentRow - 1):
-                cell_data = tablewidget.item(i,3)
+                cell_data = tablewidget.item(i,columnPosition)
                 if cell_data is not None and cell_data.text() !='':
                     self.cell_sum += int(cell_data.text())
-            tablewidget.setItem(currentRow - 1,3, QtGui.QTableWidgetItem(str(self.cell_sum)))
+            tablewidget.setItem(currentRow - 1,columnPosition, QtGui.QTableWidgetItem(str(self.cell_sum)))
 
             # tablewidget.setItem(rowPosition + currentRow - 1,3, QtGui.QTableWidgetItem(str(tablewidget.item(0,3).text())))
             # tablewidget.setItem(5,3, QtGui.QTableWidgetItem(str("Hello")))
@@ -328,7 +329,7 @@ class Ui_Dialog(object):
             # tablewidget.setItem(rowPosition , columnPosition, QtGui.QTableWidgetItem(str(Amount)))
 
             # tablewidget.setItem(rowPosition , columnPosition, QtGui.QTableWidgetItem(str(Amount)))
-        columnPosition = tablewidget.setCurrentCell(rowPosition,0)
+        columnPosition = tablewidget.setCurrentCell(rowPosition,3)
         MainWindow.close()
 
     def sum_function(self,MainWindow,tablewidget):
