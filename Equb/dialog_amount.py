@@ -183,7 +183,7 @@ class Ui_Dialog(object):
         # QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("rejected()")), Dialog.reject)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
         self.okay_button.clicked.connect(lambda x: self.okay_button_function(Dialog,tablewidget,str(self.lineEdit.text()),rowPosition,rounds))
-        tablewidget.cellChanged.connect(lambda x: self.sum_function(Dialog,tablewidget))
+        # tablewidget.cellChanged.connect(lambda x: self.sum_function(Dialog,tablewidget))
         self.cell_sum = 0
         self.count = 0 
 
@@ -309,12 +309,25 @@ class Ui_Dialog(object):
 
 
     def okay_button_function(self,MainWindow,tablewidget,Amount,rowPosition,rounds):
-        
+        currentRow = tablewidget.rowCount()
         columnPosition = tablewidget.currentColumn()
-        if columnPosition <= 3:
+        if (columnPosition < 0):
             tablewidget.setItem(rowPosition , 3, QtGui.QTableWidgetItem(str(Amount)))
+            tablewidget.setItem(currentRow - 1,3, QtGui.QTableWidgetItem(str(tablewidget.item(0,3).text())))
         else:
-            tablewidget.setItem(rowPosition , columnPosition, QtGui.QTableWidgetItem(str(Amount)))
+            tablewidget.setItem(rowPosition , 3, QtGui.QTableWidgetItem(str(Amount)))
+            for i in range(currentRow - 1):
+                cell_data = tablewidget.item(i,3)
+                if cell_data is not None and cell_data.text() !='':
+                    self.cell_sum += int(cell_data.text())
+            tablewidget.setItem(currentRow - 1,3, QtGui.QTableWidgetItem(str(self.cell_sum)))
+
+            # tablewidget.setItem(rowPosition + currentRow - 1,3, QtGui.QTableWidgetItem(str(tablewidget.item(0,3).text())))
+            # tablewidget.setItem(5,3, QtGui.QTableWidgetItem(str("Hello")))
+        # else:
+            # tablewidget.setItem(rowPosition , columnPosition, QtGui.QTableWidgetItem(str(Amount)))
+
+            # tablewidget.setItem(rowPosition , columnPosition, QtGui.QTableWidgetItem(str(Amount)))
         columnPosition = tablewidget.setCurrentCell(rowPosition,0)
         MainWindow.close()
 
@@ -329,7 +342,7 @@ class Ui_Dialog(object):
                 cell_data = tablewidget.item(i,3)
                 if cell_data is not None and cell_data.text() !='':
                     self.cell_sum += int(cell_data.text())
-            print self.cell_sum
+        print (self.count,self.cell_sum)
                         
             # tablewidget.setItem(4,3, QtGui.QTableWidgetItem(str(self.cell_sum)))
 

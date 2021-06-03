@@ -362,6 +362,8 @@ class Ui_MainWindow(object):
             add_menu_ui.setupUi(Dialog,tablewidget,rowPosition,rounds)
             Dialog.exec_()
 
+    
+
 
 
 

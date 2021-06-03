@@ -104,6 +104,9 @@ class Ui_Dialog(object):
         
         rowPosition = tablewidget.rowCount()
         currentRow = tablewidget.currentRow()
+
+        
+
         
         if (currentRow > -1):
             rowPosition = rowPosition - 1
@@ -120,8 +123,10 @@ class Ui_Dialog(object):
             tablewidget.setVerticalHeaderItem(rowPosition,QtGui.QTableWidgetItem("SEED-" + str(self.count)))
             tablewidget.setItem(rowPosition , 2, QtGui.QTableWidgetItem("F"))
             tablewidget.item(rowPosition,2).setBackground(QtGui.QColor(0,0,255))
+            
+            # tablewidget.setItem(currentRow,3, QtGui.QTableWidgetItem(str(tablewidget.item(rowPosition,3).text())))
 
-        
+            
         if (checkboxes[1] == 'True'):
             currentRow = rowPosition + 2
             tablewidget.setRowCount(currentRow)
@@ -129,7 +134,8 @@ class Ui_Dialog(object):
                 tablewidget.setVerticalHeaderItem(rowPosition + i,QtGui.QTableWidgetItem("SEED-" + str(self.count)))
                 tablewidget.setItem(rowPosition + i , 2, QtGui.QTableWidgetItem("H"))
                 tablewidget.item(rowPosition + i,2).setBackground(QtGui.QColor(255,255,0))
-                
+            # tablewidget.setItem(currentRow,3, QtGui.QTableWidgetItem(str(tablewidget.item(rowPosition,3).text())))
+   
         if (checkboxes[2] == 'True'):
             currentRow = rowPosition + 4
             tablewidget.setRowCount(currentRow)
@@ -137,7 +143,8 @@ class Ui_Dialog(object):
                 tablewidget.setVerticalHeaderItem(rowPosition + i,QtGui.QTableWidgetItem("SEED-" + str(self.count)))
                 tablewidget.setItem(rowPosition + i, 2, QtGui.QTableWidgetItem("Q"))
                 tablewidget.item(rowPosition + i,2).setBackground(QtGui.QColor(100,100,150))
-        
+            # tablewidget.setItem(currentRow,3, QtGui.QTableWidgetItem(str(tablewidget.item(rowPosition,3).text())))
+
         tablewidget.insertRow(currentRow)
         tablewidget.setVerticalHeaderItem(currentRow,QtGui.QTableWidgetItem("SUM"))
 
