@@ -46,7 +46,7 @@ class Ui_MainWindow(object):
 
         # self.tableWidget.setVerticalHeaderLabels(['t-1', 't-2', 't-3', 't-4', 't-5'])
 
-        self.tableWidget.setColumnCount(3 + rounds)
+        self.tableWidget.setColumnCount(4 + rounds)
         self.tableWidget.setRowCount(0)
         item = QtGui.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(0, item)
@@ -83,6 +83,7 @@ class Ui_MainWindow(object):
         
 
 
+        self.tableWidget.setHorizontalHeaderItem(rounds + 3,QtGui.QTableWidgetItem("SUM"))
 
 
         self.frame = QtGui.QFrame(self.tab)
@@ -362,7 +363,7 @@ class Ui_MainWindow(object):
             add_menu_ui.setupUi(Dialog,tablewidget,rowPosition,rounds)
             Dialog.exec_()
 
-    
+
 
 
 
