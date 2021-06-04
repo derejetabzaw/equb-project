@@ -137,7 +137,7 @@ class Ui_Dialog(object):
                 tablewidget.item(rowPosition + i,2).setBackground(QtGui.QColor(100,100,150))
 
         tablewidget.insertRow(currentRow)
-        tablewidget.setVerticalHeaderItem(currentRow,QtGui.QTableWidgetItem("SUM"))
+        tablewidget.setVerticalHeaderItem(currentRow,QtGui.QTableWidgetItem("VSUM"))
 
 
         MainWindow.close()

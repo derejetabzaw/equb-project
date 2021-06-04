@@ -13,6 +13,7 @@ import dialog_bank_acc
 import os
 import calendar 
 import admin_access
+import datetime
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -31,7 +32,9 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow,grand_total_amount,rounds,date):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(1150, 575)
-        self.date = date
+        self.date = str(date)
+        print self.date
+        # year, week_num , day_of_week = self.date.isocalendar()
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.tabWidget = QtGui.QTabWidget(self.centralwidget)
@@ -83,7 +86,7 @@ class Ui_MainWindow(object):
         
 
 
-        self.tableWidget.setHorizontalHeaderItem(rounds + 3,QtGui.QTableWidgetItem("SUM"))
+        self.tableWidget.setHorizontalHeaderItem(rounds + 3,QtGui.QTableWidgetItem("HSUM"))
 
 
         self.frame = QtGui.QFrame(self.tab)
@@ -328,19 +331,21 @@ class Ui_MainWindow(object):
         '''if currentcolumn > 2 and self.date inside current-week 
         current week has an age of a week
         '''
+
         if (currentColumn > 2 and self.date=='May'):
-            add_menu_ui = dialog_amount.Ui_Dialog()
+            self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+
+            password_access = admin_access.Admin_Access()
             Dialog = QtGui.QDialog(MainWindow)
-            add_menu_ui.setupUi(Dialog,tablewidget,rowPosition,rounds)
+            password_access.setupUi(Dialog,tablewidget,rowPosition,rounds)
             Dialog.exec_()
+
         else:
             '''Ask for an Admin Access'''
-            # password_access = admin_access.Admin_Access()
-            # Dialog = QtGui.QDialog(MainWindow)
-            # password_access.setupUi(Dialog)
-            # Dialog.exec_()
-            print "Admin Access"
-            print str(self.tableWidget.currentItem())
+            self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.DoubleClicked)
+
+            # print "Admin Access"
+            # print str(self.tableWidget.currentItem())
             # self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
 
 

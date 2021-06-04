@@ -8,6 +8,7 @@
 
 from PyQt4 import QtCore, QtGui
 import os
+import dialog_amount 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -23,7 +24,7 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 
 class Admin_Access(object):
-    def setupUi(self, MainWindow):
+    def setupUi(self, MainWindow,tablewidget,rowPosition,rounds):
         MainWindow.resize(300, 100)
         MainWindow.setWindowTitle(_translate("MainWindow", "Admin Access Required", None))
 
@@ -37,13 +38,16 @@ class Admin_Access(object):
         self.button_enter = QtGui.QPushButton('Enter', MainWindow)
         self.button_enter.setGeometry(135,65,75,25)
         self.textPass.setEchoMode(self.textPass.Password)
-        self.button_enter.clicked.connect(lambda x: self.handleLogin(MainWindow))
+        self.button_enter.clicked.connect(lambda x: self.handleLogin(MainWindow,tablewidget,rowPosition,rounds))
 
 
-    def handleLogin(self,MainWindow):
+    def handleLogin(self,MainWindow,tablewidget,rowPosition,rounds):
         if (self.textPass.text() == 'admin'):
-            print "pass"
-            # self.accept()
+            MainWindow.close()
+            add_menu_ui = dialog_amount.Ui_Dialog()
+            Dialog = QtGui.QDialog(MainWindow)
+            add_menu_ui.setupUi(Dialog,tablewidget,rowPosition,rounds)
+            Dialog.exec_()
         else:
             QtGui.QMessageBox.warning(MainWindow, 'Error', 'Wrong Password')
 
