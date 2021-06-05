@@ -46,25 +46,13 @@ class Ui_MainWindow(object):
         self.tableWidget.setGeometry(QtCore.QRect(0, 0, 960, 500))
         self.tableWidget.setObjectName(_fromUtf8("tableWidget"))
 
-
-        # self.tableWidget.setVerticalHeaderLabels(['t-1', 't-2', 't-3', 't-4', 't-5'])
-
         self.tableWidget.setColumnCount(4 + rounds)
         self.tableWidget.setRowCount(0)
         item = QtGui.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(0, item)
 
 
-        # model = QtGui.QStandardItemModel()
-        # model.setHorizontalHeaderLabels(['Name', 'Age', 'Sex', 'Add'])
-        # table = QtGui.QTableView()
-        # table.setModel(model)
-        
-        # item = QtGui.QTableWidgetItem()
-        # self.tableWidget.verticalHeader().setVisible(False)
-        # self.tableWidget.setVerticalHeaderItem(0,item)
-        # item = self.tableWidget.verticalHeaderItem(0)
-        # item.setText(_translate("MainWindow", "Commitment", None))
+
 
 
 

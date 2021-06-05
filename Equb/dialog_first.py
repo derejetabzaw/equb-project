@@ -10,6 +10,7 @@
 from PyQt4 import QtCore, QtGui
 import views
 import calendar
+import datetime
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -83,11 +84,13 @@ class Ui_Dialog(object):
             self.year_box.addItem(str(i))
 
 
+        todays_date = datetime.date.today() 
+        year, week_num, day_of_week = todays_date.isocalendar()
 
-        self.day_box.setCurrentIndex(4)
-        self.month_box.setCurrentIndex(4)
-        self.date_box.setCurrentIndex(20)
-        self.year_box.setCurrentIndex(21)
+        self.day_box.setCurrentIndex(day_of_week - 1)
+        self.month_box.setCurrentIndex(todays_date.month -1)
+        self.date_box.setCurrentIndex(todays_date.day - 1)
+        self.year_box.setCurrentIndex(year - 2000)
 
         
         self.horizontalLayoutWidget = QtGui.QWidget(Dialog)
