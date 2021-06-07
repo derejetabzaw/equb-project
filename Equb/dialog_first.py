@@ -11,6 +11,7 @@ from PyQt4 import QtCore, QtGui
 import views
 import calendar
 import datetime
+import numpy as np
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -84,13 +85,13 @@ class Ui_Dialog(object):
             self.year_box.addItem(str(i))
 
 
-        todays_date = datetime.date.today() 
-        year, week_num, day_of_week = todays_date.isocalendar()
+        self.todays_date = datetime.date.today() 
+        self.year, self.week_num, self.day_of_week = self.todays_date.isocalendar()
 
-        self.day_box.setCurrentIndex(day_of_week - 1)
-        self.month_box.setCurrentIndex(todays_date.month -1)
-        self.date_box.setCurrentIndex(todays_date.day - 1)
-        self.year_box.setCurrentIndex(year - 2000)
+        self.day_box.setCurrentIndex(self.day_of_week - 1)
+        self.month_box.setCurrentIndex(self.todays_date.month -1)
+        self.date_box.setCurrentIndex(self.todays_date.day - 1)
+        self.year_box.setCurrentIndex(self.year - 2000)
 
         
         self.horizontalLayoutWidget = QtGui.QWidget(Dialog)
@@ -161,9 +162,12 @@ class Ui_Dialog(object):
         self.day_box.setCurrentIndex(day_index)
         
     def next_button_function(self,MainWindow,grand_total_amount,rounds):
-        date = [str(self.day_box.currentText()),str(self.month_box.currentText()),str(self.date_box.currentText()),str(self.year_box.currentText())]
+        date = np.array([str(self.day_box.currentText()),str(self.month_box.currentText()),str(self.date_box.currentText()),str(self.year_box.currentText())])
+        week = self.week_num
+        indices = int(self.day_box.currentIndex() + 1),int(self.month_box.currentIndex() + 1),int(self.date_box.currentIndex() + 1),int(self.year_box.currentIndex())
+        print indices
         add_menu_ui = views.Ui_MainWindow()
-        add_menu_ui.setupUi(MainWindow,grand_total_amount,rounds,date)
+        add_menu_ui.setupUi(MainWindow,grand_total_amount,rounds,indices,week)
         MainWindow.show()
 
 

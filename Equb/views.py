@@ -29,12 +29,21 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_MainWindow(object):
-    def setupUi(self, MainWindow,grand_total_amount,rounds,date):
+    def setupUi(self, MainWindow,grand_total_amount,rounds,date,week):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(1150, 575)
-        self.date = str(date)
-        print self.date
-        # year, week_num , day_of_week = self.date.isocalendar()
+        self.date = date
+        self.week = week 
+        
+        self.todays_date = datetime.date.today() 
+        self.first_date = datetime.date(self.date[3] + 2000,self.date[1],self.date[2])
+        self.year, self.week_num_now, self.day_of_week = self.todays_date.isocalendar()
+        self.week_num_first = self.first_date.isocalendar()[1]
+
+        all_weeks = []
+        for i in range(0,rounds):
+            all_weeks.append(self.first_date + datetime.timedelta(days = i * 7))
+
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.tabWidget = QtGui.QTabWidget(self.centralwidget)
@@ -68,7 +77,7 @@ class Ui_MainWindow(object):
         for i in range(3,rounds + 3):
             item = QtGui.QTableWidgetItem()
             self.tableWidget.setHorizontalHeaderItem(i, item)
-            item.setText(_translate("MainWindow", "Week-"+ str(indx), None))
+            item.setText(_translate("MainWindow", "Week-"+ str(indx) +'\n'+ str(all_weeks[i - 3]), None))
             indx +=1 
 
         
@@ -320,21 +329,22 @@ class Ui_MainWindow(object):
         current week has an age of a week
         '''
 
-        if (currentColumn > 2 and self.date=='May'):
+        if (currentColumn > 2 and (currentColumn + self.week_num_first - 3) != self.week_num_now):
             self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
-
             password_access = admin_access.Admin_Access()
             Dialog = QtGui.QDialog(MainWindow)
             password_access.setupUi(Dialog,tablewidget,rowPosition,rounds)
             Dialog.exec_()
 
-        else:
+        if (currentColumn > 2 and (currentColumn + self.week_num_first - 3) == self.week_num_now):
             '''Ask for an Admin Access'''
-            self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.DoubleClicked)
+            self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+            add_menu_ui = dialog_amount.Ui_Dialog()
+            Dialog = QtGui.QDialog(MainWindow)
+            add_menu_ui.setupUi(Dialog,tablewidget,rowPosition,rounds)
+            Dialog.exec_()
 
-            # print "Admin Access"
-            # print str(self.tableWidget.currentItem())
-            # self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+          
 
 
         # if (currentColumn <=2):
@@ -366,7 +376,7 @@ if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
     MainWindow = QtGui.QMainWindow()
     ui = Ui_MainWindow()
-    ui.setupUi(MainWindow,13500,25,"May")
+    ui.setupUi(MainWindow,13500,25,"May",52)
     MainWindow.show()
     sys.exit(app.exec_())
 
