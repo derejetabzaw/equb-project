@@ -26,9 +26,10 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_Dialog(object):
-    def setupUi(self, Dialog,tablewidget,rounds,count):
+    def setupUi(self, Dialog,tablewidget,rounds,count,options):
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(262, 191)
+        self.options = options 
         self.count = count
         self.okay_button = QtGui.QPushButton(Dialog)
         self.okay_button.setGeometry(QtCore.QRect(90, 150, 75, 20))
@@ -74,6 +75,14 @@ class Ui_Dialog(object):
         self.checkBox_3.setObjectName(_fromUtf8("checkBox_3"))
         self.horizontalLayout.addWidget(self.checkBox_3)
         self.formLayout.setLayout(2, QtGui.QFormLayout.LabelRole, self.horizontalLayout)
+        if self.options =='Q':
+            self.checkBox.setEnabled(False)
+            self.checkBox_2.setEnabled(False)
+            
+        if self.options =='H':
+            self.checkBox.setEnabled(False)
+            self.checkBox_3.setEnabled(False)
+            
 
 
         # self.cancel_button.clicked.connect(lambda x: self.cancel_button_function(Dialog))
@@ -102,51 +111,50 @@ class Ui_Dialog(object):
     def okay_button_function(self,MainWindow,tablewidget,Name,Lastname,checkboxes,rounds):   
         rowPosition = tablewidget.rowCount()
         currentRow = tablewidget.currentRow()
+        currentColumn = tablewidget.currentColumn()
 
+        if (self.options == ''):
+            if (rowPosition > 0):
+                rowPosition = rowPosition - 1
+                tablewidget.removeRow(rowPosition)
+            tablewidget.insertRow(rowPosition)
+            tablewidget.setItem(rowPosition , 0, QtGui.QTableWidgetItem(str(Name)))
+            tablewidget.setItem(rowPosition , 1, QtGui.QTableWidgetItem(str(Lastname)))
+    
+                
+            if (checkboxes[0] == 'True'):
+                currentRow = rowPosition + 1
+                tablewidget.setRowCount(currentRow)
+                tablewidget.setVerticalHeaderItem(rowPosition,QtGui.QTableWidgetItem("SEED-" + str(self.count)))
+                tablewidget.setItem(rowPosition , 2, QtGui.QTableWidgetItem("F"))
+                tablewidget.item(rowPosition,2).setBackground(QtGui.QColor(0,0,255))
+                
+            if (checkboxes[1] == 'True'):
+                currentRow = rowPosition + 2
+                tablewidget.setRowCount(currentRow)
+                for i in range(2):
+                    tablewidget.setVerticalHeaderItem(rowPosition + i,QtGui.QTableWidgetItem("SEED-" + str(self.count)))
+                    tablewidget.setItem(rowPosition + i , 2, QtGui.QTableWidgetItem("H"))
+                    tablewidget.item(rowPosition + i,2).setBackground(QtGui.QColor(255,255,0))
 
-        if (currentRow > -1):
-            rowPosition = rowPosition - 1
-            tablewidget.removeRow(rowPosition)
-        tablewidget.insertRow(rowPosition)
-        tablewidget.setItem(rowPosition , 0, QtGui.QTableWidgetItem(str(Name)))
-        tablewidget.setItem(rowPosition , 1, QtGui.QTableWidgetItem(str(Lastname)))
-        
+            if (checkboxes[2] == 'True'):
+                currentRow = rowPosition + 4
+                tablewidget.setRowCount(currentRow)
+                for i in range(4):
+                    tablewidget.setVerticalHeaderItem(rowPosition + i,QtGui.QTableWidgetItem("SEED-" + str(self.count)))
+                    tablewidget.setItem(rowPosition + i, 2, QtGui.QTableWidgetItem("Q"))
+                    tablewidget.item(rowPosition + i,2).setBackground(QtGui.QColor(100,100,150))
 
-        
-        if (checkboxes[0] == 'True'):
-            currentRow = rowPosition + 1
-            tablewidget.setRowCount(currentRow)
-            tablewidget.setVerticalHeaderItem(rowPosition,QtGui.QTableWidgetItem("SEED-" + str(self.count)))
-            tablewidget.setItem(rowPosition , 2, QtGui.QTableWidgetItem("F"))
-            tablewidget.item(rowPosition,2).setBackground(QtGui.QColor(0,0,255))
-            
-        if (checkboxes[1] == 'True'):
-            currentRow = rowPosition + 2
-            tablewidget.setRowCount(currentRow)
-            for i in range(2):
-                tablewidget.setVerticalHeaderItem(rowPosition + i,QtGui.QTableWidgetItem("SEED-" + str(self.count)))
-                tablewidget.setItem(rowPosition + i , 2, QtGui.QTableWidgetItem("H"))
-                tablewidget.item(rowPosition + i,2).setBackground(QtGui.QColor(255,255,0))
-   
-        if (checkboxes[2] == 'True'):
-            currentRow = rowPosition + 4
-            tablewidget.setRowCount(currentRow)
-            for i in range(4):
-                tablewidget.setVerticalHeaderItem(rowPosition + i,QtGui.QTableWidgetItem("SEED-" + str(self.count)))
-                tablewidget.setItem(rowPosition + i, 2, QtGui.QTableWidgetItem("Q"))
-                tablewidget.item(rowPosition + i,2).setBackground(QtGui.QColor(100,100,150))
+            tablewidget.insertRow(currentRow)
+            tablewidget.setVerticalHeaderItem(currentRow,QtGui.QTableWidgetItem("VSUM"))
+            tablewidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+            MainWindow.close()
+        if (self.options =='H' or self.options =='Q'):
+            tablewidget.setItem(currentRow , 0, QtGui.QTableWidgetItem(str(Name)))
+            tablewidget.setItem(currentRow , 1, QtGui.QTableWidgetItem(str(Lastname)))
+            tablewidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+            MainWindow.close()    
 
-        tablewidget.insertRow(currentRow)
-        tablewidget.setVerticalHeaderItem(currentRow,QtGui.QTableWidgetItem("VSUM"))
-
-
-        MainWindow.close()
-        Dialog = QtGui.QDialog(MainWindow)
-        add_menu_ui = dialog_amount.Ui_Dialog()
-        add_menu_ui.setupUi(Dialog,tablewidget,rowPosition,rounds)
-        Dialog.exec_()
-
-        
    
 
 

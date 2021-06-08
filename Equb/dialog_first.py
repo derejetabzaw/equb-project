@@ -165,7 +165,6 @@ class Ui_Dialog(object):
         date = np.array([str(self.day_box.currentText()),str(self.month_box.currentText()),str(self.date_box.currentText()),str(self.year_box.currentText())])
         week = self.week_num
         indices = int(self.day_box.currentIndex() + 1),int(self.month_box.currentIndex() + 1),int(self.date_box.currentIndex() + 1),int(self.year_box.currentIndex())
-        print indices
         add_menu_ui = views.Ui_MainWindow()
         add_menu_ui.setupUi(MainWindow,grand_total_amount,rounds,indices,week)
         MainWindow.show()

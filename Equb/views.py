@@ -8,6 +8,7 @@
 
 from PyQt4 import QtCore, QtGui
 import dialog_name
+import dialog_name_replica
 import dialog_amount
 import dialog_bank_acc
 import os
@@ -304,7 +305,8 @@ class Ui_MainWindow(object):
         self.count +=1
         add_menu_ui = dialog_name.Ui_Dialog()
         Dialog = QtGui.QDialog(MainWindow)
-        add_menu_ui.setupUi(Dialog,tablewidget,rounds,self.count)
+        options = ""
+        add_menu_ui.setupUi(Dialog,tablewidget,rounds,self.count,options)
         Dialog.exec_()
     def delete_button_function(self,MainWindow):
         password_access = admin_access.Admin_Access()
@@ -325,38 +327,33 @@ class Ui_MainWindow(object):
     def double_clicked_cell(self,MainWindow,tablewidget,item,rounds):
         currentRow, currentColumn = tablewidget.currentRow(), tablewidget.currentColumn()
         rowPosition = tablewidget.currentRow()
-        '''if currentcolumn > 2 and self.date inside current-week 
-        current week has an age of a week
-        '''
+        rowcount = tablewidget.rowCount()
+        columncount = tablewidget.columnCount()
 
-        if (currentColumn > 2 and (currentColumn + self.week_num_first - 3) != self.week_num_now):
+        self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+        print currentRow,currentColumn,rowPosition,rowcount,columncount    
+        if (currentColumn > 2 and (rowPosition < rowcount-1) and (currentColumn < columncount - 1) and (currentColumn + self.week_num_first - 3) != self.week_num_now):
             self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
             password_access = admin_access.Admin_Access()
             Dialog = QtGui.QDialog(MainWindow)
             password_access.setupUi(Dialog,tablewidget,rowPosition,rounds)
             Dialog.exec_()
-
-        if (currentColumn > 2 and (currentColumn + self.week_num_first - 3) == self.week_num_now):
-            '''Ask for an Admin Access'''
-            self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
-            add_menu_ui = dialog_amount.Ui_Dialog()
-            Dialog = QtGui.QDialog(MainWindow)
-            add_menu_ui.setupUi(Dialog,tablewidget,rowPosition,rounds)
-            Dialog.exec_()
-
           
 
-
-        # if (currentColumn <=2):
-        #     if (tablewidget.item(currentRow,2).text()) == "H":
-        #         pass 
-        #     if tablewidget.item(currentRow,2).text()== "Q":
-        #         pass
-        #     else:
-        #         add_menu_ui = dialog_name.Ui_Dialog()
-        #         Dialog = QtGui.QDialog(MainWindow)
-        #         add_menu_ui.setupUi(Dialog,tablewidget,rounds)
-        #         Dialog.exec_()
+        if (currentColumn <=2):
+            options = tablewidget.item(currentRow,2).text()
+            if tablewidget.item(currentRow,2) is not None and tablewidget.item(currentRow,2).text() !='':
+                if (options == "H"):
+                    add_menu_ui = dialog_name.Ui_Dialog()
+                    Dialog = QtGui.QDialog(MainWindow)
+                    add_menu_ui.setupUi(Dialog,tablewidget,rounds,self.count,options)
+                    Dialog.exec_() 
+                if (options== "Q"):
+                    add_menu_ui = dialog_name.Ui_Dialog()
+                    Dialog = QtGui.QDialog(MainWindow)
+                    add_menu_ui.setupUi(Dialog,tablewidget,rounds,self.count,options)
+                    Dialog.exec_()
+            
     def clicked_cell(self,MainWindow,tablewidget,rounds):
         currentRow, currentColumn = self.tableWidget1.currentRow(), self.tableWidget1.currentColumn()
         rowPosition = self.tableWidget1.currentRow()
