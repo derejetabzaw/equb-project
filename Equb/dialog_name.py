@@ -149,12 +149,19 @@ class Ui_Dialog(object):
             tablewidget.setVerticalHeaderItem(currentRow,QtGui.QTableWidgetItem("VSUM"))
             tablewidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
             MainWindow.close()
+            Dialog = QtGui.QDialog(MainWindow)
+            add_menu_ui = dialog_amount.Ui_Dialog()
+            add_menu_ui.setupUi(Dialog,tablewidget,rowPosition,rounds)
+            Dialog.exec_()
         if (self.options =='H' or self.options =='Q'):
             tablewidget.setItem(currentRow , 0, QtGui.QTableWidgetItem(str(Name)))
             tablewidget.setItem(currentRow , 1, QtGui.QTableWidgetItem(str(Lastname)))
             tablewidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
             MainWindow.close()    
-
+            Dialog = QtGui.QDialog(MainWindow)
+            add_menu_ui = dialog_amount.Ui_Dialog()
+            add_menu_ui.setupUi(Dialog,tablewidget,rowPosition,rounds)
+            Dialog.exec_()
    
 
 

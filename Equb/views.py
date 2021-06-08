@@ -8,7 +8,6 @@
 
 from PyQt4 import QtCore, QtGui
 import dialog_name
-import dialog_name_replica
 import dialog_amount
 import dialog_bank_acc
 import os
@@ -331,7 +330,6 @@ class Ui_MainWindow(object):
         columncount = tablewidget.columnCount()
 
         self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
-        print currentRow,currentColumn,rowPosition,rowcount,columncount    
         if (currentColumn > 2 and (rowPosition < rowcount-1) and (currentColumn < columncount - 1) and (currentColumn + self.week_num_first - 3) != self.week_num_now):
             self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
             password_access = admin_access.Admin_Access()
