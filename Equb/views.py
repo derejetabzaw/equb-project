@@ -40,10 +40,18 @@ class Ui_MainWindow(object):
         self.year, self.week_num_now, self.day_of_week = self.todays_date.isocalendar()
         self.week_num_first = self.first_date.isocalendar()[1]
 
+
         all_weeks = []
+        self.week_number = rounds
         for i in range(0,rounds):
             all_weeks.append(self.first_date + datetime.timedelta(days = i * 7))
-
+    
+        for i in range(0,rounds):
+            if all_weeks[i] > self.todays_date:
+                self.week_number = i
+                break
+            else:
+                continue
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.tabWidget = QtGui.QTabWidget(self.centralwidget)
@@ -71,7 +79,6 @@ class Ui_MainWindow(object):
         self.tableWidget.setHorizontalHeaderItem(2, item)
         
         item = QtGui.QTableWidgetItem()
-
 
         indx = 1
         for i in range(3,rounds + 3):
@@ -115,7 +122,7 @@ class Ui_MainWindow(object):
         self.tableWidget1 = QtGui.QTableWidget(self.tab_3)
         self.tableWidget1.setGeometry(QtCore.QRect(0, 20, 500, 350))
         self.tableWidget1.setObjectName(_fromUtf8("tableWidget1"))
-        self.tableWidget1.setColumnCount(5)
+        self.tableWidget1.setColumnCount(6)
         self.tableWidget1.setRowCount(3)
         item = QtGui.QTableWidgetItem()
         self.tableWidget1.setHorizontalHeaderItem(0, item)
@@ -127,6 +134,9 @@ class Ui_MainWindow(object):
         self.tableWidget1.setHorizontalHeaderItem(3, item)
         item = QtGui.QTableWidgetItem()
         self.tableWidget1.setHorizontalHeaderItem(4, item)
+        item = QtGui.QTableWidgetItem()
+        self.tableWidget1.setHorizontalHeaderItem(5, item)
+        
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("boaindex.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.tabWidget_2.addTab(self.tab_3, icon, _fromUtf8(""))
@@ -135,7 +145,7 @@ class Ui_MainWindow(object):
         self.tableWidget_2 = QtGui.QTableWidget(self.tab_4)
         self.tableWidget_2.setGeometry(QtCore.QRect(0, 20, 500, 350))
         self.tableWidget_2.setObjectName(_fromUtf8("tableWidget_2"))
-        self.tableWidget_2.setColumnCount(5)
+        self.tableWidget_2.setColumnCount(6)
         self.tableWidget_2.setRowCount(0)
         item = QtGui.QTableWidgetItem()
         self.tableWidget_2.setHorizontalHeaderItem(0, item)
@@ -147,6 +157,8 @@ class Ui_MainWindow(object):
         self.tableWidget_2.setHorizontalHeaderItem(3, item)
         item = QtGui.QTableWidgetItem()
         self.tableWidget_2.setHorizontalHeaderItem(4, item)
+        item = QtGui.QTableWidgetItem()
+        self.tableWidget_2.setHorizontalHeaderItem(5, item)
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(_fromUtf8("cbe.pmg.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.tabWidget_2.addTab(self.tab_4, icon1, _fromUtf8(""))
@@ -156,7 +168,7 @@ class Ui_MainWindow(object):
         self.tableWidget_3 = QtGui.QTableWidget(self.tab_5)
         self.tableWidget_3.setGeometry(QtCore.QRect(0, 20, 500, 350))
         self.tableWidget_3.setObjectName(_fromUtf8("tableWidget_3"))
-        self.tableWidget_3.setColumnCount(5)
+        self.tableWidget_3.setColumnCount(6)
         self.tableWidget_3.setRowCount(0)
         item = QtGui.QTableWidgetItem()
         self.tableWidget_3.setHorizontalHeaderItem(0, item)
@@ -168,6 +180,8 @@ class Ui_MainWindow(object):
         self.tableWidget_3.setHorizontalHeaderItem(3, item)
         item = QtGui.QTableWidgetItem()
         self.tableWidget_3.setHorizontalHeaderItem(4, item)
+        item = QtGui.QTableWidgetItem()
+        self.tableWidget_3.setHorizontalHeaderItem(5, item)
         icon2 = QtGui.QIcon()
         boa_image = str(os.getcwd() + "/" + str("Dashen-Bank-sc-Logo-Square.jpg")).replace("\\","/")
         icon2.addPixmap(QtGui.QPixmap((boa_image)), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -190,7 +204,7 @@ class Ui_MainWindow(object):
         self.tableWidget_debt = QtGui.QTableWidget(self.tab_debt)
         self.tableWidget_debt.setGeometry(QtCore.QRect(0, 0, 960, 500))
         self.tableWidget_debt.setObjectName(_fromUtf8("tableWidget_debit"))
-        self.tableWidget_debt.setColumnCount(3 + rounds)
+        self.tableWidget_debt.setColumnCount(3)
         self.tableWidget_debt.setRowCount(0)
         item = QtGui.QTableWidgetItem()
         self.tableWidget_debt.setHorizontalHeaderItem(0, item)
@@ -202,12 +216,12 @@ class Ui_MainWindow(object):
 
 
         
-        index_2 = 1
-        for i in range(3,rounds + 3):
-            item = QtGui.QTableWidgetItem()
-            self.tableWidget_debt.setHorizontalHeaderItem(i, item)
-            item.setText(_translate("MainWindow", "Week-"+ str(index_2), None))
-            index_2 +=1 
+        # index_2 = 1
+        # for i in range(3,rounds + 3):
+        #     item = QtGui.QTableWidgetItem()
+        #     self.tableWidget_debt.setHorizontalHeaderItem(i, item)
+        #     item.setText(_translate("MainWindow", "Week-"+ str(index_2), None))
+        #     index_2 +=1 
 
         self.tabWidget.addTab(self.tab_debt, _fromUtf8(""))
 
@@ -256,34 +270,40 @@ class Ui_MainWindow(object):
         item = self.tableWidget1.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Date", None))
         item = self.tableWidget1.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Reference Number", None))
+        item.setText(_translate("MainWindow", "Name", None))
         item = self.tableWidget1.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Credit", None))
+        item.setText(_translate("MainWindow", "Reference Number", None))
         item = self.tableWidget1.horizontalHeaderItem(3)
-        item.setText(_translate("MainWindow", "Withdraw", None))
+        item.setText(_translate("MainWindow", "Credit", None))
         item = self.tableWidget1.horizontalHeaderItem(4)
+        item.setText(_translate("MainWindow", "Withdraw", None))
+        item = self.tableWidget1.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "Balance", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_3), _translate("MainWindow", "Bank of Abyssinia", None))
         item = self.tableWidget_2.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Date", None))
         item = self.tableWidget_2.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Reference Number", None))
+        item.setText(_translate("MainWindow", "Name", None))
         item = self.tableWidget_2.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Credit", None))
+        item.setText(_translate("MainWindow", "Reference Number", None))
         item = self.tableWidget_2.horizontalHeaderItem(3)
-        item.setText(_translate("MainWindow", "Withdraw", None))
+        item.setText(_translate("MainWindow", "Credit", None))
         item = self.tableWidget_2.horizontalHeaderItem(4)
+        item.setText(_translate("MainWindow", "Withdraw", None))
+        item = self.tableWidget_2.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "Balance", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_4), _translate("MainWindow", "Commercial Bank", None))
         item = self.tableWidget_3.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Date", None))
         item = self.tableWidget_3.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Reference Number", None))
+        item.setText(_translate("MainWindow", "Name", None))
         item = self.tableWidget_3.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Credit", None))
+        item.setText(_translate("MainWindow", "Reference Number", None))
         item = self.tableWidget_3.horizontalHeaderItem(3)
-        item.setText(_translate("MainWindow", "Withdraw", None))
+        item.setText(_translate("MainWindow", "Credit", None))
         item = self.tableWidget_3.horizontalHeaderItem(4)
+        item.setText(_translate("MainWindow", "Withdraw", None))
+        item = self.tableWidget_3.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "Balance", None))
         
         item = self.tableWidget_debt.horizontalHeaderItem(0)
@@ -328,30 +348,29 @@ class Ui_MainWindow(object):
         rowPosition = tablewidget.currentRow()
         rowcount = tablewidget.rowCount()
         columncount = tablewidget.columnCount()
-
         self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
-        if (currentColumn > 2 and (rowPosition < rowcount-1) and (currentColumn < columncount - 1) and (currentColumn + self.week_num_first - 3) != self.week_num_now):
-            self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+        if (currentColumn > 2 and (rowPosition < rowcount-1) and (currentColumn < columncount - 1) and (self.week_number + 2) != currentColumn):
+            # self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
             password_access = admin_access.Admin_Access()
             Dialog = QtGui.QDialog(MainWindow)
             password_access.setupUi(Dialog,tablewidget,rowPosition,rounds)
             Dialog.exec_()
-          
+        if (currentColumn > 2 and (self.week_number + 2) == currentColumn):
+            self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+            add_menu_ui = dialog_amount.Ui_Dialog()
+            Dialog = QtGui.QDialog(MainWindow)
+            add_menu_ui.setupUi(Dialog,tablewidget,rowPosition,rounds)
+            Dialog.exec_()  
 
         if (currentColumn <=2):
             options = tablewidget.item(currentRow,2).text()
             if tablewidget.item(currentRow,2) is not None and tablewidget.item(currentRow,2).text() !='':
-                if (options == "H"):
+                if (options == "H" or options =="Q"):
                     add_menu_ui = dialog_name.Ui_Dialog()
                     Dialog = QtGui.QDialog(MainWindow)
                     add_menu_ui.setupUi(Dialog,tablewidget,rounds,self.count,options)
                     Dialog.exec_() 
-                if (options== "Q"):
-                    add_menu_ui = dialog_name.Ui_Dialog()
-                    Dialog = QtGui.QDialog(MainWindow)
-                    add_menu_ui.setupUi(Dialog,tablewidget,rounds,self.count,options)
-                    Dialog.exec_()
-            
+
     def clicked_cell(self,MainWindow,tablewidget,rounds):
         currentRow, currentColumn = self.tableWidget1.currentRow(), self.tableWidget1.currentColumn()
         rowPosition = self.tableWidget1.currentRow()
