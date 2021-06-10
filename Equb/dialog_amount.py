@@ -315,7 +315,7 @@ class Ui_Dialog(object):
             tablewidget.setItem(currentRow - 1,3, QtGui.QTableWidgetItem(str(tablewidget.item(0,3).text())))
             tablewidget.setItem(0,column_count - 1, QtGui.QTableWidgetItem(str(tablewidget.item(0,3).text())))
 
-        else:
+        else: 
             tablewidget.setItem(rowPosition , columnPosition, QtGui.QTableWidgetItem(str(Amount)))
             for i in range(currentRow - 1):
                 cell_data = tablewidget.item(i,columnPosition)

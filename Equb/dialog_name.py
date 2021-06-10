@@ -169,10 +169,10 @@ class Ui_Dialog(object):
             tablewidget.setItem(currentRow , 1, QtGui.QTableWidgetItem(str(Lastname)))
             tablewidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
             MainWindow.close()    
-            Dialog = QtGui.QDialog(MainWindow)
-            add_menu_ui = dialog_amount.Ui_Dialog()
-            add_menu_ui.setupUi(Dialog,tablewidget,rowPosition,rounds)
-            Dialog.exec_()
+            # Dialog = QtGui.QDialog(MainWindow)
+            # add_menu_ui = dialog_amount.Ui_Dialog()
+            # add_menu_ui.setupUi(Dialog,tablewidget,rowPosition,rounds)
+            # Dialog.exec_()
         
         if (self.options== 'Q'):        
             if self.checkBox_2.isChecked():
@@ -195,16 +195,17 @@ class Ui_Dialog(object):
                         tablewidget.setItem(currentRow + i , 2, QtGui.QTableWidgetItem("H"))
                         tablewidget.item(currentRow + i,2).setBackground(QtGui.QColor(255,255,0))
 
-                    tablewidget.setVerticalHeaderItem(rowPosition - 1,QtGui.QTableWidgetItem("VSUM"))
-                    tablewidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
-                    tablewidget.setItem(currentRow , 0, QtGui.QTableWidgetItem(str(Name)))
-                    tablewidget.setItem(currentRow , 1, QtGui.QTableWidgetItem(str(Lastname)))
-                    tablewidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
-                    MainWindow.close()    
-                    Dialog = QtGui.QDialog(MainWindow)
-                    add_menu_ui = dialog_amount.Ui_Dialog()
-                    add_menu_ui.setupUi(Dialog,tablewidget,rowPosition,rounds)
-                    Dialog.exec_()
+            tablewidget.setVerticalHeaderItem(rowPosition - 1,QtGui.QTableWidgetItem("VSUM"))
+            tablewidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+            tablewidget.setItem(currentRow , 0, QtGui.QTableWidgetItem(str(Name)))
+            tablewidget.setItem(currentRow , 1, QtGui.QTableWidgetItem(str(Lastname)))
+            tablewidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+
+            MainWindow.close()    
+            # Dialog = QtGui.QDialog(MainWindow)
+            # add_menu_ui = dialog_amount.Ui_Dialog()
+            # add_menu_ui.setupUi(Dialog,tablewidget,rowPosition,rounds)
+            # Dialog.exec_()
 
 
 if __name__ == "__main__":
