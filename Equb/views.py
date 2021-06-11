@@ -29,7 +29,7 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_MainWindow(object):
-    def setupUi(self, MainWindow,grand_total_amount,rounds,date,week):
+    def setupUi(self, MainWindow,grand_total_amount,date,week):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(1150, 575)
         self.date = date
@@ -39,19 +39,9 @@ class Ui_MainWindow(object):
         self.first_date = datetime.date(self.date[3] + 2000,self.date[1],self.date[2])
         self.year, self.week_num_now, self.day_of_week = self.todays_date.isocalendar()
         self.week_num_first = self.first_date.isocalendar()[1]
+        
 
 
-        all_weeks = []
-        self.week_number = rounds
-        for i in range(0,rounds):
-            all_weeks.append(self.first_date + datetime.timedelta(days = i * 7))
-    
-        for i in range(0,rounds):
-            if all_weeks[i] > self.todays_date:
-                self.week_number = i
-                break
-            else:
-                continue
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.tabWidget = QtGui.QTabWidget(self.centralwidget)
@@ -63,13 +53,62 @@ class Ui_MainWindow(object):
         self.tableWidget.setGeometry(QtCore.QRect(0, 0, 960, 500))
         self.tableWidget.setObjectName(_fromUtf8("tableWidget"))
 
+
+
+        self.frame = QtGui.QFrame(self.tab)
+        self.frame.setGeometry(QtCore.QRect(960, 0, 960, 1050))
+        self.frame.setFrameShape(QtGui.QFrame.StyledPanel)
+        self.frame.setFrameShadow(QtGui.QFrame.Raised)
+        self.frame.setObjectName(_fromUtf8("frame"))
+        self.pushButton = QtGui.QPushButton(self.frame)
+        self.pushButton.setGeometry(QtCore.QRect(15, 0, 160, 25))
+        self.pushButton.setObjectName(_fromUtf8("pushButton"))
+        self.pushButton_2 = QtGui.QPushButton(self.frame)
+        self.pushButton_2.setGeometry(QtCore.QRect(15, 30, 160, 25))
+        self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
+        self.pushButton_3 = QtGui.QPushButton(self.frame)
+        self.pushButton_3.setGeometry(QtCore.QRect(15, 60, 160, 25))
+        self.pushButton_3.setObjectName(_fromUtf8("pushButton_3"))
+        self.pushButton_4 = QtGui.QPushButton(self.frame)
+        self.pushButton_4.setGeometry(QtCore.QRect(15, 90, 160, 25))
+        self.pushButton_4.setObjectName(_fromUtf8("pushButton_4"))
+        self.tabWidget.addTab(self.tab, _fromUtf8(""))
+
+        self.label = QtGui.QLabel(self.frame)
+        self.label.setObjectName(_fromUtf8("label"))
+        self.label.setGeometry(QtCore.QRect(15, 120, 40, 40))
+        self.label.setText(_translate("Dialog", "Rounds:", None))
+
+        self.spinBox = QtGui.QSpinBox(self.frame)
+        self.spinBox.setObjectName(_fromUtf8("spinBox"))
+        self.spinBox.setGeometry(QtCore.QRect(60, 120, 35, 35))
+        self.spinBox.setMinimum(1)
+        self.spinBox.setMaximum(500)
+
+        rounds = self.spinBox.value() 
+        self.spinBox.valueChanged.connect(self.rounds_changed)
+        all_weeks = []
+        self.week_number = rounds
+        for i in range(0,rounds):
+            all_weeks.append(self.first_date + datetime.timedelta(days = i * 7))
+    
+        for i in range(0,rounds):
+            if all_weeks[i] > self.todays_date:
+                self.week_number = i
+                break
+            else:
+                continue
+
+
+
+
         self.tableWidget.setColumnCount(4 + rounds)
         self.tableWidget.setRowCount(0)
         item = QtGui.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(0, item)
 
-
-
+        
+       
 
 
 
@@ -93,24 +132,7 @@ class Ui_MainWindow(object):
         self.tableWidget.setHorizontalHeaderItem(rounds + 3,QtGui.QTableWidgetItem("HSUM"))
 
 
-        self.frame = QtGui.QFrame(self.tab)
-        self.frame.setGeometry(QtCore.QRect(960, 0, 960, 1050))
-        self.frame.setFrameShape(QtGui.QFrame.StyledPanel)
-        self.frame.setFrameShadow(QtGui.QFrame.Raised)
-        self.frame.setObjectName(_fromUtf8("frame"))
-        self.pushButton = QtGui.QPushButton(self.frame)
-        self.pushButton.setGeometry(QtCore.QRect(15, 0, 160, 25))
-        self.pushButton.setObjectName(_fromUtf8("pushButton"))
-        self.pushButton_2 = QtGui.QPushButton(self.frame)
-        self.pushButton_2.setGeometry(QtCore.QRect(15, 30, 160, 25))
-        self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
-        self.pushButton_3 = QtGui.QPushButton(self.frame)
-        self.pushButton_3.setGeometry(QtCore.QRect(15, 60, 160, 25))
-        self.pushButton_3.setObjectName(_fromUtf8("pushButton_3"))
-        self.pushButton_4 = QtGui.QPushButton(self.frame)
-        self.pushButton_4.setGeometry(QtCore.QRect(15, 90, 160, 25))
-        self.pushButton_4.setObjectName(_fromUtf8("pushButton_4"))
-        self.tabWidget.addTab(self.tab, _fromUtf8(""))
+
         
         self.tab_2 = QtGui.QWidget()
         self.tab_2.setObjectName(_fromUtf8("tab_2"))
@@ -379,7 +401,8 @@ class Ui_MainWindow(object):
             Dialog = QtGui.QDialog(MainWindow)
             add_menu_ui.setupUi(Dialog,tablewidget,rowPosition,rounds)
             Dialog.exec_()
-
+    def rounds_changed(self):
+        print self.spinBox.value()
 
 
 

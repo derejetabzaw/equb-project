@@ -105,15 +105,7 @@ class Ui_Dialog(object):
         self.lineEdit = QtGui.QLineEdit(self.horizontalLayoutWidget)
         self.lineEdit.setObjectName(_fromUtf8("lineEdit"))
         self.horizontalLayout.addWidget(self.lineEdit)
-        self.label_2 = QtGui.QLabel(self.horizontalLayoutWidget)
-        self.label_2.setObjectName(_fromUtf8("label_2"))
-        self.horizontalLayout.addWidget(self.label_2)
-        self.spinBox = QtGui.QSpinBox(self.horizontalLayoutWidget)
-        self.spinBox.setObjectName(_fromUtf8("spinBox"))
-        self.spinBox.setMinimum(1)
-        self.spinBox.setMaximum(500)
 
-        self.horizontalLayout.addWidget(self.spinBox)
 
         self.retranslateUi(Dialog)
         # QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), Dialog.accept)
@@ -129,16 +121,16 @@ class Ui_Dialog(object):
 
 
         # self.next_button.clicked.connect(lambda x: self.next_button_function(MainWindow,self.lineEdit.text()))
-        self.next_button.clicked.connect(lambda x: self.next_button_function(MainWindow,self.lineEdit.text(),self.spinBox.value()))
+        self.next_button.clicked.connect(lambda x: self.next_button_function(Dialog,self.lineEdit.text()))
         
-        self.exit_button.clicked.connect(lambda x: self.exit_button_function(MainWindow))
+        self.exit_button.clicked.connect(lambda x: self.exit_button_function(Dialog))
 
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog", None))
+        Dialog.setWindowTitle(_translate("Dialog", "Basic Information", None))
         self.label.setText(_translate("Dialog", "Equb Amount:", None))
-        self.label_2.setText(_translate("Dialog", "Total Rounds:", None))
+        # self.label_2.setText(_translate("Dialog", "Total Rounds:", None))
     def month_changed(self):
         day_index = calendar.weekday(int(self.year_box.currentText()),int(self.month_box.currentIndex() + 1),int(self.date_box.currentIndex() + 1))
         self.day_box.setCurrentIndex(day_index)
@@ -161,12 +153,12 @@ class Ui_Dialog(object):
         day_index = calendar.weekday(int(self.year_box.currentText()),int(self.month_box.currentIndex() + 1),int(self.date_box.currentIndex() + 1))
         self.day_box.setCurrentIndex(day_index)
         
-    def next_button_function(self,MainWindow,grand_total_amount,rounds):
+    def next_button_function(self,MainWindow,grand_total_amount):
         date = np.array([str(self.day_box.currentText()),str(self.month_box.currentText()),str(self.date_box.currentText()),str(self.year_box.currentText())])
         week = self.week_num
         indices = int(self.day_box.currentIndex() + 1),int(self.month_box.currentIndex() + 1),int(self.date_box.currentIndex() + 1),int(self.year_box.currentIndex())
         add_menu_ui = views.Ui_MainWindow()
-        add_menu_ui.setupUi(MainWindow,grand_total_amount,rounds,indices,week)
+        add_menu_ui.setupUi(MainWindow,grand_total_amount,indices,week)
         MainWindow.show()
 
 

@@ -145,6 +145,7 @@ class Ui_Dialog(object):
             tablewidget.insertRow(currentRow)
             tablewidget.setVerticalHeaderItem(currentRow,QtGui.QTableWidgetItem("VSUM"))
             tablewidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+            columnPosition = tablewidget.setCurrentCell(rowPosition,3)       
             MainWindow.close()
             Dialog = QtGui.QDialog(MainWindow)
             add_menu_ui = dialog_amount.Ui_Dialog()
@@ -168,11 +169,9 @@ class Ui_Dialog(object):
             tablewidget.setItem(currentRow , 0, QtGui.QTableWidgetItem(str(Name)))
             tablewidget.setItem(currentRow , 1, QtGui.QTableWidgetItem(str(Lastname)))
             tablewidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+            columnPosition = tablewidget.setCurrentCell(rowPosition,3)
             MainWindow.close()    
-            # Dialog = QtGui.QDialog(MainWindow)
-            # add_menu_ui = dialog_amount.Ui_Dialog()
-            # add_menu_ui.setupUi(Dialog,tablewidget,rowPosition,rounds)
-            # Dialog.exec_()
+
         
         if (self.options== 'Q'):        
             if self.checkBox_2.isChecked():
@@ -190,10 +189,9 @@ class Ui_Dialog(object):
                     tablewidget.removeRow(quarter_delete_row_two)
                     rowPosition = rowPosition - 1
                     tablewidget.setRowCount(rowPosition)
-                    for i in range(1):
-                        tablewidget.setVerticalHeaderItem(currentRow + i,QtGui.QTableWidgetItem(str(self.count)))
-                        tablewidget.setItem(currentRow + i , 2, QtGui.QTableWidgetItem("H"))
-                        tablewidget.item(currentRow + i,2).setBackground(QtGui.QColor(255,255,0))
+                    tablewidget.setVerticalHeaderItem(currentRow,QtGui.QTableWidgetItem(str(self.count)))
+                    tablewidget.setItem(currentRow , 2, QtGui.QTableWidgetItem("H"))
+                    tablewidget.item(currentRow,2).setBackground(QtGui.QColor(255,255,0))
 
             tablewidget.setVerticalHeaderItem(rowPosition - 1,QtGui.QTableWidgetItem("VSUM"))
             tablewidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
@@ -202,10 +200,6 @@ class Ui_Dialog(object):
             tablewidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
 
             MainWindow.close()    
-            # Dialog = QtGui.QDialog(MainWindow)
-            # add_menu_ui = dialog_amount.Ui_Dialog()
-            # add_menu_ui.setupUi(Dialog,tablewidget,rowPosition,rounds)
-            # Dialog.exec_()
 
 
 if __name__ == "__main__":
