@@ -14,6 +14,10 @@ import os
 import calendar 
 import admin_access
 import datetime
+import database 
+
+database_file = str(os.getcwd() + "/" + str("Equb.sqlite")).replace("\\","/")
+
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -29,16 +33,14 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_MainWindow(object):
-    def setupUi(self, MainWindow,grand_total_amount,date,week):
+    def setupUi(self, MainWindow,date):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(1150, 575)
-        self.date = date
-        self.week = week 
-        
+        self.first_date = datetime.datetime.strptime(
+            str(database.select_date_from_database(database_file)[0][0]),
+            '%Y-%m-%d').date()
         self.todays_date = datetime.date.today() 
-        self.first_date = datetime.date(self.date[3] + 2000,self.date[1],self.date[2])
-        self.year, self.week_num_now, self.day_of_week = self.todays_date.isocalendar()
-        self.week_num_first = self.first_date.isocalendar()[1]
+
         
 
 
@@ -81,7 +83,7 @@ class Ui_MainWindow(object):
 
         self.spinBox = QtGui.QSpinBox(self.frame)
         self.spinBox.setObjectName(_fromUtf8("spinBox"))
-        self.spinBox.setGeometry(QtCore.QRect(60, 120, 35, 35))
+        self.spinBox.setGeometry(QtCore.QRect(60, 130, 40, 20))
         self.spinBox.setMinimum(1)
         self.spinBox.setMaximum(500)
 
@@ -347,6 +349,7 @@ class Ui_MainWindow(object):
         add_menu_ui = dialog_name.Ui_Dialog()
         Dialog = QtGui.QDialog(MainWindow)
         options = ""
+        database.insert_round_and_count(database_file,self.count,rounds)
         add_menu_ui.setupUi(Dialog,tablewidget,rounds,self.count,options)
         Dialog.exec_()
     def delete_button_function(self,MainWindow):
@@ -402,7 +405,55 @@ class Ui_MainWindow(object):
             add_menu_ui.setupUi(Dialog,tablewidget,rowPosition,rounds)
             Dialog.exec_()
     def rounds_changed(self):
-        print self.spinBox.value()
+        rounds =  self.spinBox.value()
+        all_weeks = []
+        self.week_number = rounds
+        for i in range(0,rounds):
+            all_weeks.append(self.first_date + datetime.timedelta(days = i * 7))
+    
+        for i in range(0,rounds):
+            if all_weeks[i] > self.todays_date:
+                self.week_number = i
+                break
+            else:
+                continue
+
+
+
+
+        self.tableWidget.setColumnCount(4 + rounds)
+        self.tableWidget.setRowCount(0)
+        item = QtGui.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(0, item)
+
+    
+
+
+        item = QtGui.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(1, item)
+        item = QtGui.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(2, item)
+
+        item = self.tableWidget.horizontalHeaderItem(0)
+        item.setText(_translate("MainWindow", "Name", None))
+        item = self.tableWidget.horizontalHeaderItem(1)
+        item.setText(_translate("MainWindow", "Last Name", None))
+        item = self.tableWidget.horizontalHeaderItem(2)
+        item.setText(_translate("MainWindow", "Commitment", None))
+        
+        item = QtGui.QTableWidgetItem()
+
+        indx = 1
+        for i in range(3,rounds + 3):
+            item = QtGui.QTableWidgetItem()
+            self.tableWidget.setHorizontalHeaderItem(i, item)
+            item.setText(_translate("MainWindow", "Week-"+ str(indx) +'\n'+ str(all_weeks[i - 3]), None))
+            indx +=1 
+
+        
+
+
+        self.tableWidget.setHorizontalHeaderItem(rounds + 3,QtGui.QTableWidgetItem("HSUM"))
 
 
 

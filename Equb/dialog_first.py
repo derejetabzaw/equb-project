@@ -11,7 +11,14 @@ from PyQt4 import QtCore, QtGui
 import views
 import calendar
 import datetime
-import numpy as np
+import os 
+import database
+
+
+
+database_file = str(os.getcwd() + "/" + str("Equb.sqlite")).replace("\\","/")
+database.create_database_and_tables(database_file)
+
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -154,11 +161,11 @@ class Ui_Dialog(object):
         self.day_box.setCurrentIndex(day_index)
         
     def next_button_function(self,MainWindow,grand_total_amount):
-        date = np.array([str(self.day_box.currentText()),str(self.month_box.currentText()),str(self.date_box.currentText()),str(self.year_box.currentText())])
-        week = self.week_num
         indices = int(self.day_box.currentIndex() + 1),int(self.month_box.currentIndex() + 1),int(self.date_box.currentIndex() + 1),int(self.year_box.currentIndex())
+        first_date = datetime.date(indices[3] + 2000,indices[1],int(indices[2]))
+        database.insert_date_and_amount(database_file,str(grand_total_amount),str(first_date))
         add_menu_ui = views.Ui_MainWindow()
-        add_menu_ui.setupUi(MainWindow,grand_total_amount,indices,week)
+        add_menu_ui.setupUi(MainWindow,first_date)
         MainWindow.show()
 
 

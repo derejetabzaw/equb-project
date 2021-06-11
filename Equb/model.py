@@ -32,7 +32,7 @@ class EqubModel:
 
         tableModel.select()
 
-        headers = ("Name","Last Name")
+        headers = ("Name","Last Name","Commitment","Week","HSUM")
 
         for columnIndex, header in enumerate(headers):
 

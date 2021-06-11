@@ -8,7 +8,11 @@
 
 from PyQt4 import QtCore, QtGui
 from model import EqubModel
+import os
 import dialog_amount
+import database 
+database_file = str(os.getcwd() + "/" + str("Equb.sqlite")).replace("\\","/")
+
 
 
 try:
@@ -30,7 +34,7 @@ class Ui_Dialog(object):
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(262, 191)
         self.options = options 
-        self.count = count
+        self.count = database.select_count_from_database(database_file)[0][0]
         self.okay_button = QtGui.QPushButton(Dialog)
         self.okay_button.setGeometry(QtCore.QRect(90, 150, 75, 20))
         self.okay_button.setObjectName(_fromUtf8("okay_button"))
