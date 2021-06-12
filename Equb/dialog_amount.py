@@ -173,7 +173,12 @@ class Ui_Dialog(object):
         self.checkBox_2.clicked.connect(lambda x: self.cheque_ref_number(Dialog,self.label_ref_number,self.lineEdit_3,self.okay_button,self.cancel_button)) 
         self.checkBox_3.clicked.connect(lambda x: self.bank_deposit(Dialog,self.boa_option,self.cbe_option,self.dashen_option,self.okay_button,self.cancel_button)) 
 
+        currentRow = tablewidget.currentRow()
+        column_count = tablewidget.columnCount()
+        currentColumn = tablewidget.currentColumn()
 
+        if tablewidget.item(currentRow,currentColumn) is not None and tablewidget.item(currentRow,currentColumn).text() !='':            
+            self.lineEdit.setText(str(tablewidget.item(currentRow,currentColumn).text()))    
 
 
 
@@ -185,8 +190,11 @@ class Ui_Dialog(object):
         self.cell_sum_column = 0
         self.count = 0 
 
+
+
         self.retranslateUi(Dialog)
 
+        
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "Dialog", None))
         self.label_3.setText(_translate("Dialog", "Amount:", None))

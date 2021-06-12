@@ -15,6 +15,7 @@ import calendar
 import admin_access
 import datetime
 import database 
+from model import EqubModel
 
 database_file = str(os.getcwd() + "/" + str("Equb.sqlite")).replace("\\","/")
 
@@ -42,7 +43,7 @@ class Ui_MainWindow(object):
         self.todays_date = datetime.date.today() 
 
         
-
+        
 
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
@@ -54,6 +55,14 @@ class Ui_MainWindow(object):
         self.tableWidget = QtGui.QTableWidget(self.tab)
         self.tableWidget.setGeometry(QtCore.QRect(0, 0, 960, 500))
         self.tableWidget.setObjectName(_fromUtf8("tableWidget"))
+
+        self.iterate_over_database =  len(database.select_equb_information(database_file))
+        # self.tableWidget.setRowCount(self.iterate_over_database - 1)
+        # self.tableWidget.insertRow(self.iterate_over_database - 1)
+        
+
+
+  
 
 
 
@@ -106,6 +115,8 @@ class Ui_MainWindow(object):
 
         self.tableWidget.setColumnCount(4 + rounds)
         self.tableWidget.setRowCount(0)
+
+        
         item = QtGui.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(0, item)
 
@@ -134,8 +145,22 @@ class Ui_MainWindow(object):
         self.tableWidget.setHorizontalHeaderItem(rounds + 3,QtGui.QTableWidgetItem("HSUM"))
 
 
+        """MODEL"""
 
+        # for i in range(0,self.iterate_over_database):
+        #     Name = database.select_equb_information(database_file)[i][0]
+        #     Lastname = database.select_equb_information(database_file)[i][1]
+        #     # rowPosition = database.select_equb_information(database_file)[i][2]
+        #     # columncount = database.select_equb_information(database_file)[i][3]
+        #     # currentRow = database.select_equb_information(database_file)[i][4]
+        #     # currentcolumn = database.select_equb_information(database_file)[i][5] 
+
+        #     self.tableWidget.setItem(i , 0, QtGui.QTableWidgetItem(str(Name)))
+        #     self.tableWidget.setItem(i , 1, QtGui.QTableWidgetItem(str(Lastname)))
         
+
+
+
         self.tab_2 = QtGui.QWidget()
         self.tab_2.setObjectName(_fromUtf8("tab_2"))
         self.tabWidget_2 = QtGui.QTabWidget(self.tab_2)
@@ -382,6 +407,7 @@ class Ui_MainWindow(object):
             Dialog.exec_()
         if (currentColumn > 2 and (self.week_number + 2) == currentColumn):
             self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+
             add_menu_ui = dialog_amount.Ui_Dialog()
             Dialog = QtGui.QDialog(MainWindow)
             add_menu_ui.setupUi(Dialog,tablewidget,rowPosition,rounds)
@@ -395,6 +421,11 @@ class Ui_MainWindow(object):
                     Dialog = QtGui.QDialog(MainWindow)
                     add_menu_ui.setupUi(Dialog,tablewidget,rounds,self.count,options)
                     Dialog.exec_() 
+
+
+
+
+     
 
     def clicked_cell(self,MainWindow,tablewidget,rounds):
         currentRow, currentColumn = self.tableWidget1.currentRow(), self.tableWidget1.currentColumn()
@@ -422,7 +453,7 @@ class Ui_MainWindow(object):
 
 
         self.tableWidget.setColumnCount(4 + rounds)
-        self.tableWidget.setRowCount(0)
+        self.tableWidget.setRowCount(self.tableWidget.rowCount())
         item = QtGui.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(0, item)
 

@@ -47,12 +47,13 @@ def create_database_and_tables(database):
     # sqlite3.register_converter("array", convert_array)
 
     sql_create_equb_table = """ CREATE TABLE IF NOT EXISTS Equb (
-                            seed INTEGER NOT NULL,
-                            name VARCHAR(40) NOT NULL,
-                            lastname VARCHAR(40) NOT NULL,
-                            commitment VARCHAR(40) NOT NULL,
-                            week INTEGER,
-                            hsum INTEGER
+                            name text NOT NULL,
+                            lastname text NOT NULL,
+                            rowposition INTEGER,
+                            columncount INTEGER,
+                            currentrow INTEGER,
+                            currentcolumn INTEGER
+
                         ); """
     sql_create_basic_information = """ CREATE TABLE IF NOT EXISTS basic_informations (
                             grand_total INTEGER NOT NULL,
@@ -157,3 +158,35 @@ def select_count_from_database(database):
     return rows 
 
 
+
+def add_name_and_last_name(conn, information):
+    """
+    Create a new project into the projects table
+    :param conn:
+    :param project:
+    :return: project id
+    """
+    sql = ''' INSERT INTO Equb(name,lastname,rowposition,columncount,currentrow,currentcolumn)
+              VALUES(?,?,?,?,?,?) '''
+    cur = conn.cursor()
+    cur.execute(sql, information)
+    return cur.lastrowid
+
+
+
+def insert_data_entry(database,name,lastname,rowcount,columncount,currentRow,currentColumn):
+    # create a database connection
+    conn = create_connection(database)
+    with conn:
+        # tasks
+        information = name,lastname,rowcount,columncount,currentRow,currentColumn
+        add_name_and_last_name(conn, information)
+
+
+
+def select_equb_information(database):
+    conn = create_connection(database)
+    cur = conn.cursor()
+    cur.execute("SELECT DISTINCT * FROM Equb")
+    rows = cur.fetchall()
+    return rows 
