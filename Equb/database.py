@@ -1,19 +1,21 @@
 import sqlite3
 from sqlite3 import Error
+import numpy as np 
+import io 
  
-# def adapt_array(arr):
-#     """
-#     http://stackoverflow.com/a/31312102/190597 (SoulNibbler)
-#     """
-#     out = io.BytesIO()
-#     np.save(out, arr)
-#     out.seek(0)
-#     return sqlite3.Binary(out.read())
+def adapt_array(arr):
+    """
+    http://stackoverflow.com/a/31312102/190597 (SoulNibbler)
+    """
+    out = io.BytesIO()
+    np.save(out, arr)
+    out.seek(0)
+    return sqlite3.Binary(out.read())
 
-# def convert_array(text):
-#     out = io.BytesIO(text)
-#     out.seek(0)
-#     return np.load(out)
+def convert_array(text):
+    out = io.BytesIO(text)
+    out.seek(0)
+    return np.load(out)
 
  
 def create_connection(db_file):
@@ -41,10 +43,10 @@ def create_table(conn, create_table_sql):
 def create_database_and_tables(database):
     
     # Converts np.array to TEXT when inserting
-    # sqlite3.register_adapter(np.ndarray, adapt_array)
+    sqlite3.register_adapter(np.ndarray, adapt_array)
 
     # Converts TEXT to np.array when selecting
-    # sqlite3.register_converter("array", convert_array)
+    sqlite3.register_converter("array", convert_array)
 
     sql_create_equb_table = """ CREATE TABLE IF NOT EXISTS Equb (
                             name text NOT NULL,
@@ -64,6 +66,15 @@ def create_database_and_tables(database):
                             count INTEGER NOT NULL,
                             rounds INTEGER NOT NULL
                         ); """
+    sql_create_amount = """ CREATE TABLE IF NOT EXISTS Amount (
+                            amount INTEGER NOT NULL,
+                            currentrow INTEGER,
+                            currentcolumn INTEGER,
+                            checked_box  array,
+                            cheque_information array,
+                            checkbox_bank_options array,
+                            others_text text
+                        ); """
                                     
 
 
@@ -77,6 +88,7 @@ def create_database_and_tables(database):
         create_table(conn, sql_create_equb_table)
         create_table(conn,sql_create_basic_information)
         create_table(conn,sql_create_view_status)
+        create_table(conn,sql_create_amount)
 
 
     else:
@@ -188,5 +200,36 @@ def select_equb_information(database):
     conn = create_connection(database)
     cur = conn.cursor()
     cur.execute("SELECT DISTINCT * FROM Equb")
+    rows = cur.fetchall()
+    return rows 
+
+
+def add_amount(conn, information):
+    """
+    Create a new project into the projects table
+    :param conn:
+    :param project:
+    :return: project id
+    """
+    sql = ''' INSERT INTO Amount(amount,currentrow,currentcolumn,checked_box,cheque_information,checkbox_bank_options,others_text)
+              VALUES(?,?,?,?,?,?,?) '''
+    cur = conn.cursor()
+    cur.execute(sql, information)
+    return cur.lastrowid
+
+
+
+
+def insert_amount_dialog(database,amount,currentrow,currentcolumn,checked_box,cheque_information,checkbox_bank_options,others_text):
+    conn = create_connection(database)
+    with conn:
+        information = amount,currentrow,currentcolumn,adapt_array(checked_box),adapt_array(cheque_information),adapt_array(checkbox_bank_options),others_text
+        add_amount(conn, information)
+
+
+def select_amount(database,row,column):
+    conn = create_connection(database)
+    cur = conn.cursor()
+    cur.execute("SELECT amount,checked_box,cheque_information,checkbox_bank_options,others_text FROM Amount WHERE currentrow = ? AND currentcolumn=?",(row,column))
     rows = cur.fetchall()
     return rows 

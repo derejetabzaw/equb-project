@@ -7,7 +7,10 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
-
+import database 
+import os 
+database_file = str(os.getcwd() + "/" + str("Equb.sqlite")).replace("\\","/")
+import numpy as np 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -178,7 +181,21 @@ class Ui_Dialog(object):
         currentColumn = tablewidget.currentColumn()
 
         if tablewidget.item(currentRow,currentColumn) is not None and tablewidget.item(currentRow,currentColumn).text() !='':            
-            self.lineEdit.setText(str(tablewidget.item(currentRow,currentColumn).text()))    
+            self.lineEdit.setText(str(tablewidget.item(currentRow,currentColumn).text()))
+            amount,checked_box,cheque_information,bank_options,others = database.select_amount(database_file,currentRow,currentColumn)[-1]
+            print amount,database.convert_array(checked_box),database.convert_array(cheque_information),database.convert_array(bank_options),others
+            checked_box = (database.convert_array(checked_box)).astype(np.int)
+            if checked_box[0] == 2:
+                 self.checkBox.setChecked(True) 
+            if checked_box[1] == 2:
+                 self.checkBox_2.setChecked(True) 
+            if checked_box[2] == 2:
+                 self.checkBox_3.setChecked(True) 
+            if checked_box[3] == 2:
+                 self.checkBox_4.setChecked(True) 
+            if checked_box[4] == 2:
+                 self.checkBox_5.setChecked(True) 
+               
 
 
 
@@ -318,6 +335,45 @@ class Ui_Dialog(object):
         currentRow = tablewidget.rowCount()
         column_count = tablewidget.columnCount()
         columnPosition = tablewidget.currentColumn()
+        currentrow_ = tablewidget.currentRow()
+        currentcolumn_ = tablewidget.currentColumn()
+        
+        checkboxes = [str(self.checkBox.checkState()),
+        str(self.checkBox_2.checkState()),
+        str(self.checkBox_3.checkState()),
+        str(self.checkBox_4.checkState()),
+        str(self.checkBox_5.checkState())]
+        checkboxes = np.asarray(checkboxes)
+
+        cheque_rowCount = self.cheque_tableWidget.rowCount()
+        cheque_columnCount = self.cheque_tableWidget.columnCount()
+        cheque_currentColumn = self.cheque_tableWidget.currentColumn()
+        cheque_currentRow = self.cheque_tableWidget.currentRow()
+        print cheque_currentRow,cheque_currentColumn
+        
+        
+        if self.cheque_tableWidget.item(cheque_currentRow,cheque_currentColumn) is not None and self.cheque_tableWidget.item(cheque_currentRow,cheque_currentColumn).text() !='':            
+
+
+            cheque_information = [str(self.cheque_tableWidget.item(cheque_currentRow,0).text()),
+            str(self.cheque_tableWidget.item(cheque_currentRow,1).text()),
+            str(self.cheque_tableWidget.item(cheque_currentRow,2).text()),
+            str(self.cheque_tableWidget.item(cheque_currentRow,3).text()),
+            str(self.cheque_tableWidget.item(cheque_currentRow,4).text())]
+            cheque_information = np.asarray(cheque_information)
+
+        else:
+            cheque_information = ['','','','','']
+
+        checkbox_bank_options = [self.boa_option.isChecked(),
+        self.cbe_option.isChecked(),self.dashen_option.isChecked(),self.awash_option.isChecked(),
+        self.nib_option.isChecked(),self.Birhan_option.isChecked(),self.Hibret_option.isChecked(),
+        self.wegagen_option.isChecked(),self.bunna_option.isChecked()]
+
+        checkbox_bank_options = np.array(checkbox_bank_options,dtype = bool)
+        checkbox_bank_options = checkbox_bank_options.astype(int)
+        others_text = str(self.lineEdit_2.toPlainText())
+
         if (columnPosition < 0):
             tablewidget.setItem(rowPosition , 3, QtGui.QTableWidgetItem(str(Amount)))
             tablewidget.setItem(currentRow - 1,3, QtGui.QTableWidgetItem(str(tablewidget.item(0,3).text())))
@@ -337,7 +393,9 @@ class Ui_Dialog(object):
                     self.cell_sum_column += int(cell_data_column.text())
             tablewidget.setItem(rowPosition,column_count - 1, QtGui.QTableWidgetItem(str(self.cell_sum_column)))
             
+        database.insert_amount_dialog(database_file,Amount,currentrow_,currentcolumn_,checkboxes,cheque_information,checkbox_bank_options,others_text)    
         columnPosition = tablewidget.setCurrentCell(rowPosition,3)
+        
         MainWindow.close()
 
     
@@ -350,6 +408,7 @@ if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
     MainWindow = QtGui.QDialog()
     ui = Ui_Dialog()
-    ui.setupUi(MainWindow,"tablewidget",5,15)
+    tableWidget = QtGui.QTableWidget(MainWindow)
+    ui.setupUi(MainWindow,tableWidget,5,15)
     MainWindow.show()
     sys.exit(app.exec_())
