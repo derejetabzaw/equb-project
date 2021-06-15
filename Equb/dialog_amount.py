@@ -176,6 +176,9 @@ class Ui_Dialog(object):
         self.checkBox_2.clicked.connect(lambda x: self.cheque_ref_number(Dialog,self.label_ref_number,self.lineEdit_3,self.okay_button,self.cancel_button)) 
         self.checkBox_3.clicked.connect(lambda x: self.bank_deposit(Dialog,self.boa_option,self.cbe_option,self.dashen_option,self.okay_button,self.cancel_button)) 
 
+
+
+        """Model_Amount"""
         currentRow = tablewidget.currentRow()
         column_count = tablewidget.columnCount()
         currentColumn = tablewidget.currentColumn()
@@ -183,7 +186,7 @@ class Ui_Dialog(object):
         if tablewidget.item(currentRow,currentColumn) is not None and tablewidget.item(currentRow,currentColumn).text() !='':            
             self.lineEdit.setText(str(tablewidget.item(currentRow,currentColumn).text()))
             amount,checked_box,cheque_information,bank_options,others = database.select_amount(database_file,currentRow,currentColumn)[-1]
-            print amount,database.convert_array(checked_box),database.convert_array(cheque_information),database.convert_array(bank_options),others
+            # print amount,database.convert_array(checked_box),database.convert_array(cheque_information),database.convert_array(bank_options),others
             checked_box = (database.convert_array(checked_box)).astype(np.int)
             if checked_box[0] == 2:
                  self.checkBox.setChecked(True) 
@@ -349,7 +352,6 @@ class Ui_Dialog(object):
         cheque_columnCount = self.cheque_tableWidget.columnCount()
         cheque_currentColumn = self.cheque_tableWidget.currentColumn()
         cheque_currentRow = self.cheque_tableWidget.currentRow()
-        print cheque_currentRow,cheque_currentColumn
         
         
         if self.cheque_tableWidget.item(cheque_currentRow,cheque_currentColumn) is not None and self.cheque_tableWidget.item(cheque_currentRow,cheque_currentColumn).text() !='':            

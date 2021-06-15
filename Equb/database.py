@@ -75,6 +75,17 @@ def create_database_and_tables(database):
                             checkbox_bank_options array,
                             others_text text
                         ); """
+    sql_create_save_table = """ CREATE TABLE IF NOT EXISTS SAVE (
+                            name text,
+                            lastname text,
+                            commitment varchar,
+                            amount integer,
+                            rounds integer,
+                            currentrow integer,
+                            currentcolumn integer,
+                            rowcount integer,
+                            columncount integer
+                        ); """
                                     
 
 
@@ -89,6 +100,7 @@ def create_database_and_tables(database):
         create_table(conn,sql_create_basic_information)
         create_table(conn,sql_create_view_status)
         create_table(conn,sql_create_amount)
+        create_table(conn,sql_create_save_table)
 
 
     else:
@@ -232,4 +244,19 @@ def select_amount(database,row,column):
     cur = conn.cursor()
     cur.execute("SELECT amount,checked_box,cheque_information,checkbox_bank_options,others_text FROM Amount WHERE currentrow = ? AND currentcolumn=?",(row,column))
     rows = cur.fetchall()
-    return rows 
+    return rows
+
+
+
+def save_information(conn,information):
+    sql = ''' INSERT INTO SAVE(name,lastname,commitment,amount,rounds,currentrow,currentcolumn,rowcount,columncount)
+              VALUES(?,?,?,?,?,?,?,?,?) '''
+    cur = conn.cursor()
+    cur.execute(sql, information)
+    return cur.lastrowid
+
+def insert_views_information(database,name,lastname,commitment,amount,rounds,currentrow,currentcolumn,rowcount,columncount):
+    conn = create_connection(database)
+    with conn:
+        information = name,lastname,commitment,amount,rounds,currentrow,currentcolumn,rowcount,columncount
+        save_information(conn, information)

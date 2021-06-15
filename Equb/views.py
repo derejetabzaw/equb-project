@@ -16,6 +16,7 @@ import admin_access
 import datetime
 import database 
 from model import EqubModel
+import numpy as np 
 
 database_file = str(os.getcwd() + "/" + str("Equb.sqlite")).replace("\\","/")
 
@@ -299,6 +300,7 @@ class Ui_MainWindow(object):
         self.pushButton_3.clicked.connect(lambda x: self.delete_button_function(MainWindow))
 
         self.pushButton_4.clicked.connect(lambda x: self.clear_all_button_function(MainWindow))
+        self.save_button.clicked.connect(lambda x: self.save_function(MainWindow))
         self.count = 0
 
         self.tabWidget.setCurrentIndex(0)
@@ -501,8 +503,28 @@ class Ui_MainWindow(object):
 
 
 
+    def save_function(self,MainWindow):
+        currentRow, currentColumn = self.tableWidget.currentRow(), self.tableWidget.currentColumn()
+        rowcount = self.tableWidget.rowCount()
+        columncount = self.tableWidget.columnCount()
+        rounds =  self.spinBox.value()
+        '''Row-Column Loop'''
+        all_table_information = []
+        for row in range(0,rowcount - 1):
+            for column in range(0,columncount - 1):
+                if self.tableWidget.item(row,column) is not None and self.tableWidget.item(row,column).text() !='':
+                    all_table_information.append(str(self.tableWidget.item(row,column).text()))
+                else:
+                    all_table_information.append("")
+        
+        all_table_information = np.asarray(all_table_information)
+        print type(all_table_information)
+        print len(all_table_information)
+        print rowcount-1
+        print columncount-1
 
-
+        all_table_information.reshape(rowcount-1,columncount-1)
+        print all_table_information
 if __name__ == "__main__":
     import sys
     app = QtGui.QApplication(sys.argv)
