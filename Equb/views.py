@@ -510,21 +510,18 @@ class Ui_MainWindow(object):
         rounds =  self.spinBox.value()
         '''Row-Column Loop'''
         all_table_information = []
+        all_table_information = np.empty((rowcount - 1, columncount - 1), dtype=object) 
         for row in range(0,rowcount - 1):
             for column in range(0,columncount - 1):
                 if self.tableWidget.item(row,column) is not None and self.tableWidget.item(row,column).text() !='':
-                    all_table_information.append(str(self.tableWidget.item(row,column).text()))
+                    all_table_information[row][column] = str(self.tableWidget.item(row,column).text())
                 else:
-                    all_table_information.append("")
-        
-        all_table_information = np.asarray(all_table_information)
-        print type(all_table_information)
-        print len(all_table_information)
-        print rowcount-1
-        print columncount-1
+                    all_table_information[row][column] = str("")
 
-        all_table_information.reshape(rowcount-1,columncount-1)
-        print all_table_information
+        
+
+
+
 if __name__ == "__main__":
     import sys
     app = QtGui.QApplication(sys.argv)
