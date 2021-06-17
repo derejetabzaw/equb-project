@@ -17,9 +17,10 @@ import datetime
 import database 
 from model import EqubModel
 import numpy as np 
+import sys, csv
 
 database_file = str(os.getcwd() + "/" + str("Equb.sqlite")).replace("\\","/")
-
+default_path = os.path.dirname(os.path.abspath(__file__))
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -508,18 +509,37 @@ class Ui_MainWindow(object):
         rowcount = self.tableWidget.rowCount()
         columncount = self.tableWidget.columnCount()
         rounds =  self.spinBox.value()
+        path = QtGui.QFileDialog.getSaveFileName(MainWindow, 'Save File',default_path, 'CSV(*.csv)')
         '''Row-Column Loop'''
-        all_table_information = []
-        all_table_information = np.empty((rowcount - 1, columncount - 1), dtype=object) 
-        for row in range(0,rowcount - 1):
-            for column in range(0,columncount - 1):
-                if self.tableWidget.item(row,column) is not None and self.tableWidget.item(row,column).text() !='':
-                    all_table_information[row][column] = str(self.tableWidget.item(row,column).text())
-                else:
-                    all_table_information[row][column] = str("")
 
-        
+        if rowcount or columncount < 0: 
+            all_table_information = np.empty((0, 0), dtype=object)
+        else:
+            all_table_information = np.empty((rowcount - 1, columncount - 1), dtype=object) 
 
+
+        if not path.isEmpty():
+            with open(path, 'wb') as stream:
+                writer = csv.writer(stream)
+                columndata = [""]
+                for column in range(0,columncount):
+                    horizontal_header = self.tableWidget.horizontalHeaderItem(column) 
+                    columndata.append(unicode(horizontal_header.text()).encode('utf8'))
+                writer.writerow(columndata)
+
+                for row in range(0,rowcount):
+                    rowdata = []
+                    vertical_header = self.tableWidget.verticalHeaderItem(row)
+                    rowdata.append(unicode(vertical_header.text()).encode('utf8'))
+                    for column in range(0,columncount):
+                        item = self.tableWidget.item(row, column)
+
+                        if self.tableWidget.item(row,column) is not None and self.tableWidget.item(row,column).text() !='':
+                            rowdata.append(unicode(item.text()).encode('utf8'))
+                        else:
+                            rowdata.append('')
+                    writer.writerow(rowdata)
+             
 
 
 if __name__ == "__main__":
