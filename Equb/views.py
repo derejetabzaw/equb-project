@@ -302,6 +302,7 @@ class Ui_MainWindow(object):
 
         self.pushButton_4.clicked.connect(lambda x: self.clear_all_button_function(MainWindow))
         self.save_button.clicked.connect(lambda x: self.save_function(MainWindow))
+        self.open_button.clicked.connect(lambda x: self.open_function(MainWindow))
         self.count = 0
 
         self.tabWidget.setCurrentIndex(0)
@@ -539,7 +540,36 @@ class Ui_MainWindow(object):
                         else:
                             rowdata.append('')
                     writer.writerow(rowdata)
-             
+    def open_function(self,MainWindow):
+        path = QtGui.QFileDialog.getOpenFileName(MainWindow, 'Open File', default_path , 'CSV(*.csv)')
+        if not path.isEmpty():
+            with open(unicode(path), 'rb') as stream:
+                self.tableWidget.setRowCount(0)
+                self.tableWidget.setColumnCount(0)
+                rowdata_ = []
+                for rowdata in csv.reader(stream):
+                    rowdata_.append(rowdata)
+                    row = self.tableWidget.rowCount()
+                    self.tableWidget.insertRow(row)
+                    self.tableWidget.setColumnCount(len(rowdata))
+                    self.tableWidget.setVerticalHeaderItem(row,QtGui.QTableWidgetItem(rowdata[0]))
+                    for column, data in enumerate(rowdata):
+                        item = QtGui.QTableWidgetItem(data.decode('utf8'))
+                        self.tableWidget.setItem(row, column, item)
+        
+
+        for colour_commitment in range(0,len(rowdata_) - 1):
+            if rowdata_[colour_commitment][3] == "F":
+                self.tableWidget.item(colour_commitment,3).setBackground(QtGui.QColor(0,0,255))
+            if rowdata_[colour_commitment][3] == "H":
+                self.tableWidget.item(colour_commitment,3).setBackground(QtGui.QColor(255,255,0))
+            if rowdata_[colour_commitment][3] == "Q":
+                self.tableWidget.item(colour_commitment,3).setBackground(QtGui.QColor(100,100,150))
+        for column_ in range(0,len(rowdata_[0])):
+            self.tableWidget.setHorizontalHeaderItem(column_,QtGui.QTableWidgetItem(rowdata_[0][column_]))
+        self.tableWidget.removeRow(0)
+        self.tableWidget.removeColumn(0)
+     
 
 
 if __name__ == "__main__":
