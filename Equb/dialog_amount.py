@@ -25,8 +25,10 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
+debt_calculator = [0] * 500
+
 class Ui_Dialog(object):
-    def setupUi(self, Dialog,tablewidget,rowPosition,rounds):
+    def setupUi(self, Dialog,tablewidget,tablewidget_debt,rowPosition,rounds):
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(415, 120)
         self.okay_button = QtGui.QPushButton(Dialog)
@@ -183,29 +185,78 @@ class Ui_Dialog(object):
         column_count = tablewidget.columnCount()
         currentColumn = tablewidget.currentColumn()
 
+        banks = [self.boa_option,self.cbe_option,self.dashen_option,self.awash_option,
+                self.nib_option,self.Birhan_option,self.Hibret_option,self.wegagen_option,
+                self.bunna_option]
+
         if tablewidget.item(currentRow,currentColumn) is not None and tablewidget.item(currentRow,currentColumn).text() !='':            
             self.lineEdit.setText(str(tablewidget.item(currentRow,currentColumn).text()))
             amount,checked_box,cheque_information,bank_options,others = database.select_amount(database_file,currentRow,currentColumn)[-1]
             # print amount,database.convert_array(checked_box),database.convert_array(cheque_information),database.convert_array(bank_options),others
             checked_box = (database.convert_array(checked_box)).astype(np.int)
+            bank_options  = (database.convert_array(bank_options)).astype(np.int)
+
             if checked_box[0] == 2:
                  self.checkBox.setChecked(True) 
             if checked_box[1] == 2:
                  self.checkBox_2.setChecked(True) 
+                 if (self.checkBox_2.checkState() != 0):
+                    self.checkBox_4.setEnabled(False)
+                    self.checkBox_5.setEnabled(False)
+                    self.checkBox_3.setEnabled(False)
+                    self.checkBox.setEnabled(False)
+                    self.cheque_tableWidget.show()
+                    Dialog.resize(415, 200)
+                    self.okay_button.setGeometry(QtCore.QRect(240, 165, 75, 20))
+                    self.cancel_button.setGeometry(QtCore.QRect(320, 165, 75, 20)) 
             if checked_box[2] == 2:
-                 self.checkBox_3.setChecked(True) 
+                self.checkBox_3.setChecked(True) 
+                if (self.checkBox_3.checkState() != 0):
+                    self.checkBox_4.setEnabled(False)
+                    self.checkBox_5.setEnabled(False)
+                    self.checkBox.setEnabled(False)
+                    self.checkBox_2.setEnabled(False)
+                    self.boa_option.show()
+                    self.cbe_option.show()
+                    self.dashen_option.show()
+                    self.awash_option.show()
+                    self.nib_option.show()
+                    self.Birhan_option.show()
+                    self.Hibret_option.show()
+                    self.wegagen_option.show()
+                    self.bunna_option.show()
+                    Dialog.resize(415, 170)
+                    self.okay_button.setGeometry(QtCore.QRect(240, 145, 75, 20))
+                    self.cancel_button.setGeometry(QtCore.QRect(320, 145, 75, 20))
+                    bank_option_indexes = [i for i, element in enumerate(bank_options) if element!=0][0]
+                    banks[bank_option_indexes].setChecked(True)
             if checked_box[3] == 2:
                  self.checkBox_4.setChecked(True) 
             if checked_box[4] == 2:
                  self.checkBox_5.setChecked(True) 
-               
+                 if (self.checkBox_5.checkState() != 0):
+
+                    self.checkBox_4.setEnabled(False)
+                    self.checkBox_3.setEnabled(False)
+                    self.checkBox.setEnabled(False)
+                    self.checkBox_2.setEnabled(False)
+                    self.lineEdit_2.show()
+
+                    Dialog.resize(415, 320)
+                    
+                    self.okay_button.setGeometry(QtCore.QRect(240, 240, 75, 20))
+
+                    self.cancel_button.setGeometry(QtCore.QRect(320, 240, 75, 20))
+                
+                    self.lineEdit_2.setPlainText(str(others))
+
 
 
 
 
 
         QtCore.QMetaObject.connectSlotsByName(Dialog)
-        self.okay_button.clicked.connect(lambda x: self.okay_button_function(Dialog,tablewidget,str(self.lineEdit.text()),rowPosition,rounds))
+        self.okay_button.clicked.connect(lambda x: self.okay_button_function(Dialog,tablewidget,tablewidget_debt,str(self.lineEdit.text()),rowPosition,rounds))
         self.cell_sum = 0
         self.cell_sum_column = 0
         self.count = 0 
@@ -334,12 +385,17 @@ class Ui_Dialog(object):
 
 
 
-    def okay_button_function(self,MainWindow,tablewidget,Amount,rowPosition,rounds):
+    def okay_button_function(self,MainWindow,tablewidget,tablewidget_debt,Amount,rowPosition,rounds):
         currentRow = tablewidget.rowCount()
         column_count = tablewidget.columnCount()
         columnPosition = tablewidget.currentColumn()
         currentrow_ = tablewidget.currentRow()
         currentcolumn_ = tablewidget.currentColumn()
+        # week_index = x
+        GEA = int(database.select_equb_amount_from_database(database_file)[-1][0])
+        debt_calculator[currentcolumn_ - 3] = float(Amount) - float(GEA/float(rounds))
+        debt_per_week = debt_calculator[0:rounds]
+        tablewidget_debt.setRowCount(currentRow)
         
         checkboxes = [str(self.checkBox.checkState()),
         str(self.checkBox_2.checkState()),
@@ -380,9 +436,12 @@ class Ui_Dialog(object):
             tablewidget.setItem(rowPosition , 3, QtGui.QTableWidgetItem(str(Amount)))
             tablewidget.setItem(currentRow - 1,3, QtGui.QTableWidgetItem(str(tablewidget.item(0,3).text())))
             tablewidget.setItem(0,column_count - 1, QtGui.QTableWidgetItem(str(tablewidget.item(0,3).text())))
+            tablewidget_debt.setItem(rowPosition,2, QtGui.QTableWidgetItem(str(debt_per_week[currentcolumn_ - 3])))
 
         else: 
             tablewidget.setItem(rowPosition , columnPosition, QtGui.QTableWidgetItem(str(Amount)))
+            tablewidget_debt.setItem(rowPosition,2, QtGui.QTableWidgetItem(str(debt_per_week[currentcolumn_ - 3])))
+
             for i in range(currentRow - 1):
                 cell_data = tablewidget.item(i,columnPosition)
                 if cell_data is not None and cell_data.text() !='':
@@ -393,8 +452,11 @@ class Ui_Dialog(object):
                 cell_data_column = tablewidget.item(rowPosition,i)
                 if cell_data_column is not None and cell_data_column.text() !='':
                     self.cell_sum_column += int(cell_data_column.text())
-            tablewidget.setItem(rowPosition,column_count - 1, QtGui.QTableWidgetItem(str(self.cell_sum_column)))
             
+
+            
+            tablewidget.setItem(rowPosition,column_count - 1, QtGui.QTableWidgetItem(str(self.cell_sum_column)))
+
         database.insert_amount_dialog(database_file,Amount,currentrow_,currentcolumn_,checkboxes,cheque_information,checkbox_bank_options,others_text)    
         columnPosition = tablewidget.setCurrentCell(rowPosition,3)
         

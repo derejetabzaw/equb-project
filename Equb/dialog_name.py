@@ -30,7 +30,7 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_Dialog(object):
-    def setupUi(self, Dialog,tablewidget,rounds,count,options):
+    def setupUi(self, Dialog,tablewidget,tablewidget_debt,rounds,count,options):
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(262, 191)
         self.options = options 
@@ -80,6 +80,7 @@ class Ui_Dialog(object):
         self.checkBox_3.setObjectName(_fromUtf8("checkBox_3"))
         self.horizontalLayout.addWidget(self.checkBox_3)
         self.formLayout.setLayout(2, QtGui.QFormLayout.LabelRole, self.horizontalLayout)
+        
         rowPosition = tablewidget.rowCount()
         columnCount = tablewidget.columnCount()
         currentRow = tablewidget.currentRow()
@@ -111,7 +112,7 @@ class Ui_Dialog(object):
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
 
-        self.okay_button.clicked.connect(lambda x: self.okay_button_function(Dialog,tablewidget,str(self.lineEdit_2.text()),str(self.lineEdit_3.text()),[str(self.checkBox.isChecked()),str(self.checkBox_2.isChecked()),str(self.checkBox_3.isChecked())],rounds))
+        self.okay_button.clicked.connect(lambda x: self.okay_button_function(Dialog,tablewidget,tablewidget_debt,str(self.lineEdit_2.text()),str(self.lineEdit_3.text()),[str(self.checkBox.isChecked()),str(self.checkBox_2.isChecked()),str(self.checkBox_3.isChecked())],rounds))
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "Add Name and Commitment", None))
         self.label_2.setText(_translate("Dialog", "Last Name:", None))
@@ -123,7 +124,7 @@ class Ui_Dialog(object):
         self.okay_button.setText("Add")
         self.cancel_button.setText("Cancel")
 
-    def okay_button_function(self,MainWindow,tablewidget,Name,Lastname,checkboxes,rounds):   
+    def okay_button_function(self,MainWindow,tablewidget,tablewidget_debt,Name,Lastname,checkboxes,rounds):   
         rowPosition = tablewidget.rowCount()
         columnCount = tablewidget.columnCount()
         currentRow = tablewidget.currentRow()
@@ -136,6 +137,9 @@ class Ui_Dialog(object):
             tablewidget.insertRow(rowPosition)
             tablewidget.setItem(rowPosition , 0, QtGui.QTableWidgetItem(str(Name)))
             tablewidget.setItem(rowPosition , 1, QtGui.QTableWidgetItem(str(Lastname)))
+            tablewidget_debt.insertRow(rowPosition)
+            tablewidget_debt.setItem(rowPosition , 0, QtGui.QTableWidgetItem(str(Name)))
+            tablewidget_debt.setItem(rowPosition , 1, QtGui.QTableWidgetItem(str(Lastname)))
                 
             if (checkboxes[0] == 'True'):
                 currentRow = rowPosition + 1
@@ -171,7 +175,7 @@ class Ui_Dialog(object):
             MainWindow.close()
             Dialog = QtGui.QDialog(MainWindow)
             add_menu_ui = dialog_amount.Ui_Dialog()
-            add_menu_ui.setupUi(Dialog,tablewidget,rowPosition,rounds)
+            add_menu_ui.setupUi(Dialog,tablewidget,tablewidget_debt,rowPosition,rounds)
             Dialog.exec_()
         if (self.options =='H'):
             if self.checkBox_3.isChecked():

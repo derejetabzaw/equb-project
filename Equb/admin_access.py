@@ -24,7 +24,7 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 
 class Admin_Access(object):
-    def setupUi(self, MainWindow,tablewidget,rowPosition,rounds):
+    def setupUi(self, MainWindow,tablewidget,tablewidget_debt,rowPosition,rounds):
         MainWindow.resize(300, 100)
         MainWindow.setWindowTitle(_translate("MainWindow", "Admin Access Required", None))
 
@@ -38,15 +38,15 @@ class Admin_Access(object):
         self.button_enter = QtGui.QPushButton('Enter', MainWindow)
         self.button_enter.setGeometry(135,65,75,25)
         self.textPass.setEchoMode(self.textPass.Password)
-        self.button_enter.clicked.connect(lambda x: self.handleLogin(MainWindow,tablewidget,rowPosition,rounds))
+        self.button_enter.clicked.connect(lambda x: self.handleLogin(MainWindow,tablewidget,tablewidget_debt,rowPosition,rounds))
 
 
-    def handleLogin(self,MainWindow,tablewidget,rowPosition,rounds):
+    def handleLogin(self,MainWindow,tablewidget,tablewidget_debt,rowPosition,rounds):
         if (self.textPass.text() == 'admin'):
             MainWindow.close()
             add_menu_ui = dialog_amount.Ui_Dialog()
             Dialog = QtGui.QDialog(MainWindow)
-            add_menu_ui.setupUi(Dialog,tablewidget,rowPosition,rounds)
+            add_menu_ui.setupUi(Dialog,tablewidget,tablewidget_debt,rowPosition,rounds)
             Dialog.exec_()
         else:
             QtGui.QMessageBox.warning(MainWindow, 'Error', 'Wrong Password')

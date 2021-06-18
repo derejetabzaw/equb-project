@@ -143,6 +143,17 @@ def select_date_from_database(database):
     rows = cur.fetchall()
     return rows 
 
+def select_equb_amount_from_database(database):
+
+    conn = create_connection(database)
+    cur = conn.cursor()
+    cur.execute("SELECT DISTINCT grand_total FROM basic_informations")
+    #cur.execute("SELECT * FROM video_fingerprint_information")
+
+    rows = cur.fetchall()
+    return rows 
+
+
 
 
 

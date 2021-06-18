@@ -275,7 +275,6 @@ class Ui_MainWindow(object):
 
 
 
-        
         # index_2 = 1
         # for i in range(3,rounds + 3):
         #     item = QtGui.QTableWidgetItem()
@@ -294,10 +293,10 @@ class Ui_MainWindow(object):
 
 
         
-        self.tableWidget.cellDoubleClicked.connect(lambda x: self.double_clicked_cell(MainWindow,self.tableWidget,item,rounds))
+        self.tableWidget.cellDoubleClicked.connect(lambda x: self.double_clicked_cell(MainWindow,self.tableWidget,self.tableWidget_debt,item,rounds))
         self.tableWidget1.cellClicked.connect(lambda x: self.clicked_cell(MainWindow,self.tableWidget1,rounds))
         
-        self.pushButton.clicked.connect(lambda x: self.add_button_function(MainWindow,self.tableWidget,rounds))
+        self.pushButton.clicked.connect(lambda x: self.add_button_function(MainWindow,self.tableWidget,self.tableWidget_debt,rounds))
         self.pushButton_3.clicked.connect(lambda x: self.delete_button_function(MainWindow))
 
         self.pushButton_4.clicked.connect(lambda x: self.clear_all_button_function(MainWindow))
@@ -386,13 +385,14 @@ class Ui_MainWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_debt), _translate("MainWindow", "Debt Amount", None))
 
 
-    def add_button_function(self,MainWindow,tablewidget,rounds):
+    def add_button_function(self,MainWindow,tablewidget,tableWidget_debt,rounds):
         self.count +=1
         add_menu_ui = dialog_name.Ui_Dialog()
         Dialog = QtGui.QDialog(MainWindow)
         options = ""
+        rounds = self.spinBox.value() 
         database.insert_round_and_count(database_file,self.count,rounds)
-        add_menu_ui.setupUi(Dialog,tablewidget,rounds,self.count,options)
+        add_menu_ui.setupUi(Dialog,tablewidget,tableWidget_debt,rounds,self.count,options)
         Dialog.exec_()
     def delete_button_function(self,MainWindow):
         password_access = admin_access.Admin_Access()
@@ -410,24 +410,27 @@ class Ui_MainWindow(object):
 
 
 
-    def double_clicked_cell(self,MainWindow,tablewidget,item,rounds):
+    def double_clicked_cell(self,MainWindow,tablewidget,tablewidget_debt,item,rounds):
         currentRow, currentColumn = tablewidget.currentRow(), tablewidget.currentColumn()
         rowPosition = tablewidget.currentRow()
         rowcount = tablewidget.rowCount()
         columncount = tablewidget.columnCount()
+        rounds = self.spinBox.value() 
+
+
         self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
         if (currentColumn > 2 and (rowPosition < rowcount-1) and (currentColumn < columncount - 1) and (self.week_number + 2) != currentColumn):
             # self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
             password_access = admin_access.Admin_Access()
             Dialog = QtGui.QDialog(MainWindow)
-            password_access.setupUi(Dialog,tablewidget,rowPosition,rounds)
+            password_access.setupUi(Dialog,tablewidget,tablewidget_debt,rowPosition,rounds)
             Dialog.exec_()
         if (currentColumn > 2 and (self.week_number + 2) == currentColumn):
             self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
 
             add_menu_ui = dialog_amount.Ui_Dialog()
             Dialog = QtGui.QDialog(MainWindow)
-            add_menu_ui.setupUi(Dialog,tablewidget,rowPosition,rounds)
+            add_menu_ui.setupUi(Dialog,tablewidget,tablewidget_debt,rowPosition,rounds)
             Dialog.exec_()  
 
         if (currentColumn <=2):
@@ -436,7 +439,7 @@ class Ui_MainWindow(object):
                 if (options == "H" or options =="Q"):
                     add_menu_ui = dialog_name.Ui_Dialog()
                     Dialog = QtGui.QDialog(MainWindow)
-                    add_menu_ui.setupUi(Dialog,tablewidget,rounds,self.count,options)
+                    add_menu_ui.setupUi(Dialog,tablewidget,tablewidget_debt,rounds,self.count,options)
                     Dialog.exec_() 
 
 
@@ -577,7 +580,7 @@ if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
     MainWindow = QtGui.QMainWindow()
     ui = Ui_MainWindow()
-    ui.setupUi(MainWindow,13500,25,"May",52)
+    ui.setupUi(MainWindow,str(2021-06-18))
     MainWindow.show()
     sys.exit(app.exec_())
 
