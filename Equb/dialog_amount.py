@@ -25,7 +25,7 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-debt_calculator = [0] * 500
+debt_calculator = [[0] * 500] * 500
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog,tablewidget,tablewidget_debt,rowPosition,rounds):
@@ -393,8 +393,15 @@ class Ui_Dialog(object):
         currentcolumn_ = tablewidget.currentColumn()
         # week_index = x
         GEA = int(database.select_equb_amount_from_database(database_file)[-1][0])
-        debt_calculator[currentcolumn_ - 3] = float(Amount) - float(GEA/float(rounds))
-        debt_per_week = debt_calculator[0:rounds]
+        debt_calculator = np.array(debt_calculator)
+        debt_calculator[currentrow_ - 3][currentcolumn_ - 3] = float(Amount) - float(GEA/float(rounds))
+        debt_per_week = debt_calculator[0:currentRow - 1][0:rounds]
+
+        # if columnPosition == 3:
+        #     debt_per_week[0] = debt_calculator[0]
+        # else:
+        #     for i in range(1,rounds):
+        #         debt_per_week[i] = debt_calculator[i] + debt_per_week[i - 1] 
         tablewidget_debt.setRowCount(currentRow)
         
         checkboxes = [str(self.checkBox.checkState()),
@@ -436,11 +443,11 @@ class Ui_Dialog(object):
             tablewidget.setItem(rowPosition , 3, QtGui.QTableWidgetItem(str(Amount)))
             tablewidget.setItem(currentRow - 1,3, QtGui.QTableWidgetItem(str(tablewidget.item(0,3).text())))
             tablewidget.setItem(0,column_count - 1, QtGui.QTableWidgetItem(str(tablewidget.item(0,3).text())))
-            tablewidget_debt.setItem(rowPosition,2, QtGui.QTableWidgetItem(str(debt_per_week[currentcolumn_ - 3])))
+            # tablewidget_debt.setItem(rowPosition,2, QtGui.QTableWidgetItem(str(debt_per_week[currentcolumn_ - 3])))
 
         else: 
             tablewidget.setItem(rowPosition , columnPosition, QtGui.QTableWidgetItem(str(Amount)))
-            tablewidget_debt.setItem(rowPosition,2, QtGui.QTableWidgetItem(str(debt_per_week[currentcolumn_ - 3])))
+            # tablewidget_debt.setItem(rowPosition,2, QtGui.QTableWidgetItem(str(debt_per_week[currentcolumn_ - 3])))
 
             for i in range(currentRow - 1):
                 cell_data = tablewidget.item(i,columnPosition)
