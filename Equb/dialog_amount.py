@@ -393,9 +393,9 @@ class Ui_Dialog(object):
         currentcolumn_ = tablewidget.currentColumn()
         # week_index = x
         GEA = int(database.select_equb_amount_from_database(database_file)[-1][0])
-        debt_calculator = np.array(debt_calculator)
-        debt_calculator[currentrow_ - 3][currentcolumn_ - 3] = float(Amount) - float(GEA/float(rounds))
-        debt_per_week = debt_calculator[0:currentRow - 1][0:rounds]
+        # debt_calculator = np.array(debt_calculator)
+        # debt_calculator[currentrow_ - 3][currentcolumn_ - 3] = float(Amount) - float(GEA/float(rounds))
+        # debt_per_week = debt_calculator[0:currentRow - 1][0:rounds]
 
         # if columnPosition == 3:
         #     debt_per_week[0] = debt_calculator[0]

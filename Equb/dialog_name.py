@@ -36,6 +36,8 @@ class Ui_Dialog(object):
         self.options = options 
         # self.count = database.select_count_from_database(database_file)[0][0]
         self.count = count
+        # self.count = database.select_count_from_database(database_file)[-1][0]
+
         self.okay_button = QtGui.QPushButton(Dialog)
         self.okay_button.setGeometry(QtCore.QRect(90, 150, 75, 20))
         self.okay_button.setObjectName(_fromUtf8("okay_button"))
@@ -70,6 +72,11 @@ class Ui_Dialog(object):
         self.label_3 = QtGui.QLabel(self.formLayoutWidget)
         self.label_3.setObjectName(_fromUtf8("label_3"))
         self.horizontalLayout.addWidget(self.label_3)
+        
+        self.label_4 = QtGui.QLabel(Dialog)
+        self.label_4.setObjectName(_fromUtf8("label_4"))
+        self.label_4.setGeometry(QtCore.QRect(20, 95, 65, 15))
+        self.label_4.hide()
         self.checkBox = QtGui.QRadioButton(self.formLayoutWidget)
         self.checkBox.setObjectName(_fromUtf8("checkBox"))
         self.horizontalLayout.addWidget(self.checkBox)
@@ -78,6 +85,33 @@ class Ui_Dialog(object):
         self.horizontalLayout.addWidget(self.checkBox_2)
         self.checkBox_3 = QtGui.QRadioButton(self.formLayoutWidget)
         self.checkBox_3.setObjectName(_fromUtf8("checkBox_3"))
+        self.checkBox_4 = QtGui.QRadioButton(Dialog)
+        self.checkBox_4.setObjectName(_fromUtf8("checkBox_2"))
+        self.checkBox_4.setGeometry(QtCore.QRect(100, 95, 60, 15))
+        self.checkBox_4.setText(_translate("Dialog", "H", None))
+
+        self.checkBox_5 = QtGui.QRadioButton(Dialog)
+        self.checkBox_5.setObjectName(_fromUtf8("checkBox_2"))
+        self.checkBox_5.setGeometry(QtCore.QRect(175, 95, 60, 15))
+        self.checkBox_5.setText(_translate("Dialog", "2Q", None))
+
+
+        self.checkBox_6 = QtGui.QRadioButton(Dialog)
+        self.checkBox_6.setObjectName(_fromUtf8("checkBox_2"))
+        self.checkBox_6.setGeometry(QtCore.QRect(100, 95, 60, 15))
+        self.checkBox_6.setText(_translate("Dialog", "2H", None))
+
+
+        self.checkBox_7 = QtGui.QRadioButton(Dialog)
+        self.checkBox_7.setObjectName(_fromUtf8("checkBox_2"))
+        self.checkBox_7.setGeometry(QtCore.QRect(175, 95, 60, 15))
+        self.checkBox_7.setText(_translate("Dialog", "3Q", None))
+
+        self.checkBox_4.hide()
+        self.checkBox_5.hide()
+        self.checkBox_6.hide()
+        self.checkBox_7.hide()
+
         self.horizontalLayout.addWidget(self.checkBox_3)
         self.formLayout.setLayout(2, QtGui.QFormLayout.LabelRole, self.horizontalLayout)
         
@@ -113,11 +147,53 @@ class Ui_Dialog(object):
 
 
         self.okay_button.clicked.connect(lambda x: self.okay_button_function(Dialog,tablewidget,tablewidget_debt,str(self.lineEdit_2.text()),str(self.lineEdit_3.text()),[str(self.checkBox.isChecked()),str(self.checkBox_2.isChecked()),str(self.checkBox_3.isChecked())],rounds))
+        self.cancel_button.clicked.connect(lambda x: self.cancel_button_function(Dialog,rounds))
+
+        self.checkBox_2.clicked.connect(lambda x: self.checkbox_2_clicked(Dialog)) 
+        self.checkBox_3.clicked.connect(lambda x: self.checkbox_3_clicked(Dialog)) 
+        self.checkBox_4.clicked.connect(lambda x: self.checkbox_4_clicked(Dialog)) 
+        self.checkBox_5.clicked.connect(lambda x: self.checkbox_5_clicked(Dialog)) 
+        self.checkBox_6.clicked.connect(lambda x: self.checkbox_6_clicked(Dialog)) 
+        self.checkBox_7.clicked.connect(lambda x: self.checkbox_7_clicked(Dialog)) 
+    def checkbox_2_clicked(self,Dialog):
+        self.checkBox.setEnabled(False)
+        self.checkBox_4.show()
+        self.checkBox_5.show()
+        self.checkBox_6.hide()
+        self.checkBox_7.hide()
+        self.label_4.show()
+
+
+    def checkbox_3_clicked(self,Dialog):
+        self.checkBox.setEnabled(False)
+        self.checkBox_4.hide()
+        self.checkBox_5.hide()
+        self.checkBox_6.show()
+        self.checkBox_7.show()
+        self.label_4.show()
+    def checkbox_4_clicked(self,Dialog):
+        self.checkBox_5.setChecked(False) 
+    def checkbox_5_clicked(self,Dialog):
+        self.checkBox_4.setChecked(False) 
+    def checkbox_6_clicked(self,Dialog):
+        self.checkBox_7.setChecked(False) 
+    def checkbox_7_clicked(self,Dialog):
+        self.checkBox_6.setChecked(False) 
+           
+
+
+
+        # if (self.checkBox_2.isChecked() == True):
+
+    
+    
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "Add Name and Commitment", None))
         self.label_2.setText(_translate("Dialog", "Last Name:", None))
         self.label.setText(_translate("Dialog", "Name:", None))
         self.label_3.setText(_translate("Dialog", "Commitment:", None))
+        self.label_4.setText(_translate("Dialog", "Combination:", None))
+
         self.checkBox.setText(_translate("Dialog", "Full ", None))
         self.checkBox_2.setText(_translate("Dialog", "Half", None))
         self.checkBox_3.setText(_translate("Dialog", "Quarter", None))
@@ -226,6 +302,10 @@ class Ui_Dialog(object):
             tablewidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
 
             MainWindow.close()    
+    def cancel_button_function(self,MainWindow,rounds):
+        self.count = self.count - 1
+        database.insert_round_and_count(database_file,self.count,rounds)
+        MainWindow.close()
 
 
 if __name__ == "__main__":
