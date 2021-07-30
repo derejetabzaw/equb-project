@@ -183,7 +183,7 @@ class Ui_MainWindow(object):
         self.tableWidget1.setGeometry(QtCore.QRect(0, 20, 500, 350))
         self.tableWidget1.setObjectName(_fromUtf8("tableWidget1"))
         self.tableWidget1.setColumnCount(6)
-        self.tableWidget1.setRowCount(3)
+        self.tableWidget1.setRowCount(100)
         item = QtGui.QTableWidgetItem()
         self.tableWidget1.setHorizontalHeaderItem(0, item)
         item = QtGui.QTableWidgetItem()
@@ -206,7 +206,7 @@ class Ui_MainWindow(object):
         self.tableWidget_2.setGeometry(QtCore.QRect(0, 20, 500, 350))
         self.tableWidget_2.setObjectName(_fromUtf8("tableWidget_2"))
         self.tableWidget_2.setColumnCount(6)
-        self.tableWidget_2.setRowCount(0)
+        self.tableWidget_2.setRowCount(100)
         item = QtGui.QTableWidgetItem()
         self.tableWidget_2.setHorizontalHeaderItem(0, item)
         item = QtGui.QTableWidgetItem()
@@ -219,6 +219,8 @@ class Ui_MainWindow(object):
         self.tableWidget_2.setHorizontalHeaderItem(4, item)
         item = QtGui.QTableWidgetItem()
         self.tableWidget_2.setHorizontalHeaderItem(5, item)
+        
+        
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(_fromUtf8("cbe.pmg.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.tabWidget_2.addTab(self.tab_4, icon1, _fromUtf8(""))
@@ -229,7 +231,7 @@ class Ui_MainWindow(object):
         self.tableWidget_3.setGeometry(QtCore.QRect(0, 20, 500, 350))
         self.tableWidget_3.setObjectName(_fromUtf8("tableWidget_3"))
         self.tableWidget_3.setColumnCount(6)
-        self.tableWidget_3.setRowCount(0)
+        self.tableWidget_3.setRowCount(100)
         item = QtGui.QTableWidgetItem()
         self.tableWidget_3.setHorizontalHeaderItem(0, item)
         item = QtGui.QTableWidgetItem()
@@ -261,7 +263,7 @@ class Ui_MainWindow(object):
         self.tableWidget_4.setGeometry(QtCore.QRect(0, 20, 500, 350))
         self.tableWidget_4.setObjectName(_fromUtf8("tableWidget_4"))
         self.tableWidget_4.setColumnCount(6)
-        self.tableWidget_4.setRowCount(0)
+        self.tableWidget_4.setRowCount(100)
         item = QtGui.QTableWidgetItem()
         self.tableWidget_4.setHorizontalHeaderItem(0, item)
         item = QtGui.QTableWidgetItem()
@@ -284,7 +286,7 @@ class Ui_MainWindow(object):
         self.tableWidget_5.setGeometry(QtCore.QRect(0, 20, 500, 350))
         self.tableWidget_5.setObjectName(_fromUtf8("tableWidget_4"))
         self.tableWidget_5.setColumnCount(6)
-        self.tableWidget_5.setRowCount(0)
+        self.tableWidget_5.setRowCount(100)
         item = QtGui.QTableWidgetItem()
         self.tableWidget_5.setHorizontalHeaderItem(0, item)
         item = QtGui.QTableWidgetItem()
@@ -306,7 +308,7 @@ class Ui_MainWindow(object):
         self.tableWidget_6.setGeometry(QtCore.QRect(0, 20, 500, 350))
         self.tableWidget_6.setObjectName(_fromUtf8("tableWidget_4"))
         self.tableWidget_6.setColumnCount(6)
-        self.tableWidget_6.setRowCount(0)
+        self.tableWidget_6.setRowCount(100)
         item = QtGui.QTableWidgetItem()
         self.tableWidget_6.setHorizontalHeaderItem(0, item)
         item = QtGui.QTableWidgetItem()
@@ -329,7 +331,7 @@ class Ui_MainWindow(object):
         self.tableWidget_7.setGeometry(QtCore.QRect(0, 20, 500, 350))
         self.tableWidget_7.setObjectName(_fromUtf8("tableWidget_4"))
         self.tableWidget_7.setColumnCount(6)
-        self.tableWidget_7.setRowCount(0)
+        self.tableWidget_7.setRowCount(100)
         item = QtGui.QTableWidgetItem()
         self.tableWidget_7.setHorizontalHeaderItem(0, item)
         item = QtGui.QTableWidgetItem()
@@ -351,7 +353,7 @@ class Ui_MainWindow(object):
         self.tableWidget_8.setGeometry(QtCore.QRect(0, 20, 500, 350))
         self.tableWidget_8.setObjectName(_fromUtf8("tableWidget_4"))
         self.tableWidget_8.setColumnCount(6)
-        self.tableWidget_8.setRowCount(0)
+        self.tableWidget_8.setRowCount(100)
         item = QtGui.QTableWidgetItem()
         self.tableWidget_8.setHorizontalHeaderItem(0, item)
         item = QtGui.QTableWidgetItem()
@@ -373,7 +375,7 @@ class Ui_MainWindow(object):
         self.tableWidget_9.setGeometry(QtCore.QRect(0, 20, 500, 350))
         self.tableWidget_9.setObjectName(_fromUtf8("tableWidget_4"))
         self.tableWidget_9.setColumnCount(6)
-        self.tableWidget_9.setRowCount(0)
+        self.tableWidget_9.setRowCount(100)
         item = QtGui.QTableWidgetItem()
         self.tableWidget_9.setHorizontalHeaderItem(0, item)
         item = QtGui.QTableWidgetItem()
@@ -388,7 +390,7 @@ class Ui_MainWindow(object):
         self.tableWidget_9.setHorizontalHeaderItem(5, item)
         self.tabWidget_2.addTab(self.tab_11, icon2, _fromUtf8(""))
 
-
+        self.bank_books = [self.tableWidget1,self.tableWidget_2,self.tableWidget_3,self.tableWidget_4,self.tableWidget_5,self.tableWidget_6,self.tableWidget_7,self.tableWidget_8,self.tableWidget_9]
 
 
 
@@ -402,7 +404,7 @@ class Ui_MainWindow(object):
         self.tableWidget_debt.setGeometry(QtCore.QRect(0, 0, 960, 500))
         self.tableWidget_debt.setObjectName(_fromUtf8("tableWidget_debit"))
         self.tableWidget_debt.setColumnCount(3)
-        self.tableWidget_debt.setRowCount(0)
+        self.tableWidget_debt.setRowCount(100)
         item = QtGui.QTableWidgetItem()
         self.tableWidget_debt.setHorizontalHeaderItem(0, item)
         item = QtGui.QTableWidgetItem()
@@ -433,7 +435,7 @@ class Ui_MainWindow(object):
         self.tableWidget.cellDoubleClicked.connect(lambda x: self.double_clicked_cell(MainWindow,self.tableWidget,self.tableWidget_debt,item,rounds))
         self.tableWidget1.cellClicked.connect(lambda x: self.clicked_cell(MainWindow,self.tableWidget1,rounds))
         
-        self.pushButton.clicked.connect(lambda x: self.add_button_function(MainWindow,self.tableWidget,self.tableWidget_debt,rounds))
+        self.pushButton.clicked.connect(lambda x: self.add_button_function(MainWindow,self.tableWidget,self.bank_books,self.tableWidget_debt,rounds))
         self.pushButton_3.clicked.connect(lambda x: self.delete_button_function(MainWindow))
 
         self.pushButton_4.clicked.connect(lambda x: self.clear_all_button_function(MainWindow))
@@ -514,7 +516,6 @@ class Ui_MainWindow(object):
         item = self.tableWidget_3.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "Balance", None))     
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_5), _translate("MainWindow", "Dashen Bank", None))
-   
         '''NIB'''
         item = self.tableWidget_4.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Date", None))
@@ -623,15 +624,16 @@ class Ui_MainWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_debt), _translate("MainWindow", "Debt Amount", None))
 
 
-    def add_button_function(self,MainWindow,tablewidget,tableWidget_debt,rounds):
+    def add_button_function(self,MainWindow,tablewidget,bank_books,tableWidget_debt,rounds):
         self.count +=1
         add_menu_ui = dialog_name.Ui_Dialog()
+
         Dialog = QtGui.QDialog(MainWindow)
         options = ""
         rounds = self.spinBox.value() 
         database.insert_round_and_count(database_file,self.count,rounds)
 
-        add_menu_ui.setupUi(Dialog,tablewidget,tableWidget_debt,rounds,self.count,options)
+        add_menu_ui.setupUi(Dialog,tablewidget,bank_books,tableWidget_debt,rounds,self.count,options)
         Dialog.exec_()
     def delete_button_function(self,MainWindow):
         password_access = admin_access.Admin_Access()
@@ -669,7 +671,7 @@ class Ui_MainWindow(object):
 
             add_menu_ui = dialog_amount.Ui_Dialog()
             Dialog = QtGui.QDialog(MainWindow)
-            add_menu_ui.setupUi(Dialog,tablewidget,tablewidget_debt,rowPosition,rounds)
+            add_menu_ui.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,rounds)
             Dialog.exec_()  
 
         if (currentColumn <=2):
@@ -678,7 +680,7 @@ class Ui_MainWindow(object):
                 if (options == "H" or options =="Q"):
                     add_menu_ui = dialog_name.Ui_Dialog()
                     Dialog = QtGui.QDialog(MainWindow)
-                    add_menu_ui.setupUi(Dialog,tablewidget,tablewidget_debt,rounds,self.count,options)
+                    add_menu_ui.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rounds,self.count,options)
                     Dialog.exec_() 
 
 

@@ -28,7 +28,7 @@ except AttributeError:
 debt_calculator = [[0] * 500] * 500
 
 class Ui_Dialog(object):
-    def setupUi(self, Dialog,tablewidget,tablewidget_debt,rowPosition,rounds):
+    def setupUi(self, Dialog,tablewidget,bank_books,tablewidget_debt,rowPosition,rounds):
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(415, 120)
         self.okay_button = QtGui.QPushButton(Dialog)
