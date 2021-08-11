@@ -183,7 +183,7 @@ class Ui_MainWindow(object):
         self.tableWidget1.setGeometry(QtCore.QRect(0, 20, 500, 350))
         self.tableWidget1.setObjectName(_fromUtf8("tableWidget1"))
         self.tableWidget1.setColumnCount(6)
-        self.tableWidget1.setRowCount(100)
+        # self.tableWidget1.setRowCount(100)
         item = QtGui.QTableWidgetItem()
         self.tableWidget1.setHorizontalHeaderItem(0, item)
         item = QtGui.QTableWidgetItem()
@@ -390,6 +390,8 @@ class Ui_MainWindow(object):
         self.tableWidget_9.setHorizontalHeaderItem(5, item)
         self.tabWidget_2.addTab(self.tab_11, icon2, _fromUtf8(""))
 
+
+        '''[BOA,CBE,Dashen,NiB,Hibret Bank,Bunna,Awash,Birhan,Wegagen]'''
         self.bank_books = [self.tableWidget1,self.tableWidget_2,self.tableWidget_3,self.tableWidget_4,self.tableWidget_5,self.tableWidget_6,self.tableWidget_7,self.tableWidget_8,self.tableWidget_9]
 
 

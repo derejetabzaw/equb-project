@@ -256,7 +256,7 @@ class Ui_Dialog(object):
 
 
         QtCore.QMetaObject.connectSlotsByName(Dialog)
-        self.okay_button.clicked.connect(lambda x: self.okay_button_function(Dialog,tablewidget,tablewidget_debt,str(self.lineEdit.text()),rowPosition,rounds))
+        self.okay_button.clicked.connect(lambda x: self.okay_button_function(Dialog,tablewidget,bank_books,tablewidget_debt,str(self.lineEdit.text()),rowPosition,rounds))
         self.cell_sum = 0
         self.cell_sum_column = 0
         self.count = 0 
@@ -385,12 +385,43 @@ class Ui_Dialog(object):
 
 
 
-    def okay_button_function(self,MainWindow,tablewidget,tablewidget_debt,Amount,rowPosition,rounds):
+    def okay_button_function(self,MainWindow,tablewidget,bank_books,tablewidget_debt,Amount,rowPosition,rounds):
         currentRow = tablewidget.rowCount()
         column_count = tablewidget.columnCount()
         columnPosition = tablewidget.currentColumn()
         currentrow_ = tablewidget.currentRow()
         currentcolumn_ = tablewidget.currentColumn()
+        
+
+        # if (self.cbe_option.isChecked()==True):
+        # if (self.dashen_option.isChecked()==True):
+        if (self.boa_option.isChecked()==True):
+            boa_currentRow = bank_books[0].rowCount() 
+            print boa_currentRow
+            bank_books[0].setRowCount(boa_currentRow + 1)
+        
+            boa_currentRow = bank_books[0].rowCount()
+            
+            boa_column_count = bank_books[0].columnCount()
+            boa_columnPosition = bank_books[0].currentColumn()
+            boa_currentrow_ = bank_books[0].currentRow()
+            boa_currentcolumn_ = bank_books[0].currentColumn()
+            # print (boa_column_count,boa_columnPosition,boa_currentrow_,boa_currentcolumn_)
+            if (boa_currentRow < 2):
+                bank_books[0].setItem(0 , 3, QtGui.QTableWidgetItem(str(Amount)))
+                
+            else:
+                bank_books[0].setItem(boa_currentRow - 1, 3, QtGui.QTableWidgetItem(str(Amount)))
+
+
+
+        # if (self.Hibret_option.isChecked()==True):
+        # if (self.awash_option.isChecked()==True):
+        # if (self.Birhan_option.isChecked()==True):
+        # if (self.bunna_option.isChecked()==True):
+        # if (self.wegagen_option.isChecked()==True):
+        # if (self.nib_option.isChecked()==True):
+
         # week_index = x
         GEA = int(database.select_equb_amount_from_database(database_file)[-1][0])
         # debt_calculator = np.array(debt_calculator)
@@ -444,6 +475,7 @@ class Ui_Dialog(object):
             tablewidget.setItem(currentRow - 1,3, QtGui.QTableWidgetItem(str(tablewidget.item(0,3).text())))
             tablewidget.setItem(0,column_count - 1, QtGui.QTableWidgetItem(str(tablewidget.item(0,3).text())))
             # tablewidget_debt.setItem(rowPosition,2, QtGui.QTableWidgetItem(str(debt_per_week[currentcolumn_ - 3])))
+            
 
         else: 
             tablewidget.setItem(rowPosition , columnPosition, QtGui.QTableWidgetItem(str(Amount)))
