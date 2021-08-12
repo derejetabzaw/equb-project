@@ -37,6 +37,7 @@ except AttributeError:
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow,date):
+        self.date_new = date
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(1150, 575)
         self.first_date = datetime.datetime.strptime(
@@ -44,8 +45,6 @@ class Ui_MainWindow(object):
             '%Y-%m-%d').date()
         self.todays_date = datetime.date.today() 
 
-        
-        
 
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
@@ -635,7 +634,7 @@ class Ui_MainWindow(object):
         rounds = self.spinBox.value() 
         database.insert_round_and_count(database_file,self.count,rounds)
 
-        add_menu_ui.setupUi(Dialog,tablewidget,bank_books,tableWidget_debt,rounds,self.count,options)
+        add_menu_ui.setupUi(Dialog,tablewidget,bank_books,tableWidget_debt,rounds,self.date_new,self.count,options)
         Dialog.exec_()
     def delete_button_function(self,MainWindow):
         password_access = admin_access.Admin_Access()
@@ -666,14 +665,14 @@ class Ui_MainWindow(object):
             # self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
             password_access = admin_access.Admin_Access()
             Dialog = QtGui.QDialog(MainWindow)
-            password_access.setupUi(Dialog,tablewidget,tablewidget_debt,rowPosition,rounds)
+            password_access.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,rounds,self.date_new)
             Dialog.exec_()
         if (currentColumn > 2 and (self.week_number + 2) == currentColumn):
             self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
 
             add_menu_ui = dialog_amount.Ui_Dialog()
             Dialog = QtGui.QDialog(MainWindow)
-            add_menu_ui.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,rounds)
+            add_menu_ui.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,rounds,self.date_new)
             Dialog.exec_()  
 
         if (currentColumn <=2):

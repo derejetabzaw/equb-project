@@ -28,9 +28,10 @@ except AttributeError:
 debt_calculator = [[0] * 500] * 500
 
 class Ui_Dialog(object):
-    def setupUi(self, Dialog,tablewidget,bank_books,tablewidget_debt,rowPosition,rounds):
+    def setupUi(self, Dialog,tablewidget,bank_books,tablewidget_debt,rowPosition,rounds,date):
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(415, 120)
+        self.date = date
         self.okay_button = QtGui.QPushButton(Dialog)
         self.okay_button.setGeometry(QtCore.QRect(240, 80, 75, 20))
         self.okay_button.setObjectName(_fromUtf8("okay_button"))
@@ -258,6 +259,7 @@ class Ui_Dialog(object):
         QtCore.QMetaObject.connectSlotsByName(Dialog)
         self.okay_button.clicked.connect(lambda x: self.okay_button_function(Dialog,tablewidget,bank_books,tablewidget_debt,str(self.lineEdit.text()),rowPosition,rounds))
         self.cell_sum = 0
+        self.boa_cell_sum = 0
         self.cell_sum_column = 0
         self.count = 0 
 
@@ -391,28 +393,39 @@ class Ui_Dialog(object):
         columnPosition = tablewidget.currentColumn()
         currentrow_ = tablewidget.currentRow()
         currentcolumn_ = tablewidget.currentColumn()
+
+
+
+       
         
 
         # if (self.cbe_option.isChecked()==True):
         # if (self.dashen_option.isChecked()==True):
         if (self.boa_option.isChecked()==True):
             boa_currentRow = bank_books[0].rowCount() 
-            print boa_currentRow
-            bank_books[0].setRowCount(boa_currentRow + 1)
-        
+            bank_books[0].setRowCount(boa_currentRow + 1)        
             boa_currentRow = bank_books[0].rowCount()
-            
             boa_column_count = bank_books[0].columnCount()
             boa_columnPosition = bank_books[0].currentColumn()
             boa_currentrow_ = bank_books[0].currentRow()
             boa_currentcolumn_ = bank_books[0].currentColumn()
             # print (boa_column_count,boa_columnPosition,boa_currentrow_,boa_currentcolumn_)
+            
+            # for i in range(boa_currentRow - 1):
+            #     cell_data = tablewidget.item(i,boa_columnPosition)
+            #     if cell_data is not None and cell_data.text() !='':
+            #         self.boa_cell_sum += int(cell_data.text())
+            # tablewidget.setItem(boa_currentRow - 1,boa_columnPosition, QtGui.QTableWidgetItem(str(self.boa_cell_sum)))
+
+
             if (boa_currentRow < 2):
                 bank_books[0].setItem(0 , 3, QtGui.QTableWidgetItem(str(Amount)))
+                bank_books[0].setItem(0 , 0, QtGui.QTableWidgetItem(str(self.date)))
+                
                 
             else:
-                bank_books[0].setItem(boa_currentRow - 1, 3, QtGui.QTableWidgetItem(str(Amount)))
-
+                bank_books[0].setItem(boa_currentRow - 1,3, QtGui.QTableWidgetItem(str(Amount)))
+                bank_books[0].setItem(boa_currentRow - 1,0, QtGui.QTableWidgetItem(str(self.date)))
 
 
         # if (self.Hibret_option.isChecked()==True):
