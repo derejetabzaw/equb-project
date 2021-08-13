@@ -435,9 +435,13 @@ class Ui_Dialog(object):
                 
                 
             else:
+                previous_balance = int(bank_books[0].item(boa_currentRow - 2 ,5).text())
+                new_Balance = previous_balance + int(Amount)
+                print new_Balance
                 bank_books[0].setItem(boa_currentRow - 1,3, QtGui.QTableWidgetItem(str(Amount)))
                 bank_books[0].setItem(boa_currentRow - 1,0, QtGui.QTableWidgetItem(str(self.date)))
                 bank_books[0].setItem(boa_currentRow - 1,1, QtGui.QTableWidgetItem(str(self.name +' '+self.lname)))
+                bank_books[0].setItem(boa_currentRow - 1,5, QtGui.QTableWidgetItem(str(new_Balance)))
 
 
 

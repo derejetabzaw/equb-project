@@ -700,13 +700,13 @@ class Ui_MainWindow(object):
         rowPosition = self.bank_books[0].currentRow()
         withdraw = int(self.bank_books[0].item(currentRow,4).text())
         Balance = int(self.bank_books[0].item(currentRow,5).text())
-        print (currentRow,currentColumn)
-        print (withdraw,Balance)
         self.bank_books[0].blockSignals(True)
         if (currentColumn == 4):
 
-            Balance = Balance - withdraw
+            Balance -= withdraw
             self.bank_books[0].setItem(currentRow , 5, QtGui.QTableWidgetItem(str(Balance)))
+        self.bank_books[0].blockSignals(False)
+
         
 
     def clicked_cell(self,MainWindow,tablewidget,rounds):
