@@ -255,7 +255,7 @@ class Ui_Dialog(object):
             MainWindow.close()
             Dialog = QtGui.QDialog(MainWindow)
             add_menu_ui = dialog_amount.Ui_Dialog()
-            add_menu_ui.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,rounds,self.date)
+            add_menu_ui.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,Name,Lastname,rounds,self.date)
             Dialog.exec_()
         if (self.options =='H'):
             if self.checkBox_3.isChecked():

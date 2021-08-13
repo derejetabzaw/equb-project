@@ -28,10 +28,12 @@ except AttributeError:
 debt_calculator = [[0] * 500] * 500
 
 class Ui_Dialog(object):
-    def setupUi(self, Dialog,tablewidget,bank_books,tablewidget_debt,rowPosition,rounds,date):
+    def setupUi(self, Dialog,tablewidget,bank_books,tablewidget_debt,rowPosition,Name,Lastname,rounds,date):
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(415, 120)
         self.date = date
+        self.name = Name
+        self.lname = Lastname
         self.okay_button = QtGui.QPushButton(Dialog)
         self.okay_button.setGeometry(QtCore.QRect(240, 80, 75, 20))
         self.okay_button.setObjectName(_fromUtf8("okay_button"))
@@ -419,13 +421,24 @@ class Ui_Dialog(object):
 
 
             if (boa_currentRow < 2):
-                bank_books[0].setItem(0 , 3, QtGui.QTableWidgetItem(str(Amount)))
                 bank_books[0].setItem(0 , 0, QtGui.QTableWidgetItem(str(self.date)))
+                bank_books[0].setItem(0 , 1, QtGui.QTableWidgetItem(str(self.name +' '+self.lname)))
+                bank_books[0].setItem(0 , 3, QtGui.QTableWidgetItem(str(Amount)))
+                
+                withdraw = bank_books[0].item(0,4)
+                if withdraw is not None and withdraw.text() !='':
+                    Balance = (Amount - withdraw)
+                    bank_books[0].setItem(0 , 5, QtGui.QTableWidgetItem(str(Balance)))
+                else:
+                    Balance = Amount
+                    bank_books[0].setItem(0 , 5, QtGui.QTableWidgetItem(str(Balance)))
                 
                 
             else:
                 bank_books[0].setItem(boa_currentRow - 1,3, QtGui.QTableWidgetItem(str(Amount)))
                 bank_books[0].setItem(boa_currentRow - 1,0, QtGui.QTableWidgetItem(str(self.date)))
+                bank_books[0].setItem(boa_currentRow - 1,1, QtGui.QTableWidgetItem(str(self.name +' '+self.lname)))
+
 
 
         # if (self.Hibret_option.isChecked()==True):

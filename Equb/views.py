@@ -435,6 +435,7 @@ class Ui_MainWindow(object):
         
         self.tableWidget.cellDoubleClicked.connect(lambda x: self.double_clicked_cell(MainWindow,self.tableWidget,self.tableWidget_debt,item,rounds))
         self.tableWidget1.cellClicked.connect(lambda x: self.clicked_cell(MainWindow,self.tableWidget1,rounds))
+        self.bank_books[0].cellChanged.connect(self.withdraw_cell)
         
         self.pushButton.clicked.connect(lambda x: self.add_button_function(MainWindow,self.tableWidget,self.bank_books,self.tableWidget_debt,rounds))
         self.pushButton_3.clicked.connect(lambda x: self.delete_button_function(MainWindow))
@@ -665,14 +666,20 @@ class Ui_MainWindow(object):
             # self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
             password_access = admin_access.Admin_Access()
             Dialog = QtGui.QDialog(MainWindow)
-            password_access.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,rounds,self.date_new)
+
+
+            self.name = tablewidget.item(rowPosition,0)
+            self.lname = tablewidget.item(rowPosition,1)
+            password_access.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,self.name,self.lname,rounds,self.date_new)
             Dialog.exec_()
         if (currentColumn > 2 and (self.week_number + 2) == currentColumn):
             self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
 
+            self.name = tablewidget.item(rowPosition,0)
+            self.lname = tablewidget.item(rowPosition,1)
             add_menu_ui = dialog_amount.Ui_Dialog()
             Dialog = QtGui.QDialog(MainWindow)
-            add_menu_ui.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,rounds,self.date_new)
+            add_menu_ui.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,self.name,self.lname,rounds,self.date_new)
             Dialog.exec_()  
 
         if (currentColumn <=2):
@@ -688,6 +695,19 @@ class Ui_MainWindow(object):
 
 
      
+    def withdraw_cell(self):
+        currentRow, currentColumn = self.bank_books[0].currentRow(), self.bank_books[0].currentColumn()
+        rowPosition = self.bank_books[0].currentRow()
+        withdraw = int(self.bank_books[0].item(currentRow,4).text())
+        Balance = int(self.bank_books[0].item(currentRow,5).text())
+        print (currentRow,currentColumn)
+        print (withdraw,Balance)
+        self.bank_books[0].blockSignals(True)
+        if (currentColumn == 4):
+
+            Balance = Balance - withdraw
+            self.bank_books[0].setItem(currentRow , 5, QtGui.QTableWidgetItem(str(Balance)))
+        
 
     def clicked_cell(self,MainWindow,tablewidget,rounds):
         currentRow, currentColumn = self.tableWidget1.currentRow(), self.tableWidget1.currentColumn()
