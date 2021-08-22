@@ -688,7 +688,7 @@ class Ui_MainWindow(object):
                 if (options == "H" or options =="Q"):
                     add_menu_ui = dialog_name.Ui_Dialog()
                     Dialog = QtGui.QDialog(MainWindow)
-                    add_menu_ui.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rounds,self.count,options)
+                    add_menu_ui.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rounds,self.date_new,self.count,options)
                     Dialog.exec_() 
 
 
