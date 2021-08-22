@@ -84,6 +84,7 @@ class Ui_MainWindow(object):
         self.pushButton_4 = QtGui.QPushButton(self.frame)
         self.pushButton_4.setGeometry(QtCore.QRect(15, 90, 160, 25))
         self.pushButton_4.setObjectName(_fromUtf8("pushButton_4"))
+        # self.add_cell_button = QtGui.QPushButton(self.frame)
         self.save_button = QtGui.QPushButton(self.frame)
         self.save_button.setGeometry(QtCore.QRect(15, 415, 160, 25))
         self.save_button.setObjectName(_fromUtf8("save_button"))
@@ -176,6 +177,8 @@ class Ui_MainWindow(object):
         self.tabWidget_2 = QtGui.QTabWidget(self.tab_2)
         self.tabWidget_2.setGeometry(QtCore.QRect(0, 10, 1960, 1070))
         self.tabWidget_2.setObjectName(_fromUtf8("tabWidget_2"))
+
+        
         self.tab_3 = QtGui.QWidget()
         self.tab_3.setObjectName(_fromUtf8("tab_3"))
         self.tableWidget1 = QtGui.QTableWidget(self.tab_3)
@@ -443,6 +446,7 @@ class Ui_MainWindow(object):
         self.pushButton_4.clicked.connect(lambda x: self.clear_all_button_function(MainWindow))
         self.save_button.clicked.connect(lambda x: self.save_function(MainWindow))
         self.open_button.clicked.connect(lambda x: self.open_function(MainWindow))
+        # self.add_cell_button.clicked.connect(lambda x: self.add_cell(MainWindow))
         self.count = 0
 
         self.tabWidget.setCurrentIndex(0)
@@ -468,6 +472,7 @@ class Ui_MainWindow(object):
         self.pushButton_2.setText(_translate("MainWindow", "Edit", None))
         self.pushButton_3.setText(_translate("MainWindow", "Delete", None))
         self.pushButton_4.setText(_translate("MainWindow", "Clear All", None))
+
         self.save_button.setText(_translate("MainWindow", "Save", None))
         self.open_button.setText(_translate("MainWindow", "Open", None))
         self.generate.setText(_translate("MainWindow", "Generate", None))
@@ -698,14 +703,38 @@ class Ui_MainWindow(object):
     def withdraw_cell(self):
         currentRow, currentColumn = self.bank_books[0].currentRow(), self.bank_books[0].currentColumn()
         rowPosition = self.bank_books[0].currentRow()
-        withdraw = int(self.bank_books[0].item(currentRow,4).text())
-        Balance = int(self.bank_books[0].item(currentRow,5).text())
+
+
+        credit = self.bank_books[0].item(currentRow,3)
+        if credit is not None and credit.text() != '':
+            credit = int(self.bank_books[0].item(currentRow,3).text())
+
+        withdraw = self.bank_books[0].item(currentRow,4)
+        if withdraw is not None and withdraw.text() != '':
+            withdraw = int(self.bank_books[0].item(currentRow,4).text())        
+
+        Balance = int(self.bank_books[0].item(currentRow - 1,5).text())
         self.bank_books[0].blockSignals(True)
         if (currentColumn == 4):
-
             Balance -= withdraw
-            self.bank_books[0].setItem(currentRow , 5, QtGui.QTableWidgetItem(str(Balance)))
-        self.bank_books[0].blockSignals(False)
+            self.bank_books[0].setItem(currentRow, 5, QtGui.QTableWidgetItem(str(Balance)))
+            self.bank_books[0].insertRow(currentRow + 1)
+            self.bank_books[0].blockSignals(False)
+
+        if (currentColumn == 3):
+            Balance += credit
+            self.bank_books[0].setItem(currentRow, 5, QtGui.QTableWidgetItem(str(Balance)))
+            self.bank_books[0].insertRow(currentRow + 1)
+            self.bank_books[0].blockSignals(False)
+
+        
+
+    
+    
+
+
+    
+
 
         
 

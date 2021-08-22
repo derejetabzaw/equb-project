@@ -405,12 +405,13 @@ class Ui_Dialog(object):
         # if (self.dashen_option.isChecked()==True):
         if (self.boa_option.isChecked()==True):
             boa_currentRow = bank_books[0].rowCount() 
-            bank_books[0].setRowCount(boa_currentRow + 1)        
+            bank_books[0].setRowCount(boa_currentRow + 2)
             boa_currentRow = bank_books[0].rowCount()
             boa_column_count = bank_books[0].columnCount()
             boa_columnPosition = bank_books[0].currentColumn()
             boa_currentrow_ = bank_books[0].currentRow()
             boa_currentcolumn_ = bank_books[0].currentColumn()
+            # bank_books[0].item(boa_currentRow - 1,4).setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
             # print (boa_column_count,boa_columnPosition,boa_currentrow_,boa_currentcolumn_)
             
             # for i in range(boa_currentRow - 1):
@@ -420,26 +421,27 @@ class Ui_Dialog(object):
             # tablewidget.setItem(boa_currentRow - 1,boa_columnPosition, QtGui.QTableWidgetItem(str(self.boa_cell_sum)))
 
 
-            if (boa_currentRow < 2):
+            if (boa_currentRow < 3):
                 bank_books[0].setItem(0 , 0, QtGui.QTableWidgetItem(str(self.date)))
                 bank_books[0].setItem(0 , 1, QtGui.QTableWidgetItem(str(self.name +' '+self.lname)))
                 bank_books[0].setItem(0 , 3, QtGui.QTableWidgetItem(str(Amount)))
                 
-                withdraw = bank_books[0].item(0,4)
+                withdraw = bank_books[0].item(1,4)
                 if withdraw is not None and withdraw.text() !='':
                     Balance = (Amount - withdraw)
-                    bank_books[0].setItem(0 , 5, QtGui.QTableWidgetItem(str(Balance)))
+                    bank_books[0].setItem(1 , 5, QtGui.QTableWidgetItem(str(Balance)))
                 else:
                     Balance = Amount
                     bank_books[0].setItem(0 , 5, QtGui.QTableWidgetItem(str(Balance)))
+
                 
                 
             else:
                 previous_balance = int(bank_books[0].item(boa_currentRow - 2 ,5).text())
                 new_Balance = previous_balance + int(Amount)
-                bank_books[0].setItem(boa_currentRow - 1,3, QtGui.QTableWidgetItem(str(Amount)))
-                bank_books[0].setItem(boa_currentRow - 1,0, QtGui.QTableWidgetItem(str(self.date)))
-                bank_books[0].setItem(boa_currentRow - 1,1, QtGui.QTableWidgetItem(str(self.name +' '+self.lname)))
+                bank_books[0].setItem(boa_currentRow - 2,3, QtGui.QTableWidgetItem(str(Amount)))
+                bank_books[0].setItem(boa_currentRow - 2,0, QtGui.QTableWidgetItem(str(self.date)))
+                bank_books[0].setItem(boa_currentRow - 2,1, QtGui.QTableWidgetItem(str(self.name +' '+self.lname)))
                 bank_books[0].setItem(boa_currentRow - 1,5, QtGui.QTableWidgetItem(str(new_Balance)))
 
 
