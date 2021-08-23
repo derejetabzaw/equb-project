@@ -165,7 +165,8 @@ class Ui_Dialog(object):
         first_date = datetime.date(indices[3] + 2000,indices[1],int(indices[2]))
         database.insert_date_and_amount(database_file,str(grand_total_amount),str(first_date))
         add_menu_ui = views.Ui_MainWindow()
-        add_menu_ui.setupUi(MainWindow,first_date)
+        full_amount = grand_total_amount
+        add_menu_ui.setupUi(MainWindow,first_date,full_amount)
         MainWindow.show()
 
 

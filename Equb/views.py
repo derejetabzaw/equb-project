@@ -36,7 +36,7 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_MainWindow(object):
-    def setupUi(self, MainWindow,date):
+    def setupUi(self, MainWindow,date,full_amount):
         self.date_new = date
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(1150, 575)
@@ -46,6 +46,7 @@ class Ui_MainWindow(object):
         self.first_date = date
 
         self.todays_date = datetime.date.today() 
+        self.full_amount = full_amount
 
 
         self.centralwidget = QtGui.QWidget(MainWindow)
@@ -642,7 +643,7 @@ class Ui_MainWindow(object):
         rounds = self.spinBox.value() 
         database.insert_round_and_count(database_file,self.count,rounds)
 
-        add_menu_ui.setupUi(Dialog,tablewidget,bank_books,tableWidget_debt,rounds,self.date_new,self.week_number,self.count,options)
+        add_menu_ui.setupUi(Dialog,tablewidget,bank_books,tableWidget_debt,rounds,self.date_new,self.full_amount,self.week_number,self.count,options)
         Dialog.exec_()
     def delete_button_function(self,MainWindow):
         password_access = admin_access.Admin_Access()
@@ -677,7 +678,7 @@ class Ui_MainWindow(object):
 
             self.name = tablewidget.item(rowPosition,0)
             self.lname = tablewidget.item(rowPosition,1)
-            password_access.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,self.name,self.lname,rounds,self.date_new,self.week_number)
+            password_access.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,self.name,self.lname,rounds,self.date_new,self.full_amount,self.week_number)
             Dialog.exec_()
         if (currentColumn > 2 and (self.week_number + 2) == currentColumn):
             self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
@@ -686,7 +687,7 @@ class Ui_MainWindow(object):
             self.lname = tablewidget.item(rowPosition,1)
             add_menu_ui = dialog_amount.Ui_Dialog()
             Dialog = QtGui.QDialog(MainWindow)
-            add_menu_ui.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,self.name,self.lname,rounds,self.date_new,self.week_number)
+            add_menu_ui.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,self.name,self.lname,rounds,self.date_new,self.full_amount,self.week_number)
             Dialog.exec_()  
 
         if (currentColumn <=2):
@@ -695,7 +696,7 @@ class Ui_MainWindow(object):
                 if (options == "H" or options =="Q"):
                     add_menu_ui = dialog_name.Ui_Dialog()
                     Dialog = QtGui.QDialog(MainWindow)
-                    add_menu_ui.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rounds,self.date_new,self.week_number,self.count,options)
+                    add_menu_ui.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rounds,self.date_new,self.full_amount,self.week_number,self.count,options)
                     Dialog.exec_() 
 
 

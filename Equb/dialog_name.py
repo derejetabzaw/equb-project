@@ -30,13 +30,14 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_Dialog(object):
-    def setupUi(self, Dialog,tablewidget,bank_books,tablewidget_debt,rounds,date,week_index,count,options):
+    def setupUi(self, Dialog,tablewidget,bank_books,tablewidget_debt,rounds,date,full_amount,week_index,count,options):
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(262, 191)
         self.date = date
         self.options = options 
         self.bank_books = bank_books
         self.week_index = week_index
+        self.full_amount = full_amount
         # self.count = database.select_count_from_database(database_file)[0][0]
         self.count = count
         # self.count = database.select_count_from_database(database_file)[-1][0]
@@ -264,7 +265,7 @@ class Ui_Dialog(object):
             MainWindow.close()
             Dialog = QtGui.QDialog(MainWindow)
             add_menu_ui = dialog_amount.Ui_Dialog()
-            add_menu_ui.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,Name,Lastname,rounds,self.date,self.week_index)
+            add_menu_ui.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,Name,Lastname,rounds,self.date,self.full_amount,self.week_index)
             Dialog.exec_()
         if (self.options =='H'):
             if self.checkBox_3.isChecked():

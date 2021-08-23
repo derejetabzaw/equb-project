@@ -24,7 +24,7 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 
 class Admin_Access(object):
-    def setupUi(self, MainWindow,tablewidget,bank_books,tablewidget_debt,rowPosition,Name,LastName,rounds,date,week_number):
+    def setupUi(self, MainWindow,tablewidget,bank_books,tablewidget_debt,rowPosition,Name,LastName,rounds,date,full_amount,week_number):
         MainWindow.resize(300, 100)
         MainWindow.setWindowTitle(_translate("MainWindow", "Admin Access Required", None))
         self.bank_books = bank_books
@@ -32,6 +32,7 @@ class Admin_Access(object):
         self.name = Name
         self.lname = LastName
         self.week_number = week_number
+        self.full_amount = full_amount
     	self.password_label = QtGui.QLabel(MainWindow)
         self.password_label.setText("Password: ")
         self.password_label.move(30,20)
@@ -50,7 +51,7 @@ class Admin_Access(object):
             MainWindow.close()
             add_menu_ui = dialog_amount.Ui_Dialog()
             Dialog = QtGui.QDialog(MainWindow)
-            add_menu_ui.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,self.name,self.lname,rounds,self.date,self.week_number)
+            add_menu_ui.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,self.name,self.lname,rounds,self.date,self.full_amount,self.week_number)
             Dialog.exec_()
         else:
             QtGui.QMessageBox.warning(MainWindow, 'Error', 'Wrong Password')
