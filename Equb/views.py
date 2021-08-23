@@ -40,9 +40,11 @@ class Ui_MainWindow(object):
         self.date_new = date
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(1150, 575)
-        self.first_date = datetime.datetime.strptime(
-            str(database.select_date_from_database(database_file)[0][0]),
-            '%Y-%m-%d').date()
+        # self.first_date = datetime.datetime.strptime(
+        #     str(database.select_date_from_database(database_file)[0][0]),
+        #     '%Y-%m-%d').date()
+        self.first_date = date
+
         self.todays_date = datetime.date.today() 
 
 
@@ -623,7 +625,7 @@ class Ui_MainWindow(object):
         item = self.tableWidget_debt.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "Last Name", None))
         item = self.tableWidget_debt.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Debt-Amount", None))
+        item.setText(_translate("MainWindow", "Debt-Book", None))
         item = self.tableWidget_debt.horizontalHeaderItem(3)
         
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Bank Book", None))
@@ -640,7 +642,7 @@ class Ui_MainWindow(object):
         rounds = self.spinBox.value() 
         database.insert_round_and_count(database_file,self.count,rounds)
 
-        add_menu_ui.setupUi(Dialog,tablewidget,bank_books,tableWidget_debt,rounds,self.date_new,self.count,options)
+        add_menu_ui.setupUi(Dialog,tablewidget,bank_books,tableWidget_debt,rounds,self.date_new,self.week_number,self.count,options)
         Dialog.exec_()
     def delete_button_function(self,MainWindow):
         password_access = admin_access.Admin_Access()
@@ -675,7 +677,7 @@ class Ui_MainWindow(object):
 
             self.name = tablewidget.item(rowPosition,0)
             self.lname = tablewidget.item(rowPosition,1)
-            password_access.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,self.name,self.lname,rounds,self.date_new)
+            password_access.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,self.name,self.lname,rounds,self.date_new,self.week_number)
             Dialog.exec_()
         if (currentColumn > 2 and (self.week_number + 2) == currentColumn):
             self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
@@ -684,7 +686,7 @@ class Ui_MainWindow(object):
             self.lname = tablewidget.item(rowPosition,1)
             add_menu_ui = dialog_amount.Ui_Dialog()
             Dialog = QtGui.QDialog(MainWindow)
-            add_menu_ui.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,self.name,self.lname,rounds,self.date_new)
+            add_menu_ui.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,self.name,self.lname,rounds,self.date_new,self.week_number)
             Dialog.exec_()  
 
         if (currentColumn <=2):
@@ -693,7 +695,7 @@ class Ui_MainWindow(object):
                 if (options == "H" or options =="Q"):
                     add_menu_ui = dialog_name.Ui_Dialog()
                     Dialog = QtGui.QDialog(MainWindow)
-                    add_menu_ui.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rounds,self.date_new,self.count,options)
+                    add_menu_ui.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rounds,self.date_new,self.week_number,self.count,options)
                     Dialog.exec_() 
 
 

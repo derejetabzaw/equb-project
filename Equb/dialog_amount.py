@@ -28,9 +28,11 @@ except AttributeError:
 debt_calculator = [[0] * 500] * 500
 
 class Ui_Dialog(object):
-    def setupUi(self, Dialog,tablewidget,bank_books,tablewidget_debt,rowPosition,Name,Lastname,rounds,date):
+    def setupUi(self, Dialog,tablewidget,bank_books,tablewidget_debt,rowPosition,Name,Lastname,rounds,date,week_index):
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(415, 120)
+        self.week_index = week_index
+        print (self.week_index)
         self.date = date
         self.name = Name
         self.lname = Lastname
@@ -455,6 +457,7 @@ class Ui_Dialog(object):
 
         # week_index = x
         GEA = int(database.select_equb_amount_from_database(database_file)[-1][0])
+        full_commitment  = GEA
         # debt_calculator = np.array(debt_calculator)
         # debt_calculator[currentrow_ - 3][currentcolumn_ - 3] = float(Amount) - float(GEA/float(rounds))
         # debt_per_week = debt_calculator[0:currentRow - 1][0:rounds]
@@ -523,6 +526,8 @@ class Ui_Dialog(object):
                 if cell_data_column is not None and cell_data_column.text() !='':
                     self.cell_sum_column += int(cell_data_column.text())
             
+            # debt_calculator = (self.week_index*GEA) - self.cell_sum_column[self.week_index]
+
 
             
             tablewidget.setItem(rowPosition,column_count - 1, QtGui.QTableWidgetItem(str(self.cell_sum_column)))

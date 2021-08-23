@@ -30,12 +30,13 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_Dialog(object):
-    def setupUi(self, Dialog,tablewidget,bank_books,tablewidget_debt,rounds,date,count,options):
+    def setupUi(self, Dialog,tablewidget,bank_books,tablewidget_debt,rounds,date,week_index,count,options):
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(262, 191)
         self.date = date
         self.options = options 
         self.bank_books = bank_books
+        self.week_index = week_index
         # self.count = database.select_count_from_database(database_file)[0][0]
         self.count = count
         # self.count = database.select_count_from_database(database_file)[-1][0]
@@ -220,11 +221,19 @@ class Ui_Dialog(object):
             tablewidget_debt.insertRow(rowPosition)
             tablewidget_debt.setItem(rowPosition , 0, QtGui.QTableWidgetItem(str(Name)))
             tablewidget_debt.setItem(rowPosition , 1, QtGui.QTableWidgetItem(str(Lastname)))
-                
+            
+            
+            previous_cell_header = tablewidget.verticalHeaderItem(rowPosition-1)
+             
+
             if (checkboxes[0] == 'True'):
                 currentRow = rowPosition + 1
                 tablewidget.setRowCount(currentRow)
-                tablewidget.setVerticalHeaderItem(rowPosition,QtGui.QTableWidgetItem(str(self.count)))
+
+                if previous_cell_header is not None and previous_cell_header.text() !='':
+                    tablewidget.setVerticalHeaderItem(rowPosition,QtGui.QTableWidgetItem(str(int(tablewidget.verticalHeaderItem(rowPosition-1).text()) + 1)))
+                else:
+                    tablewidget.setVerticalHeaderItem(rowPosition,QtGui.QTableWidgetItem(str(self.count)))
                 tablewidget.setItem(rowPosition , 2, QtGui.QTableWidgetItem("F"))
                 tablewidget.item(rowPosition,2).setBackground(QtGui.QColor(0,0,255))
 
@@ -255,7 +264,7 @@ class Ui_Dialog(object):
             MainWindow.close()
             Dialog = QtGui.QDialog(MainWindow)
             add_menu_ui = dialog_amount.Ui_Dialog()
-            add_menu_ui.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,Name,Lastname,rounds,self.date)
+            add_menu_ui.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,Name,Lastname,rounds,self.date,self.week_index)
             Dialog.exec_()
         if (self.options =='H'):
             if self.checkBox_3.isChecked():
