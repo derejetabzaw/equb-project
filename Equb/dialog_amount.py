@@ -197,7 +197,6 @@ class Ui_Dialog(object):
         if tablewidget.item(currentRow,currentColumn) is not None and tablewidget.item(currentRow,currentColumn).text() !='':            
             self.lineEdit.setText(str(tablewidget.item(currentRow,currentColumn).text()))
             amount,checked_box,cheque_information,bank_options,others = database.select_amount(database_file,currentRow,currentColumn)[-1]
-            # print amount,database.convert_array(checked_box),database.convert_array(cheque_information),database.convert_array(bank_options),others
             checked_box = (database.convert_array(checked_box)).astype(np.int)
             bank_options  = (database.convert_array(bank_options)).astype(np.int)
 
