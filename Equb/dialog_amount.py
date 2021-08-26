@@ -85,7 +85,7 @@ class Ui_Dialog(object):
         self.cheque_tableWidget.hide()
 
         self.cheque_tableWidget.setColumnCount(5)
-        self.cheque_tableWidget.setRowCount(5)
+        self.cheque_tableWidget.setRowCount(20)
 
         item = QtGui.QTableWidgetItem()
         self.cheque_tableWidget.setHorizontalHeaderItem(0, item)
@@ -200,6 +200,7 @@ class Ui_Dialog(object):
             # print amount,database.convert_array(checked_box),database.convert_array(cheque_information),database.convert_array(bank_options),others
             checked_box = (database.convert_array(checked_box)).astype(np.int)
             bank_options  = (database.convert_array(bank_options)).astype(np.int)
+            cheque_information = (database.convert_array(cheque_information)).astype(np)
 
             if checked_box[0] == 2:
                  self.checkBox.setChecked(True) 
@@ -210,8 +211,19 @@ class Ui_Dialog(object):
                     self.checkBox_5.setEnabled(False)
                     self.checkBox_3.setEnabled(False)
                     self.checkBox.setEnabled(False)
+
+                    cheque_row = self.cheque_tableWidget.currentRow()
+                    cheque_rowCount = self.cheque_tableWidget.rowCount()
                     self.cheque_tableWidget.show()
+                    for i in range(cheque_rowCount):
+                        self.cheque_tableWidget.setItem(i, 0, QtGui.QTableWidgetItem(str(cheque_information[i][0])))
+                        self.cheque_tableWidget.setItem(i, 1, QtGui.QTableWidgetItem(str(cheque_information[i][1])))
+                        self.cheque_tableWidget.setItem(i, 2, QtGui.QTableWidgetItem(str(cheque_information[i][2])))
+                        self.cheque_tableWidget.setItem(i, 3, QtGui.QTableWidgetItem(str(cheque_information[i][3])))
+                        self.cheque_tableWidget.setItem(i, 4, QtGui.QTableWidgetItem(str(cheque_information[i][4])))
+
                     Dialog.resize(415, 200)
+
                     self.okay_button.setGeometry(QtCore.QRect(240, 165, 75, 20))
                     self.cancel_button.setGeometry(QtCore.QRect(320, 165, 75, 20)) 
             if checked_box[2] == 2:
@@ -483,19 +495,18 @@ class Ui_Dialog(object):
         cheque_currentColumn = self.cheque_tableWidget.currentColumn()
         cheque_currentRow = self.cheque_tableWidget.currentRow()
         
-        
-        if self.cheque_tableWidget.item(cheque_currentRow,cheque_currentColumn) is not None and self.cheque_tableWidget.item(cheque_currentRow,cheque_currentColumn).text() !='':            
+        cheque_information = [[''] * 5] * cheque_rowCount
+        cheque_information = np.array(cheque_information,dtype=np.object_)
 
 
-            cheque_information = [str(self.cheque_tableWidget.item(cheque_currentRow,0).text()),
-            str(self.cheque_tableWidget.item(cheque_currentRow,1).text()),
-            str(self.cheque_tableWidget.item(cheque_currentRow,2).text()),
-            str(self.cheque_tableWidget.item(cheque_currentRow,3).text()),
-            str(self.cheque_tableWidget.item(cheque_currentRow,4).text())]
-            cheque_information = np.asarray(cheque_information)
+        for row in range(cheque_rowCount):
+            for column in range(cheque_columnCount):
+                if self.cheque_tableWidget.item(row,column) is not None and self.cheque_tableWidget.item(row,column).text() !='':            
+                    cheque_information[row][column] = str(self.cheque_tableWidget.item(row,column).text())
 
-        else:
-            cheque_information = ['','','','','']
+                else:
+                    cheque_information[row][column] = str('')
+        print cheque_information
 
         checkbox_bank_options = [self.boa_option.isChecked(),
         self.cbe_option.isChecked(),self.dashen_option.isChecked(),self.awash_option.isChecked(),
