@@ -67,6 +67,7 @@ def create_database_and_tables(database):
                             rounds INTEGER NOT NULL
                         ); """
     sql_create_amount = """ CREATE TABLE IF NOT EXISTS Amount (
+                            file STRING,
                             amount INTEGER NOT NULL,
                             currentrow INTEGER,
                             currentcolumn INTEGER,
@@ -234,8 +235,8 @@ def add_amount(conn, information):
     :param project:
     :return: project id
     """
-    sql = ''' INSERT INTO Amount(amount,currentrow,currentcolumn,checked_box,cheque_information,checkbox_bank_options,others_text)
-              VALUES(?,?,?,?,?,?,?) '''
+    sql = ''' INSERT INTO Amount(file,amount,currentrow,currentcolumn,checked_box,cheque_information,checkbox_bank_options,others_text)
+              VALUES(?,?,?,?,?,?,?,?) '''
     cur = conn.cursor()
     cur.execute(sql, information)
     return cur.lastrowid
@@ -243,19 +244,26 @@ def add_amount(conn, information):
 
 
 
-def insert_amount_dialog(database,amount,currentrow,currentcolumn,checked_box,cheque_information,checkbox_bank_options,others_text):
+def insert_amount_dialog(database,file,amount,currentrow,currentcolumn,checked_box,cheque_information,checkbox_bank_options,others_text):
     conn = create_connection(database)
     with conn:
-        information = amount,currentrow,currentcolumn,adapt_array(checked_box),adapt_array(cheque_information),adapt_array(checkbox_bank_options),others_text
+        information = file,amount,currentrow,currentcolumn,adapt_array(checked_box),adapt_array(cheque_information),adapt_array(checkbox_bank_options),others_text
         add_amount(conn, information)
 
 
-def select_amount(database,row,column):
+def select_amount(database,row,column,filename):
     conn = create_connection(database)
     cur = conn.cursor()
-    cur.execute("SELECT amount,checked_box,cheque_information,checkbox_bank_options,others_text FROM Amount WHERE currentrow = ? AND currentcolumn=?",(row,column))
+    cur.execute("SELECT amount,checked_box,cheque_information,checkbox_bank_options,others_text FROM Amount WHERE currentrow = ? AND currentcolumn=? AND file = ?",(row,column,filename))
     rows = cur.fetchall()
     return rows
+
+# def select_all_information(database,file):
+#     conn = create_connection(database)
+#     cur = conn.cursor()
+#     cur.execute("SELECT amount,checked_box,cheque_information,checkbox_bank_options,others_text FROM Amount WHERE filename = ? ",(file))
+#     rows = cur.fetchall()
+#     return rows
 
 
 

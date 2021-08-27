@@ -18,6 +18,10 @@ import database
 from model import EqubModel
 import numpy as np 
 import sys, csv
+import tempfile
+
+tmp_file, tmp_file_filename = tempfile.mkstemp()
+
 
 database_file = str(os.getcwd() + "/" + str("Equb.sqlite")).replace("\\","/")
 default_path = os.path.dirname(os.path.abspath(__file__))
@@ -38,6 +42,7 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow,date,full_amount):
         self.date_new = date
+        self.file = tmp_file_filename
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(1150, 575)
         # self.first_date = datetime.datetime.strptime(
@@ -110,6 +115,7 @@ class Ui_MainWindow(object):
         self.spinBox.setMinimum(1)
         self.spinBox.setMaximum(500)
 
+        self.previous_rounds = []
         rounds = self.spinBox.value() 
         self.spinBox.valueChanged.connect(self.rounds_changed)
         all_weeks = []
@@ -643,7 +649,7 @@ class Ui_MainWindow(object):
         rounds = self.spinBox.value() 
         database.insert_round_and_count(database_file,self.count,rounds)
 
-        add_menu_ui.setupUi(Dialog,tablewidget,bank_books,tableWidget_debt,rounds,self.date_new,self.full_amount,self.week_number,self.count,options)
+        add_menu_ui.setupUi(self.file,Dialog,tablewidget,bank_books,tableWidget_debt,rounds,self.date_new,self.full_amount,self.week_number,self.count,options)
         Dialog.exec_()
     def delete_button_function(self,MainWindow):
         password_access = admin_access.Admin_Access()
@@ -678,7 +684,7 @@ class Ui_MainWindow(object):
 
             self.name = tablewidget.item(rowPosition,0)
             self.lname = tablewidget.item(rowPosition,1)
-            password_access.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,self.name,self.lname,rounds,self.date_new,self.full_amount,self.week_number)
+            password_access.setupUi(self.file,Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,self.name,self.lname,rounds,self.date_new,self.full_amount,self.week_number)
             Dialog.exec_()
         if (currentColumn > 2 and (self.week_number + 2) == currentColumn):
             self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
@@ -687,7 +693,7 @@ class Ui_MainWindow(object):
             self.lname = tablewidget.item(rowPosition,1)
             add_menu_ui = dialog_amount.Ui_Dialog()
             Dialog = QtGui.QDialog(MainWindow)
-            add_menu_ui.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,self.name,self.lname,rounds,self.date_new,self.full_amount,self.week_number)
+            add_menu_ui.setupUi(self.file,Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,self.name,self.lname,rounds,self.date_new,self.full_amount,self.week_number)
             Dialog.exec_()  
 
         if (currentColumn <=2):
@@ -696,7 +702,7 @@ class Ui_MainWindow(object):
                 if (options == "H" or options =="Q"):
                     add_menu_ui = dialog_name.Ui_Dialog()
                     Dialog = QtGui.QDialog(MainWindow)
-                    add_menu_ui.setupUi(Dialog,tablewidget,self.bank_books,tablewidget_debt,rounds,self.date_new,self.full_amount,self.week_number,self.count,options)
+                    add_menu_ui.setupUi(self.file,Dialog,tablewidget,self.bank_books,tablewidget_debt,rounds,self.date_new,self.full_amount,self.week_number,self.count,options)
                     Dialog.exec_() 
 
 
@@ -750,9 +756,20 @@ class Ui_MainWindow(object):
             add_menu_ui.setupUi(Dialog,tablewidget,rowPosition,rounds)
             Dialog.exec_()
     def rounds_changed(self):
+        
         rounds =  self.spinBox.value()
+        self.previous_rounds.append(rounds) 
         all_weeks = []
         self.week_number = rounds
+        total_row = self.tableWidget.rowCount() 
+        last_column = self.tableWidget.columnCount()
+        previous_value = self.previous_rounds[len(self.previous_rounds) - 2]
+        HSUM_data = []
+
+        for row in range(total_row - 1):
+                if self.tableWidget.item(row,last_column - 1) is not None and self.tableWidget.item(row,last_column - 1).text() !='':
+                    HSUM_data.append(str(self.tableWidget.item(row,last_column - 1).text()))
+
         for i in range(0,rounds):
             all_weeks.append(self.first_date + datetime.timedelta(days = i * 7))
     
@@ -795,8 +812,22 @@ class Ui_MainWindow(object):
             item.setText(_translate("MainWindow", "Week-"+ str(indx) +'\n'+ str(all_weeks[i - 3]), None))
             indx +=1 
 
-        
 
+            
+        if previous_value <= rounds:
+            for row in range(total_row - 1):
+                if self.tableWidget.item(row,rounds + 2) is not None and self.tableWidget.item(row,rounds +2).text() !='':
+                    self.tableWidget.setItem(row, rounds + 3, QtGui.QTableWidgetItem(str(self.tableWidget.item(row,rounds + 2).text())))
+                    self.tableWidget.takeItem(row,rounds + 2)
+
+
+        else:
+            total_row_ = self.tableWidget.rowCount() 
+            last_column_ = self.tableWidget.columnCount()
+            for row in range(total_row - 1):
+                if self.tableWidget.item(row,last_column_ - 1) is not None and self.tableWidget.item(row,last_column_ - 1).text() !='':
+                    self.tableWidget.setItem(row, last_column_ , QtGui.QTableWidgetItem(str(HSUM_data[row])))
+                
 
         self.tableWidget.setHorizontalHeaderItem(rounds + 3,QtGui.QTableWidgetItem("HSUM"))
 
@@ -837,6 +868,20 @@ class Ui_MainWindow(object):
                         else:
                             rowdata.append('')
                     writer.writerow(rowdata)
+
+
+        for row in range(rowcount - 1):
+            for column in range(3,columncount - 1):
+                database_return = database.select_amount(database_file,row,column,self.file)
+                if len(database_return) > 0:
+                    amount,checked_box,cheque_information,bank_options,others = database_return[-1]
+                    checked_box = (database.convert_array(checked_box)).astype(np.int)
+                    bank_options  = (database.convert_array(bank_options)).astype(np.int)
+                    cheque_information = (database.convert_array(cheque_information)).astype(np)
+                    database.insert_amount_dialog(database_file,str(path),amount,row,column,checked_box,cheque_information,bank_options,others)    
+                else: 
+                    break
+        self.file = str(path)
     def open_function(self,MainWindow):
         path = QtGui.QFileDialog.getOpenFileName(MainWindow, 'Open File', default_path , 'CSV(*.csv)')
         if not path.isEmpty():
@@ -853,7 +898,7 @@ class Ui_MainWindow(object):
                     for column, data in enumerate(rowdata):
                         item = QtGui.QTableWidgetItem(data.decode('utf8'))
                         self.tableWidget.setItem(row, column, item)
-        
+        open_file = path
 
         for colour_commitment in range(0,len(rowdata_) - 1):
             if rowdata_[colour_commitment][3] == "F":

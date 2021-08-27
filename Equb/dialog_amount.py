@@ -28,9 +28,10 @@ except AttributeError:
 debt_calculator = [[0] * 500] * 500
 
 class Ui_Dialog(object):
-    def setupUi(self, Dialog,tablewidget,bank_books,tablewidget_debt,rowPosition,Name,Lastname,rounds,date,full_amount,week_index):
+    def setupUi(self, file, Dialog,tablewidget,bank_books,tablewidget_debt,rowPosition,Name,Lastname,rounds,date,full_amount,week_index):
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(415, 120)
+        self.file = file
         self.week_index = week_index
         self.date = date
         self.name = Name
@@ -196,7 +197,7 @@ class Ui_Dialog(object):
 
         if tablewidget.item(currentRow,currentColumn) is not None and tablewidget.item(currentRow,currentColumn).text() !='':            
             self.lineEdit.setText(str(tablewidget.item(currentRow,currentColumn).text()))
-            amount,checked_box,cheque_information,bank_options,others = database.select_amount(database_file,currentRow,currentColumn)[-1]
+            amount,checked_box,cheque_information,bank_options,others = database.select_amount(database_file,currentRow,currentColumn,self.file)[-1]
             checked_box = (database.convert_array(checked_box)).astype(np.int)
             bank_options  = (database.convert_array(bank_options)).astype(np.int)
             cheque_information = (database.convert_array(cheque_information)).astype(np)
@@ -505,7 +506,7 @@ class Ui_Dialog(object):
 
                 else:
                     cheque_information[row][column] = str('')
-        print cheque_information
+        
 
         checkbox_bank_options = [self.boa_option.isChecked(),
         self.cbe_option.isChecked(),self.dashen_option.isChecked(),self.awash_option.isChecked(),
@@ -564,7 +565,7 @@ class Ui_Dialog(object):
 
             
 
-        database.insert_amount_dialog(database_file,Amount,currentrow_,currentcolumn_,checkboxes,cheque_information,checkbox_bank_options,others_text)    
+        database.insert_amount_dialog(database_file,self.file,Amount,currentrow_,currentcolumn_,checkboxes,cheque_information,checkbox_bank_options,others_text)    
         columnPosition = tablewidget.setCurrentCell(rowPosition,3)
         
         MainWindow.close()
