@@ -10,6 +10,8 @@ from PyQt4 import QtCore, QtGui
 import dialog_name
 import dialog_amount
 import dialog_bank_acc
+import dialog_first
+import settings 
 import os
 import calendar 
 import admin_access
@@ -44,7 +46,8 @@ class Ui_MainWindow(object):
         self.date_new = date
         self.file = tmp_file_filename
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(1150, 575)
+        # MainWindow.resize(1150, 575)
+        MainWindow.showMaximized()
         # self.first_date = datetime.datetime.strptime(
         #     str(database.select_date_from_database(database_file)[0][0]),
         #     '%Y-%m-%d').date()
@@ -57,12 +60,13 @@ class Ui_MainWindow(object):
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.tabWidget = QtGui.QTabWidget(self.centralwidget)
-        self.tabWidget.setGeometry(QtCore.QRect(0, 0, 1150, 575))
+        self.tabWidget.setGeometry(QtCore.QRect(0, 0, 1350, 1000))
         self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
         self.tab = QtGui.QWidget()
         self.tab.setObjectName(_fromUtf8("tab"))
+
         self.tableWidget = QtGui.QTableWidget(self.tab)
-        self.tableWidget.setGeometry(QtCore.QRect(0, 0, 960, 500))
+        self.tableWidget.setGeometry(QtCore.QRect(0, 0, 1150, 650))
         self.tableWidget.setObjectName(_fromUtf8("tableWidget"))
 
         self.iterate_over_database =  len(database.select_equb_information(database_file))
@@ -81,39 +85,48 @@ class Ui_MainWindow(object):
         self.frame.setFrameShadow(QtGui.QFrame.Raised)
         self.frame.setObjectName(_fromUtf8("frame"))
         self.pushButton = QtGui.QPushButton(self.frame)
-        self.pushButton.setGeometry(QtCore.QRect(15, 0, 160, 25))
+        self.pushButton.setGeometry(QtCore.QRect(220, 5, 160, 25))
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         self.pushButton_2 = QtGui.QPushButton(self.frame)
-        self.pushButton_2.setGeometry(QtCore.QRect(15, 30, 160, 25))
+        self.pushButton_2.setGeometry(QtCore.QRect(220, 35, 160, 25))
         self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
-        self.pushButton_3 = QtGui.QPushButton(self.frame)
-        self.pushButton_3.setGeometry(QtCore.QRect(15, 60, 160, 25))
-        self.pushButton_3.setObjectName(_fromUtf8("pushButton_3"))
-        self.pushButton_4 = QtGui.QPushButton(self.frame)
-        self.pushButton_4.setGeometry(QtCore.QRect(15, 90, 160, 25))
-        self.pushButton_4.setObjectName(_fromUtf8("pushButton_4"))
+        # self.pushButton_3 = QtGui.QPushButton(self.frame)
+        # self.pushButton_3.setGeometry(QtCore.QRect(15, 60, 160, 25))
+        # self.pushButton_3.setObjectName(_fromUtf8("pushButton_3"))
+        # self.pushButton_4 = QtGui.QPushButton(self.frame)
+        # self.pushButton_4.setGeometry(QtCore.QRect(15, 90, 160, 25))
+        # self.pushButton_4.setObjectName(_fromUtf8("pushButton_4"))
         # self.add_cell_button = QtGui.QPushButton(self.frame)
         self.save_button = QtGui.QPushButton(self.frame)
-        self.save_button.setGeometry(QtCore.QRect(15, 415, 160, 25))
+        self.save_button.setGeometry(QtCore.QRect(220, 565, 160, 25))
         self.save_button.setObjectName(_fromUtf8("save_button"))
         self.open_button = QtGui.QPushButton(self.frame)
-        self.open_button.setGeometry(QtCore.QRect(15, 445, 160, 25))
+        self.open_button.setGeometry(QtCore.QRect(220, 595, 160, 25))
         self.open_button.setObjectName(_fromUtf8("open_button"))
         self.generate = QtGui.QPushButton(self.frame)
-        self.generate.setGeometry(QtCore.QRect(15, 475, 160, 25))
+        self.generate.setGeometry(QtCore.QRect(220, 625, 160, 25))
         self.generate.setObjectName(_fromUtf8("generate"))
+        
         self.tabWidget.addTab(self.tab, _fromUtf8(""))
 
         self.label = QtGui.QLabel(self.frame)
         self.label.setObjectName(_fromUtf8("label"))
-        self.label.setGeometry(QtCore.QRect(15, 120, 40, 40))
+        self.label.setGeometry(QtCore.QRect(220, 65, 40, 40))
         self.label.setText(_translate("Dialog", "Rounds:", None))
 
         self.spinBox = QtGui.QSpinBox(self.frame)
         self.spinBox.setObjectName(_fromUtf8("spinBox"))
-        self.spinBox.setGeometry(QtCore.QRect(60, 130, 40, 20))
+        self.spinBox.setGeometry(QtCore.QRect(265, 75, 40, 20))
         self.spinBox.setMinimum(1)
         self.spinBox.setMaximum(500)
+
+        self.label_settings = QtGui.QLabel(self.frame)
+        self.label_settings.setObjectName(_fromUtf8("label"))
+        self.label_settings.setGeometry(QtCore.QRect(220, 95, 50, 40))
+        self.label_settings.setText(_translate("Dialog", "Settings:", None))
+        self.settings_button = QtGui.QPushButton(self.frame)
+        self.settings_button.setGeometry(QtCore.QRect(265, 105, 25, 25))
+        self.settings_button.setText(_translate("MainWindow", "**", None))
 
         self.previous_rounds = []
         rounds = self.spinBox.value() 
@@ -191,7 +204,8 @@ class Ui_MainWindow(object):
         self.tab_3 = QtGui.QWidget()
         self.tab_3.setObjectName(_fromUtf8("tab_3"))
         self.tableWidget1 = QtGui.QTableWidget(self.tab_3)
-        self.tableWidget1.setGeometry(QtCore.QRect(0, 20, 500, 350))
+        self.tableWidget1.setGeometry(QtCore.QRect(0, 0, 615, 615))
+
         self.tableWidget1.setObjectName(_fromUtf8("tableWidget1"))
         self.tableWidget1.setColumnCount(6)
         # self.tableWidget1.setRowCount(100)
@@ -414,7 +428,7 @@ class Ui_MainWindow(object):
 
 
         self.tableWidget_debt = QtGui.QTableWidget(self.tab_debt)
-        self.tableWidget_debt.setGeometry(QtCore.QRect(0, 0, 960, 500))
+        self.tableWidget_debt.setGeometry(QtCore.QRect(0, 0, 345, 650))
         self.tableWidget_debt.setObjectName(_fromUtf8("tableWidget_debit"))
         self.tableWidget_debt.setColumnCount(3)
         self.tableWidget_debt.setRowCount(100)
@@ -424,6 +438,23 @@ class Ui_MainWindow(object):
         self.tableWidget_debt.setHorizontalHeaderItem(1, item)
         item = QtGui.QTableWidgetItem()
         self.tableWidget_debt.setHorizontalHeaderItem(2, item)
+
+        self.generate_debt = QtGui.QPushButton(self.tab_debt)
+        self.generate_debt.setGeometry(QtCore.QRect(350, 10, 160, 25))
+        self.generate_debt.setObjectName(_fromUtf8("generate"))
+
+        
+        self.label_week = QtGui.QLabel(self.tab_debt)
+        self.label_week.setObjectName(_fromUtf8("label"))
+        self.label_week.setGeometry(QtCore.QRect(350, 40, 160, 25))
+        self.label_week.setText(_translate("Dialog", "Week:", None))
+
+        self.label_week_index = QtGui.QLabel(self.tab_debt)
+        self.label_week_index.setObjectName(_fromUtf8("label"))
+        self.label_week_index.setGeometry(QtCore.QRect(380, 40, 160, 25))
+        self.label_week_index.setText(_translate("Dialog", str(self.week_number), None))
+
+        
 
 
 
@@ -450,11 +481,12 @@ class Ui_MainWindow(object):
         self.bank_books[0].cellChanged.connect(self.withdraw_cell)
         
         self.pushButton.clicked.connect(lambda x: self.add_button_function(MainWindow,self.tableWidget,self.bank_books,self.tableWidget_debt,rounds))
-        self.pushButton_3.clicked.connect(lambda x: self.delete_button_function(MainWindow))
-
-        self.pushButton_4.clicked.connect(lambda x: self.clear_all_button_function(MainWindow))
+        self.pushButton_2.clicked.connect(lambda x: self.remove_button_function(MainWindow))
+        self.settings_button.clicked.connect(lambda x: self.settings(MainWindow))
+        # self.pushButton_4.clicked.connect(lambda x: self.clear_all_button_function(MainWindow))
         self.save_button.clicked.connect(lambda x: self.save_function(MainWindow))
         self.open_button.clicked.connect(lambda x: self.open_function(MainWindow))
+        self.generate.clicked.connect(lambda x: self.generate_function(MainWindow))
         # self.add_cell_button.clicked.connect(lambda x: self.add_cell(MainWindow))
         self.count = 0
 
@@ -463,7 +495,7 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow", None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Equb Main-Window", None))
         item = self.tableWidget.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Name", None))
         item = self.tableWidget.horizontalHeaderItem(1)
@@ -478,13 +510,14 @@ class Ui_MainWindow(object):
         #  item.setText(_translate("MainWindow", "List", None))
 
         self.pushButton.setText(_translate("MainWindow", "Add...", None))
-        self.pushButton_2.setText(_translate("MainWindow", "Edit", None))
-        self.pushButton_3.setText(_translate("MainWindow", "Delete", None))
-        self.pushButton_4.setText(_translate("MainWindow", "Clear All", None))
+        self.pushButton_2.setText(_translate("MainWindow", "Remove", None))
+        # self.pushButton_3.setText(_translate("MainWindow", "Remove", None))
+        # self.pushButton_4.setText(_translate("MainWindow", "Clear All", None))
 
         self.save_button.setText(_translate("MainWindow", "Save", None))
-        self.open_button.setText(_translate("MainWindow", "Open", None))
-        self.generate.setText(_translate("MainWindow", "Generate", None))
+        self.open_button.setText(_translate("MainWindow", "Load", None))
+        self.generate.setText(_translate("MainWindow", "Generate PDF", None))
+        self.generate_debt.setText(_translate("MainWindow", "Generate PDF", None))
 
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Equb Table", None))
         
@@ -651,19 +684,25 @@ class Ui_MainWindow(object):
 
         add_menu_ui.setupUi(self.file,Dialog,tablewidget,bank_books,tableWidget_debt,rounds,self.date_new,self.full_amount,self.week_number,self.count,options)
         Dialog.exec_()
-    def delete_button_function(self,MainWindow):
+    def remove_button_function(self,MainWindow):
         password_access = admin_access.Admin_Access()
         Dialog = QtGui.QDialog(MainWindow)
         password_access.setupUi(Dialog)
         Dialog.exec_()
-
-
-
-    def clear_all_button_function(self,MainWindow):
-        password_access = admin_access.Admin_Access()
+    def settings(self,MainWindow):
+        settings_ui = settings.Ui_Dialog()
         Dialog = QtGui.QDialog(MainWindow)
-        password_access.setupUi(Dialog)
-        Dialog.exec_()
+        settings_ui.setupUi(Dialog)
+        Dialog.exec_()  
+       
+
+
+
+    # def clear_all_button_function(self,MainWindow):
+    #     password_access = admin_access.Admin_Access()
+    #     Dialog = QtGui.QDialog(MainWindow)
+    #     password_access.setupUi(Dialog)
+    #     Dialog.exec_()
 
 
 
@@ -898,7 +937,7 @@ class Ui_MainWindow(object):
                     for column, data in enumerate(rowdata):
                         item = QtGui.QTableWidgetItem(data.decode('utf8'))
                         self.tableWidget.setItem(row, column, item)
-        open_file = path
+        
 
         for colour_commitment in range(0,len(rowdata_) - 1):
             if rowdata_[colour_commitment][3] == "F":
@@ -911,6 +950,44 @@ class Ui_MainWindow(object):
             self.tableWidget.setHorizontalHeaderItem(column_,QtGui.QTableWidgetItem(rowdata_[0][column_]))
         self.tableWidget.removeRow(0)
         self.tableWidget.removeColumn(0)
+        self.file = str(path)
+    def generate_function(self):
+        pass
+        # filename = "table.pdf"
+        # model = self.tableWidget.model()
+        # printer = QtPrintSupport.QPrinter(QtPrintSupport.QPrinter.PrinterResolution)
+        # printer.setOutputFormat(QtPrintSupport.QPrinter.PdfFormat)
+        # printer.setPaperSize(QtPrintSupport.QPrinter.A4)
+        # printer.setOrientation(QtPrintSupport.QPrinter.Landscape)
+        # printer.setOutputFileName(filename)
+
+        # doc = QtGui.QTextDocument()
+
+        # html = """<html>
+        # <head>
+        # <style>
+        # table, th, td {
+        # border: 1px solid black;
+        # border-collapse: collapse;
+        # }
+        # </style>
+        # </head>"""
+        # html += "<table><thead>"
+        # html += "<tr>"
+        # for c in range(model.columnCount()):
+        #     html += "<th>{}</th>".format(model.headerData(c, QtCore.Qt.Horizontal))
+
+        # html += "</tr></thead>"
+        # html += "<tbody>"
+        # for r in range(model.rowCount()):
+        #     html += "<tr>"
+        #     for c in range(model.columnCount()):
+        #         html += "<td>{}</td>".format(model.index(r, c).data() or "")
+        #     html += "</tr>"
+        # html += "</tbody></table>"
+        # doc.setHtml(html)
+        # doc.setPageSize(QtCore.QSizeF(printer.pageRect().size()))
+        # doc.print_(printer)
      
 
 
