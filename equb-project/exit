@@ -1,0 +1,49 @@
+[33m32daeb7[m[33m ([m[1;36mHEAD -> [m[1;32mexperment[m[33m)[m debtTab finished
+[33m7eb5411[m[33m ([m[1;31mupstream/main[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;31morigin/Experiment[m[33m, [m[1;32mmain[m[33m, [m[1;32mExperiment[m[33m)[m Modified some scripts
+[33mb7c4596[m modified database,HSUM,save functions
+[33m84fbcf5[m Merge branch 'main' of https://github.com/derejetabzaw/equb-project into main
+[33m8076b17[m committed
+[33m8f081c7[m changed cheque book
+[33m2318a3f[m allow-pickle true
+[33m0bec042[m debt_book
+[33m47595e0[m preprocess for debt_book
+[33mcf95978[m modified credit-withdraw
+[33ma5b2a6a[m modified views
+[33mc4d0067[m modified credits
+[33m58e2c7e[m modified balance credits
+[33m12c479b[m modified balance
+[33m6d4dd14[m modified some change
+[33m2c43ca5[m modified bank books
+[33m05e6edd[m modified bank books
+[33mdc33708[m Modified Grid
+[33mfeb0e97[m dialog_amount change
+[33m60dff9f[m database mod for debt tab
+[33m7bda720[m Modified database
+[33m9608919[m Added Vertical and Horizontal Header to save
+[33mf07eb0c[m save button with rowcolumn
+[33m91edf58[m Modified database for views
+[33me30d8ae[m Database design for Amount
+[33me24baf9[m database connection
+[33m94af628[m designing database
+[33m8fe3bd8[m Modified Rounds to views
+[33m0ddbf55[m changes
+[33md41557d[m Modified Seed combinations QHQ,QQH,HQQ
+[33mf682949[m modified hsum and vsum
+[33m7d01b03[m Added current column additions
+[33mf9d37f9[m Done AdminAccess and Week Headers
+[33m3dd3b75[m Modified Date
+[33mbd2c030[m admin access added
+[33m163a6ff[m modified horizontal sum
+[33mf3b114d[m refactored some codes
+[33mad2f177[m refactored some codes
+[33mbfb561e[m Completed Vertical SUM
+[33me11e580[m Sum function added for a single column
+[33m984199a[m Sum function has problem
+[33m102a4e7[m Modified dialog_name and views scripts
+[33md7abcc7[m Added sum column
+[33m135def1[m Equb
+[33m6d3d59e[m another gitignore added
+[33m3e62e27[m removed all
+[33m75f0926[m removed pyc files
+[33m0ccf870[m Equb Project
+[33ma8d9661[m Equb Project
