@@ -197,6 +197,7 @@ class Ui_Dialog(object):
 
         if tablewidget.item(currentRow,currentColumn) is not None and tablewidget.item(currentRow,currentColumn).text() !='':            
             self.lineEdit.setText(str(tablewidget.item(currentRow,currentColumn).text()))
+            #self.lineEdit.setText(str(tablewidget_debt.item(currentRow, currentColumn).text()))
             amount,checked_box,cheque_information,bank_options,others = database.select_amount(database_file,currentRow,currentColumn,self.file)[-1]
             checked_box = (database.convert_array(checked_box)).astype(np.int)
             bank_options  = (database.convert_array(bank_options)).astype(np.int)
@@ -322,7 +323,6 @@ class Ui_Dialog(object):
             self.okay_button.setGeometry(QtCore.QRect(240, 165, 75, 20))
             self.cancel_button.setGeometry(QtCore.QRect(320, 165, 75, 20)) 
     def bank_deposit(self,Dialog,option1,option2,option3,okay_button,cancel_button):
-        
         if (self.checkBox_3.checkState() != 0):
 
             self.checkBox_4.setEnabled(False)
@@ -369,11 +369,10 @@ class Ui_Dialog(object):
             Dialog.resize(415, 120)
             self.okay_button.setGeometry(QtCore.QRect(240, 80, 75, 20))
             self.cancel_button.setGeometry(QtCore.QRect(320, 80, 75, 20))
-
-
-
-
-    def others_function(self,Dialog,lineEdit_2,okay_button,cancel_button):
+# def insert_Weekly_Debt(self, row, coloumn):
+# for
+# week_debt = self.full_amount/self.week_index - self.HSUM[0]
+# def others_function(self,Dialog,lineEdit_2,okay_button,cancel_button):
         
 
         if (self.checkBox_5.checkState() != 0):
@@ -402,7 +401,6 @@ class Ui_Dialog(object):
             self.cancel_button.setGeometry(QtCore.QRect(320, 80, 75, 20))
 
 
-
     def okay_button_function(self,MainWindow,tablewidget,bank_books,tablewidget_debt,Amount,rowPosition,rounds):
         currentRow = tablewidget.rowCount()
         column_count = tablewidget.columnCount()
@@ -410,10 +408,6 @@ class Ui_Dialog(object):
         currentrow_ = tablewidget.currentRow()
         currentcolumn_ = tablewidget.currentColumn()
 
-
-
-       
-        
 
         # if (self.cbe_option.isChecked()==True):
         # if (self.dashen_option.isChecked()==True):
@@ -506,7 +500,7 @@ class Ui_Dialog(object):
 
                 else:
                     cheque_information[row][column] = str('')
-        
+
 
         checkbox_bank_options = [self.boa_option.isChecked(),
         self.cbe_option.isChecked(),self.dashen_option.isChecked(),self.awash_option.isChecked(),
@@ -522,7 +516,7 @@ class Ui_Dialog(object):
             tablewidget.setItem(currentRow - 1,3, QtGui.QTableWidgetItem(str(tablewidget.item(0,3).text())))
             tablewidget.setItem(0,column_count - 1, QtGui.QTableWidgetItem(str(tablewidget.item(0,3).text())))
             # tablewidget_debt.setItem(rowPosition,2, QtGui.QTableWidgetItem(str(debt_per_week[currentcolumn_ - 3])))
-            
+
 
         else: 
             tablewidget.setItem(rowPosition , columnPosition, QtGui.QTableWidgetItem(str(Amount)))
@@ -531,7 +525,7 @@ class Ui_Dialog(object):
             for i in range(currentRow - 1):
                 cell_data = tablewidget.item(i,columnPosition)
                 if cell_data is not None and cell_data.text() !='':
-                    self.cell_sum += int(cell_data.text())              
+                    self.cell_sum += int(cell_data.text())
 
             tablewidget.setItem(currentRow - 1,columnPosition, QtGui.QTableWidgetItem(str(self.cell_sum)))
 
@@ -552,25 +546,25 @@ class Ui_Dialog(object):
                 else:
                     HSUM_array.append(int(0))
                 commitment = tablewidget.item(i,2)
+
                 if commitment is not None and commitment.text() !='':
                     if commitment.text() == 'F':
-                        debt_per_week = str(-1 * (int(HSUM_array[i]) - int(self.week_index) * int(self.full_amount) - int(HSUM_array[i])))
+                        debt_per_week = str(-1 * (int(int(self.full_amount) - int(HSUM_array[i]))))
                         tablewidget_debt.setItem(i,2, QtGui.QTableWidgetItem(debt_per_week))
                     if commitment.text() == 'H':
-                        debt_per_week = str(-1 * (int(self.week_index) * int(self.full_amount)/2 - int(HSUM_array[i])))
+                        debt_per_week = str(-1 * (int(int(self.full_amount)/2 - int(HSUM_array[i]))))
                         tablewidget_debt.setItem(i,2, QtGui.QTableWidgetItem(debt_per_week))
                     if commitment.text() == 'Q':
-                        debt_per_week = str(-1 * (int(self.week_index) * int(self.full_amount)/4 - int(HSUM_array[i])))
+                        debt_per_week = str(-1 * (int(int(self.full_amount)/4 - int(HSUM_array[i]))))
                         tablewidget_debt.setItem(i,2, QtGui.QTableWidgetItem(debt_per_week))
 
-            
 
         database.insert_amount_dialog(database_file,self.file,Amount,currentrow_,currentcolumn_,checkboxes,cheque_information,checkbox_bank_options,others_text)    
         columnPosition = tablewidget.setCurrentCell(rowPosition,3)
         
         MainWindow.close()
 
-    
+
 
 
 

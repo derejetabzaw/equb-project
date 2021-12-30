@@ -39,7 +39,8 @@ def create_table(conn, create_table_sql):
         c.execute(create_table_sql)
     except Error as e:
         print(e)
- 
+
+
 def create_database_and_tables(database):
     
     # Converts np.array to TEXT when inserting

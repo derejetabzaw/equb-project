@@ -46,6 +46,8 @@ class Ui_Dialog(object):
         self.okay_button = QtGui.QPushButton(Dialog)
         self.okay_button.setGeometry(QtCore.QRect(90, 150, 75, 20))
         self.okay_button.setObjectName(_fromUtf8("okay_button"))
+
+
         self.cancel_button = QtGui.QPushButton(Dialog)
         self.cancel_button.setGeometry(QtCore.QRect(175, 150, 75, 20))
         self.cancel_button.setObjectName(_fromUtf8("cancel_button"))
@@ -207,6 +209,8 @@ class Ui_Dialog(object):
         self.okay_button.setText("Add")
         self.cancel_button.setText("Cancel")
 
+#add record to the main and debt table records
+
     def okay_button_function(self,MainWindow,tablewidget,tablewidget_debt,Name,Lastname,checkboxes,rounds):   
         rowPosition = tablewidget.rowCount()
         columnCount = tablewidget.columnCount()
@@ -221,8 +225,8 @@ class Ui_Dialog(object):
             tablewidget.setItem(rowPosition , 0, QtGui.QTableWidgetItem(str(Name)))
             tablewidget.setItem(rowPosition , 1, QtGui.QTableWidgetItem(str(Lastname)))
             tablewidget_debt.insertRow(rowPosition)
-            tablewidget_debt.setItem(rowPosition , 0, QtGui.QTableWidgetItem(str(Name)))
-            tablewidget_debt.setItem(rowPosition , 1, QtGui.QTableWidgetItem(str(Lastname)))
+            tablewidget_debt.setItem(rowPosition, 0, QtGui.QTableWidgetItem(str(Name)))
+            tablewidget_debt.setItem(rowPosition, 1, QtGui.QTableWidgetItem(str(Lastname)))
             
             
             previous_cell_header = tablewidget.verticalHeaderItem(rowPosition-1)

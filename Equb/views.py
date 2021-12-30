@@ -5,25 +5,28 @@
 # Created by: PyQt4 UI code generator 4.11.4
 #
 # WARNING! All changes made in this file will be lost!
+import sqlite3
 
 from PyQt4 import QtCore, QtGui
+from PyQt4.QtGui import QMessageBox, QPushButton, QHBoxLayout, QVBoxLayout
+
 import dialog_name
 import dialog_amount
 import dialog_bank_acc
 import dialog_first
-import settings 
+import settings
 import os
-import calendar 
+import calendar
 import admin_access
 import datetime
-import database 
+import database
 from model import EqubModel
-import numpy as np 
+import numpy as np
 import sys, csv
 import tempfile
 
 tmp_file, tmp_file_filename = tempfile.mkstemp()
-
+from AnyQt import QtPrintSupport
 
 database_file = str(os.getcwd() + "/" + str("Equb.sqlite")).replace("\\","/")
 default_path = os.path.dirname(os.path.abspath(__file__))
@@ -53,18 +56,21 @@ class Ui_MainWindow(object):
         #     '%Y-%m-%d').date()
         self.first_date = date
 
-        self.todays_date = datetime.date.today() 
+        self.todays_date = datetime.date.today()
         self.full_amount = full_amount
 
+
+#Frame of the the second page
+#After the amount and dates are setted
 
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.tabWidget = QtGui.QTabWidget(self.centralwidget)
         self.tabWidget.setGeometry(QtCore.QRect(0, 0, 1350, 1000))
         self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
+
         self.tab = QtGui.QWidget()
         self.tab.setObjectName(_fromUtf8("tab"))
-
         self.tableWidget = QtGui.QTableWidget(self.tab)
         self.tableWidget.setGeometry(QtCore.QRect(0, 0, 1150, 650))
         self.tableWidget.setObjectName(_fromUtf8("tableWidget"))
@@ -72,12 +78,8 @@ class Ui_MainWindow(object):
         self.iterate_over_database =  len(database.select_equb_information(database_file))
         # self.tableWidget.setRowCount(self.iterate_over_database - 1)
         # self.tableWidget.insertRow(self.iterate_over_database - 1)
-        
 
-
-  
-
-
+#ADD and Remove Button (pushButton and pushButton_2)
 
         self.frame = QtGui.QFrame(self.tab)
         self.frame.setGeometry(QtCore.QRect(960, 0, 960, 1050))
@@ -90,9 +92,10 @@ class Ui_MainWindow(object):
         self.pushButton_2 = QtGui.QPushButton(self.frame)
         self.pushButton_2.setGeometry(QtCore.QRect(220, 35, 160, 25))
         self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
-        # self.pushButton_3 = QtGui.QPushButton(self.frame)
-        # self.pushButton_3.setGeometry(QtCore.QRect(15, 60, 160, 25))
-        # self.pushButton_3.setObjectName(_fromUtf8("pushButton_3"))
+
+        #self.pushButton_3 = QtGui.QPushButton(self.frame)
+        #self.pushButton_3.setGeometry(QtCore.QRect(15, 60, 160, 25))
+        #self.pushButton_3.setObjectName(_fromUtf8("pushButton_3"))
         # self.pushButton_4 = QtGui.QPushButton(self.frame)
         # self.pushButton_4.setGeometry(QtCore.QRect(15, 90, 160, 25))
         # self.pushButton_4.setObjectName(_fromUtf8("pushButton_4"))
@@ -106,7 +109,7 @@ class Ui_MainWindow(object):
         self.generate = QtGui.QPushButton(self.frame)
         self.generate.setGeometry(QtCore.QRect(220, 625, 160, 25))
         self.generate.setObjectName(_fromUtf8("generate"))
-        
+
         self.tabWidget.addTab(self.tab, _fromUtf8(""))
 
         self.label = QtGui.QLabel(self.frame)
@@ -124,18 +127,19 @@ class Ui_MainWindow(object):
         self.label_settings.setObjectName(_fromUtf8("label"))
         self.label_settings.setGeometry(QtCore.QRect(220, 95, 50, 40))
         self.label_settings.setText(_translate("Dialog", "Settings:", None))
+
         self.settings_button = QtGui.QPushButton(self.frame)
         self.settings_button.setGeometry(QtCore.QRect(265, 105, 25, 25))
         self.settings_button.setText(_translate("MainWindow", "**", None))
 
         self.previous_rounds = []
-        rounds = self.spinBox.value() 
+        rounds = self.spinBox.value()
         self.spinBox.valueChanged.connect(self.rounds_changed)
         all_weeks = []
         self.week_number = rounds
         for i in range(0,rounds):
             all_weeks.append(self.first_date + datetime.timedelta(days = i * 7))
-    
+
         for i in range(0,rounds):
             if all_weeks[i] > self.todays_date:
                 self.week_number = i
@@ -149,20 +153,14 @@ class Ui_MainWindow(object):
         self.tableWidget.setColumnCount(4 + rounds)
         self.tableWidget.setRowCount(0)
 
-        
+
         item = QtGui.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(0, item)
-
-        
-       
-
-
 
         item = QtGui.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(1, item)
         item = QtGui.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(2, item)
-        
         item = QtGui.QTableWidgetItem()
 
         indx = 1
@@ -170,9 +168,9 @@ class Ui_MainWindow(object):
             item = QtGui.QTableWidgetItem()
             self.tableWidget.setHorizontalHeaderItem(i, item)
             item.setText(_translate("MainWindow", "Week-"+ str(indx) +'\n'+ str(all_weeks[i - 3]), None))
-            indx +=1 
+            indx +=1
 
-        
+
 
 
         self.tableWidget.setHorizontalHeaderItem(rounds + 3,QtGui.QTableWidgetItem("HSUM"))
@@ -186,26 +184,23 @@ class Ui_MainWindow(object):
         #     # rowPosition = database.select_equb_information(database_file)[i][2]
         #     # columncount = database.select_equb_information(database_file)[i][3]
         #     # currentRow = database.select_equb_information(database_file)[i][4]
-        #     # currentcolumn = database.select_equb_information(database_file)[i][5] 
+        #     # currentcolumn = database.select_equb_information(database_file)[i][5]
 
         #     self.tableWidget.setItem(i , 0, QtGui.QTableWidgetItem(str(Name)))
         #     self.tableWidget.setItem(i , 1, QtGui.QTableWidgetItem(str(Lastname)))
-        
 
 
-
+# bank book table and its tabs
         self.tab_2 = QtGui.QWidget()
         self.tab_2.setObjectName(_fromUtf8("tab_2"))
         self.tabWidget_2 = QtGui.QTabWidget(self.tab_2)
         self.tabWidget_2.setGeometry(QtCore.QRect(0, 10, 1960, 1070))
         self.tabWidget_2.setObjectName(_fromUtf8("tabWidget_2"))
 
-        
         self.tab_3 = QtGui.QWidget()
         self.tab_3.setObjectName(_fromUtf8("tab_3"))
         self.tableWidget1 = QtGui.QTableWidget(self.tab_3)
         self.tableWidget1.setGeometry(QtCore.QRect(0, 0, 615, 615))
-
         self.tableWidget1.setObjectName(_fromUtf8("tableWidget1"))
         self.tableWidget1.setColumnCount(6)
         # self.tableWidget1.setRowCount(100)
@@ -221,10 +216,11 @@ class Ui_MainWindow(object):
         self.tableWidget1.setHorizontalHeaderItem(4, item)
         item = QtGui.QTableWidgetItem()
         self.tableWidget1.setHorizontalHeaderItem(5, item)
-        
+
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("boaindex.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.tabWidget_2.addTab(self.tab_3, icon, _fromUtf8(""))
+
         self.tab_4 = QtGui.QWidget()
         self.tab_4.setObjectName(_fromUtf8("tab_4"))
         self.tableWidget_2 = QtGui.QTableWidget(self.tab_4)
@@ -244,12 +240,12 @@ class Ui_MainWindow(object):
         self.tableWidget_2.setHorizontalHeaderItem(4, item)
         item = QtGui.QTableWidgetItem()
         self.tableWidget_2.setHorizontalHeaderItem(5, item)
-        
-        
+
+
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(_fromUtf8("cbe.pmg.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.tabWidget_2.addTab(self.tab_4, icon1, _fromUtf8(""))
-        
+
         self.tab_5 = QtGui.QWidget()
         self.tab_5.setObjectName(_fromUtf8("tab_5"))
         self.tableWidget_3 = QtGui.QTableWidget(self.tab_5)
@@ -304,7 +300,7 @@ class Ui_MainWindow(object):
         self.tabWidget_2.addTab(self.tab_6, icon2, _fromUtf8(""))
 
 
-        
+
         self.tab_7 = QtGui.QWidget()
         self.tab_7.setObjectName(_fromUtf8("tab_6"))
         self.tableWidget_5 = QtGui.QTableWidget(self.tab_7)
@@ -326,7 +322,7 @@ class Ui_MainWindow(object):
         self.tableWidget_5.setHorizontalHeaderItem(5, item)
         self.tabWidget_2.addTab(self.tab_7, icon2, _fromUtf8(""))
 
-        
+
         self.tab_8 = QtGui.QWidget()
         self.tab_8.setObjectName(_fromUtf8("tab_6"))
         self.tableWidget_6 = QtGui.QTableWidget(self.tab_8)
@@ -348,8 +344,8 @@ class Ui_MainWindow(object):
         self.tableWidget_6.setHorizontalHeaderItem(5, item)
         self.tabWidget_2.addTab(self.tab_8, icon2, _fromUtf8(""))
 
-        
-        
+
+
         self.tab_9 = QtGui.QWidget()
         self.tab_9.setObjectName(_fromUtf8("tab_6"))
         self.tableWidget_7 = QtGui.QTableWidget(self.tab_9)
@@ -420,18 +416,16 @@ class Ui_MainWindow(object):
         self.bank_books = [self.tableWidget1,self.tableWidget_2,self.tableWidget_3,self.tableWidget_4,self.tableWidget_5,self.tableWidget_6,self.tableWidget_7,self.tableWidget_8,self.tableWidget_9]
 
 
-
+#Debt tab
         self.tab_debt = QtGui.QWidget()
         self.tab_debt.setObjectName(_fromUtf8("tab_debit"))
-
-
-
 
         self.tableWidget_debt = QtGui.QTableWidget(self.tab_debt)
         self.tableWidget_debt.setGeometry(QtCore.QRect(0, 0, 345, 650))
         self.tableWidget_debt.setObjectName(_fromUtf8("tableWidget_debit"))
         self.tableWidget_debt.setColumnCount(3)
         self.tableWidget_debt.setRowCount(100)
+
         item = QtGui.QTableWidgetItem()
         self.tableWidget_debt.setHorizontalHeaderItem(0, item)
         item = QtGui.QTableWidgetItem()
@@ -440,21 +434,26 @@ class Ui_MainWindow(object):
         self.tableWidget_debt.setHorizontalHeaderItem(2, item)
 
         self.generate_debt = QtGui.QPushButton(self.tab_debt)
-        self.generate_debt.setGeometry(QtCore.QRect(350, 10, 160, 25))
+        self.generate_debt.setGeometry(QtCore.QRect(350, 50, 160, 25))
         self.generate_debt.setObjectName(_fromUtf8("generate"))
 
-        
+        self.debt_button = QtGui.QPushButton(self.tab_debt)
+        self.debt_button.setGeometry(QtCore.QRect(350, 10, 160, 25))
+        self.debt_button.setObjectName(_fromUtf8("debt_button"))
+
         self.label_week = QtGui.QLabel(self.tab_debt)
         self.label_week.setObjectName(_fromUtf8("label"))
-        self.label_week.setGeometry(QtCore.QRect(350, 40, 160, 25))
-        self.label_week.setText(_translate("Dialog", "Week:", None))
+        self.label_week.setGeometry(QtCore.QRect(350, 80, 160, 25))
+        self.label_week.setText(_translate("Dialog", "Current Week:", None))
 
-        self.label_week_index = QtGui.QLabel(self.tab_debt)
-        self.label_week_index.setObjectName(_fromUtf8("label"))
-        self.label_week_index.setGeometry(QtCore.QRect(380, 40, 160, 25))
-        self.label_week_index.setText(_translate("Dialog", str(self.week_number), None))
+        self.debt_week_index = QtGui.QSpinBox(self.tab_debt)
+        self.debt_week_index.setObjectName(_fromUtf8("label"))
+        self.debt_week_index.setGeometry(QtCore.QRect(430, 80, 40, 20))
+        self.debt_week_index.setMinimum(1)
 
-        
+        # self.label_week_index.setText(_translate("Dialog", str(self.week_number), None))
+
+
 
 
 
@@ -463,7 +462,7 @@ class Ui_MainWindow(object):
         #     item = QtGui.QTableWidgetItem()
         #     self.tableWidget_debt.setHorizontalHeaderItem(i, item)
         #     item.setText(_translate("MainWindow", "Week-"+ str(index_2), None))
-        #     index_2 +=1 
+        #     index_2 +=1
 
         self.tabWidget.addTab(self.tab_debt, _fromUtf8(""))
 
@@ -475,25 +474,27 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
 
-        
+
         self.tableWidget.cellDoubleClicked.connect(lambda x: self.double_clicked_cell(MainWindow,self.tableWidget,self.tableWidget_debt,item,rounds))
         self.tableWidget1.cellClicked.connect(lambda x: self.clicked_cell(MainWindow,self.tableWidget1,rounds))
         self.bank_books[0].cellChanged.connect(self.withdraw_cell)
-        
+
         self.pushButton.clicked.connect(lambda x: self.add_button_function(MainWindow,self.tableWidget,self.bank_books,self.tableWidget_debt,rounds))
         self.pushButton_2.clicked.connect(lambda x: self.remove_button_function(MainWindow))
         self.settings_button.clicked.connect(lambda x: self.settings(MainWindow))
         # self.pushButton_4.clicked.connect(lambda x: self.clear_all_button_function(MainWindow))
         self.save_button.clicked.connect(lambda x: self.save_function(MainWindow))
         self.open_button.clicked.connect(lambda x: self.open_function(MainWindow))
-        self.generate.clicked.connect(lambda x: self.generate_function(MainWindow))
+        self.generate.clicked.connect(lambda x: self.create_message(MainWindow, "mainWindow"))
+        self.debt_button.clicked.connect(lambda x: self.debt_button_function(MainWindow, self.tableWidget, self.tableWidget_debt))
+        self.generate_debt.clicked.connect(lambda x:self.create_message(MainWindow, "debtWindow"))
         # self.add_cell_button.clicked.connect(lambda x: self.add_cell(MainWindow))
         self.count = 0
 
         self.tabWidget.setCurrentIndex(0)
         self.tabWidget_2.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-
+#ADD personals window
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "Equb Main-Window", None))
         item = self.tableWidget.horizontalHeaderItem(0)
@@ -518,9 +519,9 @@ class Ui_MainWindow(object):
         self.open_button.setText(_translate("MainWindow", "Load", None))
         self.generate.setText(_translate("MainWindow", "Generate PDF", None))
         self.generate_debt.setText(_translate("MainWindow", "Generate PDF", None))
-
+        self.debt_button.setText(_translate("MainWindow", "Show Debt", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Equb Table", None))
-        
+
         '''BOA'''
         item = self.tableWidget1.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Date", None))
@@ -550,7 +551,7 @@ class Ui_MainWindow(object):
         item = self.tableWidget_2.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "Balance", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_4), _translate("MainWindow", "Commercial Bank", None))
-        
+
         ''''Dashen'''
         item = self.tableWidget_3.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Date", None))
@@ -563,8 +564,9 @@ class Ui_MainWindow(object):
         item = self.tableWidget_3.horizontalHeaderItem(4)
         item.setText(_translate("MainWindow", "Withdraw", None))
         item = self.tableWidget_3.horizontalHeaderItem(5)
-        item.setText(_translate("MainWindow", "Balance", None))     
+        item.setText(_translate("MainWindow", "Balance", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_5), _translate("MainWindow", "Dashen Bank", None))
+
         '''NIB'''
         item = self.tableWidget_4.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Date", None))
@@ -666,12 +668,43 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Last Name", None))
         item = self.tableWidget_debt.horizontalHeaderItem(2)
         item.setText(_translate("MainWindow", "Debt-Book", None))
-        item = self.tableWidget_debt.horizontalHeaderItem(3)
-        
+        #item = self.tableWidget_debt.horizontalHeaderItem(3)
+
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Bank Book", None))
         # self.tabWidget_debt.setTabText(self.tabWidget_debt.indexOf(self.tab_debt), _translate("MainWindow", "Debt Amount", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_debt), _translate("MainWindow", "Debt Amount", None))
 
+
+    def debt_button_function(self,MainWindow, tableWidget,tableWidget_debt):
+        debt_index = self.debt_week_index.value() + 2
+        weekPaid = tableWidget.columnCount()-1
+
+        if (tableWidget.rowCount() > 1 & debt_index < weekPaid):
+            currentRow = self.tableWidget.rowCount()
+            for eachRow in range(currentRow):
+                item = tableWidget.item(eachRow, debt_index)
+                weekDebt = 0
+                committment = tableWidget.item(eachRow, 2)
+                commit = 1
+                if (committment is not None):
+                    if (committment.text() == 'H'):
+                        commit = 2
+                    elif (committment.text() == 'Q'):
+                        commit = 4
+
+                if item is None:
+                    item = 0
+                    weekDebt = -1 * int(int(self.full_amount)/ commit)
+                else:
+                    weekDebt = (-1 * int(int(self.full_amount)/ commit)) + int(item.text())
+                for previous in range(3, debt_index):
+                    previtem = tableWidget.item(eachRow, previous)
+                    if previtem is None:
+                        weekDebt -= int(int(self.full_amount)/ commit)
+                    else:
+                        prevdebt = int(int(self.full_amount) / commit) - int(previtem.text())
+                        weekDebt -= prevdebt
+                tableWidget_debt.setItem(eachRow, 2, QtGui.QTableWidgetItem(str(weekDebt)))
 
     def add_button_function(self,MainWindow,tablewidget,bank_books,tableWidget_debt,rounds):
         self.count +=1
@@ -679,10 +712,12 @@ class Ui_MainWindow(object):
 
         Dialog = QtGui.QDialog(MainWindow)
         options = ""
-        rounds = self.spinBox.value() 
+        rounds = self.spinBox.value()
+        self.debt_week_index.setMaximum(rounds)
         database.insert_round_and_count(database_file,self.count,rounds)
 
         add_menu_ui.setupUi(self.file,Dialog,tablewidget,bank_books,tableWidget_debt,rounds,self.date_new,self.full_amount,self.week_number,self.count,options)
+
         Dialog.exec_()
     def remove_button_function(self,MainWindow):
         password_access = admin_access.Admin_Access()
@@ -693,8 +728,8 @@ class Ui_MainWindow(object):
         settings_ui = settings.Ui_Dialog()
         Dialog = QtGui.QDialog(MainWindow)
         settings_ui.setupUi(Dialog)
-        Dialog.exec_()  
-       
+        Dialog.exec_()
+
 
 
 
@@ -711,7 +746,7 @@ class Ui_MainWindow(object):
         rowPosition = tablewidget.currentRow()
         rowcount = tablewidget.rowCount()
         columncount = tablewidget.columnCount()
-        rounds = self.spinBox.value() 
+        rounds = self.spinBox.value()
 
 
         self.tableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
@@ -733,7 +768,7 @@ class Ui_MainWindow(object):
             add_menu_ui = dialog_amount.Ui_Dialog()
             Dialog = QtGui.QDialog(MainWindow)
             add_menu_ui.setupUi(self.file,Dialog,tablewidget,self.bank_books,tablewidget_debt,rowPosition,self.name,self.lname,rounds,self.date_new,self.full_amount,self.week_number)
-            Dialog.exec_()  
+            Dialog.exec_()
 
         if (currentColumn <=2):
             options = tablewidget.item(currentRow,2).text()
@@ -742,12 +777,12 @@ class Ui_MainWindow(object):
                     add_menu_ui = dialog_name.Ui_Dialog()
                     Dialog = QtGui.QDialog(MainWindow)
                     add_menu_ui.setupUi(self.file,Dialog,tablewidget,self.bank_books,tablewidget_debt,rounds,self.date_new,self.full_amount,self.week_number,self.count,options)
-                    Dialog.exec_() 
+                    Dialog.exec_()
 
 
 
 
-     
+
     def withdraw_cell(self):
         currentRow, currentColumn = self.bank_books[0].currentRow(), self.bank_books[0].currentColumn()
         rowPosition = self.bank_books[0].currentRow()
@@ -759,7 +794,7 @@ class Ui_MainWindow(object):
 
         withdraw = self.bank_books[0].item(currentRow,4)
         if withdraw is not None and withdraw.text() != '':
-            withdraw = int(self.bank_books[0].item(currentRow,4).text())        
+            withdraw = int(self.bank_books[0].item(currentRow,4).text())
 
         Balance = int(self.bank_books[0].item(currentRow - 1,5).text())
         self.bank_books[0].blockSignals(True)
@@ -775,16 +810,8 @@ class Ui_MainWindow(object):
             self.bank_books[0].insertRow(currentRow + 1)
             self.bank_books[0].blockSignals(False)
 
-        
-
-    
-    
 
 
-    
-
-
-        
 
     def clicked_cell(self,MainWindow,tablewidget,rounds):
         currentRow, currentColumn = self.tableWidget1.currentRow(), self.tableWidget1.currentColumn()
@@ -795,12 +822,12 @@ class Ui_MainWindow(object):
             add_menu_ui.setupUi(Dialog,tablewidget,rowPosition,rounds)
             Dialog.exec_()
     def rounds_changed(self):
-        
+
         rounds =  self.spinBox.value()
-        self.previous_rounds.append(rounds) 
+        self.previous_rounds.append(rounds)
         all_weeks = []
         self.week_number = rounds
-        total_row = self.tableWidget.rowCount() 
+        total_row = self.tableWidget.rowCount()
         last_column = self.tableWidget.columnCount()
         previous_value = self.previous_rounds[len(self.previous_rounds) - 2]
         HSUM_data = []
@@ -811,7 +838,7 @@ class Ui_MainWindow(object):
 
         for i in range(0,rounds):
             all_weeks.append(self.first_date + datetime.timedelta(days = i * 7))
-    
+
         for i in range(0,rounds):
             if all_weeks[i] > self.todays_date:
                 self.week_number = i
@@ -820,14 +847,12 @@ class Ui_MainWindow(object):
                 continue
 
 
-
-
         self.tableWidget.setColumnCount(4 + rounds)
         self.tableWidget.setRowCount(self.tableWidget.rowCount())
         item = QtGui.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(0, item)
 
-    
+
 
 
         item = QtGui.QTableWidgetItem()
@@ -841,7 +866,7 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Last Name", None))
         item = self.tableWidget.horizontalHeaderItem(2)
         item.setText(_translate("MainWindow", "Commitment", None))
-        
+
         item = QtGui.QTableWidgetItem()
 
         indx = 1
@@ -849,10 +874,10 @@ class Ui_MainWindow(object):
             item = QtGui.QTableWidgetItem()
             self.tableWidget.setHorizontalHeaderItem(i, item)
             item.setText(_translate("MainWindow", "Week-"+ str(indx) +'\n'+ str(all_weeks[i - 3]), None))
-            indx +=1 
+            indx +=1
 
 
-            
+
         if previous_value <= rounds:
             for row in range(total_row - 1):
                 if self.tableWidget.item(row,rounds + 2) is not None and self.tableWidget.item(row,rounds +2).text() !='':
@@ -861,12 +886,12 @@ class Ui_MainWindow(object):
 
 
         else:
-            total_row_ = self.tableWidget.rowCount() 
+            total_row_ = self.tableWidget.rowCount()
             last_column_ = self.tableWidget.columnCount()
             for row in range(total_row - 1):
                 if self.tableWidget.item(row,last_column_ - 1) is not None and self.tableWidget.item(row,last_column_ - 1).text() !='':
                     self.tableWidget.setItem(row, last_column_ , QtGui.QTableWidgetItem(str(HSUM_data[row])))
-                
+
 
         self.tableWidget.setHorizontalHeaderItem(rounds + 3,QtGui.QTableWidgetItem("HSUM"))
 
@@ -877,13 +902,27 @@ class Ui_MainWindow(object):
         rowcount = self.tableWidget.rowCount()
         columncount = self.tableWidget.columnCount()
         rounds =  self.spinBox.value()
+        # vbox = QMessageBox(MainWindow)
+        # vbox.setText("Are you Sure you want to save?")
+        # vbox.setWindowTitle("Save File")
+        # vbox.setIcon(QMessageBox.Information)
+        # yesbtn = QPushButton("Yes")
+        # nobtn = QPushButton("No")
+        #
+        # vbox.addButton(yesbtn, QMessageBox.YesRole)
+        # vbox.addButton(nobtn, QMessageBox.NoRole)
+        #
+        # vbox.exec_()
+        #
+        # if(vbox.clickedButton()==yesbtn):
+
         path = QtGui.QFileDialog.getSaveFileName(MainWindow, 'Save File',default_path, 'CSV(*.csv)')
         '''Row-Column Loop'''
 
-        if rowcount or columncount < 0: 
+        if rowcount or columncount < 0:
             all_table_information = np.empty((0, 0), dtype=object)
         else:
-            all_table_information = np.empty((rowcount - 1, columncount - 1), dtype=object) 
+             all_table_information = np.empty((rowcount - 1, columncount - 1), dtype=object)
 
 
         if not path.isEmpty():
@@ -891,7 +930,7 @@ class Ui_MainWindow(object):
                 writer = csv.writer(stream)
                 columndata = [""]
                 for column in range(0,columncount):
-                    horizontal_header = self.tableWidget.horizontalHeaderItem(column) 
+                    horizontal_header = self.tableWidget.horizontalHeaderItem(column)
                     columndata.append(unicode(horizontal_header.text()).encode('utf8'))
                 writer.writerow(columndata)
 
@@ -917,10 +956,13 @@ class Ui_MainWindow(object):
                     checked_box = (database.convert_array(checked_box)).astype(np.int)
                     bank_options  = (database.convert_array(bank_options)).astype(np.int)
                     cheque_information = (database.convert_array(cheque_information)).astype(np)
-                    database.insert_amount_dialog(database_file,str(path),amount,row,column,checked_box,cheque_information,bank_options,others)    
-                else: 
+                    database.insert_amount_dialog(database_file,str(path),amount,row,column,checked_box,cheque_information,bank_options,others)
+                else:
                     break
         self.file = str(path)
+        connection = database.create_connection(database_file)
+        database.create_database_and_tables(database_file)
+
     def open_function(self,MainWindow):
         path = QtGui.QFileDialog.getOpenFileName(MainWindow, 'Open File', default_path , 'CSV(*.csv)')
         if not path.isEmpty():
@@ -937,7 +979,7 @@ class Ui_MainWindow(object):
                     for column, data in enumerate(rowdata):
                         item = QtGui.QTableWidgetItem(data.decode('utf8'))
                         self.tableWidget.setItem(row, column, item)
-        
+
 
         for colour_commitment in range(0,len(rowdata_) - 1):
             if rowdata_[colour_commitment][3] == "F":
@@ -951,45 +993,121 @@ class Ui_MainWindow(object):
         self.tableWidget.removeRow(0)
         self.tableWidget.removeColumn(0)
         self.file = str(path)
-    def generate_function(self):
-        pass
-        # filename = "table.pdf"
-        # model = self.tableWidget.model()
-        # printer = QtPrintSupport.QPrinter(QtPrintSupport.QPrinter.PrinterResolution)
-        # printer.setOutputFormat(QtPrintSupport.QPrinter.PdfFormat)
-        # printer.setPaperSize(QtPrintSupport.QPrinter.A4)
-        # printer.setOrientation(QtPrintSupport.QPrinter.Landscape)
-        # printer.setOutputFileName(filename)
+    def create_message(self,MainWindow, table):
+        vbox = QMessageBox(MainWindow)
+        vbox.setText("Do you want to Generate PDF file")
+        vbox.setWindowTitle("Generate PDF")
+        vbox.setIcon(QMessageBox.Information)
+        btn1 = QPushButton("Yes")
+        btn2 = QPushButton("No")
 
-        # doc = QtGui.QTextDocument()
+        vbox.addButton(btn1,QMessageBox.YesRole)
+        vbox.addButton(btn2,QMessageBox.NoRole)
 
-        # html = """<html>
-        # <head>
-        # <style>
-        # table, th, td {
-        # border: 1px solid black;
-        # border-collapse: collapse;
-        # }
-        # </style>
-        # </head>"""
-        # html += "<table><thead>"
-        # html += "<tr>"
-        # for c in range(model.columnCount()):
-        #     html += "<th>{}</th>".format(model.headerData(c, QtCore.Qt.Horizontal))
+        vbox.exec_()
 
-        # html += "</tr></thead>"
-        # html += "<tbody>"
-        # for r in range(model.rowCount()):
-        #     html += "<tr>"
-        #     for c in range(model.columnCount()):
-        #         html += "<td>{}</td>".format(model.index(r, c).data() or "")
-        #     html += "</tr>"
-        # html += "</tbody></table>"
-        # doc.setHtml(html)
-        # doc.setPageSize(QtCore.QSizeF(printer.pageRect().size()))
-        # doc.print_(printer)
-     
+        if(table == "mainWindow"):
+            if(vbox.clickedButton() == btn1):
+                self.generate_function(MainWindow)
+        if(table == "debtWindow"):
+            if(vbox.clickedButton() == btn1):
+                self.generate_debt_function(MainWindow)
+    def generate_function(self, MainWindow):
+        #pass
+        path = QtGui.QFileDialog.getSaveFileName(MainWindow, 'Save File', default_path, 'PDF(*.pdf)')
+        if not path.isEmpty():
+                printer =  QtPrintSupport.QPrinter(QtPrintSupport.QPrinter.PrinterResolution)
+                printer.setOutputFormat(QtPrintSupport.QPrinter.PdfFormat)
+                printer.setPaperSize(QtPrintSupport.QPrinter.A4)
+                printer.setOrientation(QtPrintSupport.QPrinter.Landscape)
+                printer.setOutputFileName(path)
 
+                doc = QtGui.QTextDocument()
+
+                html = "<html><head><style>" \
+                       " table, th, td { letter-spacing:0.1em; border: 1px solid black;" \
+                       "border-collapse: collapse; padding:7px 10px 10px 10px;}" \
+                       "th{text-align:right; font-size:90%;}</style></head>"
+                html += "<body><table border>"
+
+                #anothertable = ""
+                for colomn in range(self.tableWidget.columnCount()):
+                    html += "<tr>"
+                    head = self.tableWidget.horizontalHeaderItem(colomn)
+                    html += '<th width= "70">'+ head.text() + "</th>"
+
+                    for row in range(self.tableWidget.rowCount()- 1):
+                        # if((row%11)==0):
+                        #     if(row>10):
+                        #         anothertable += "<table>"
+                        #         for anotherrow in range(self.tableWidget.columnCount()):
+                        #             anothertable += "<tr>"
+                        #             header = self.tableWidget.horizontalHeaderItem(anotherrow)
+                        #             anothertable += '<th width= "70">'+ header.text() + "</th>"
+                        #
+                        #             for anothercoloumn in range(row, self.tableWidget.rowCount()-1):
+                        #                 item = self.tableWidget.item(anothercoloumn, anotherrow)
+                        #                 if item is not None:
+                        #                     anothertable += '<td width="60">' + item.text() + "</td>"
+                        #                 else:
+                        #                     anothertable += "<td> </td>"
+                        #         anothertable += "</table>"
+                        #         break
+                        item = self.tableWidget.item(row, colomn)
+                        if item is not None:
+                           html += '<td width="60">'+ item.text()+ "</td>"
+                        else:
+                           html += "<td> </td>"
+
+                    html += "</tr>"
+               # html += "</table>"+anothertable + "</body>"
+                html += "</table></body>"
+                html += "</html>"
+                doc.setHtml(html)
+                doc.setPageSize(QtCore.QSizeF(printer.pageRect().size()))
+                doc.print_(printer)
+
+    def generate_debt_function(self, MainWindow):
+        path = QtGui.QFileDialog.getSaveFileName(MainWindow, 'Save File', default_path, 'PDF(*.pdf)')
+        if not path.isEmpty():
+            printer = QtPrintSupport.QPrinter(QtPrintSupport.QPrinter.PrinterResolution)
+            printer.setOutputFormat(QtPrintSupport.QPrinter.PdfFormat)
+            printer.setPaperSize(QtPrintSupport.QPrinter.A3)
+            printer.setOrientation(QtPrintSupport.QPrinter.Portrait)
+            printer.setOutputFileName(path)
+
+            doc = QtGui.QTextDocument()
+
+            html = "<html><head><style>" \
+                   " table, th, td { letter-spacing:0.1em; border: 1px solid black;" \
+                   "border-collapse: collapse; padding:7px 10px 10px 10px;}" \
+                   "th{text-align:right; font-size:90%;}</style></head>"
+            html += "<body><table border>"
+            week = self.debt_week_index.value() + 2
+            for row in range(-1, self.tableWidget_debt.rowCount()):
+                html += "<tr>"
+                for column in range(self.tableWidget_debt.columnCount()):
+                  if (row == -1):
+                    if(column == 2):
+                        head = self.tableWidget.horizontalHeaderItem(week)
+                        if head is not None:
+                            html += "<th>"+ head.text() + "</th>"
+                    else:
+                        fromDebt = self.tableWidget_debt.horizontalHeaderItem(column)
+                        if fromDebt is not None:
+                            html += "<th>"+ fromDebt.text() + "</th>"
+                  else:
+                      item = self.tableWidget_debt.item(row, column)
+                      if item is not None:
+                          html += "<td>" + item.text()+ "</td>"
+                      else:
+                          html += "<td> </td>"
+                html += "</tr>"
+            html += "</table></body>"
+            html += "</html>"
+            doc.setHtml(html)
+            doc.setPageSize(QtCore.QSizeF(printer.pageRect().size()))
+            doc.print_(printer)
 
 if __name__ == "__main__":
     import sys

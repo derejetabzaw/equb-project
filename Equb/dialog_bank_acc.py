@@ -69,9 +69,9 @@ class Ui_Dialog(object):
         
         columnPosition = tablewidget.currentColumn()
         if columnPosition == 2:
-            tablewidget.setItem(rowPosition , 2, QtGui.QTableWidgetItem(str(Amount)))
+            tablewidget.setItem(rowPosition, 2, QtGui.QTableWidgetItem(str(Amount)))
         else:
-            tablewidget.setItem(rowPosition , columnPosition, QtGui.QTableWidgetItem(str(Amount)))
+            tablewidget.setItem(rowPosition, columnPosition, QtGui.QTableWidgetItem(str(Amount)))
         columnPosition = tablewidget.setCurrentCell(rowPosition,0)
         MainWindow.close()
 

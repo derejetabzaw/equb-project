@@ -50,8 +50,8 @@ class Ui_Dialog(object):
         # self.label_2.setObjectName(_fromUtf8("label"))
         # self.label_2.setText(_translate("Dialog", "Basic Information", None))
 
-        # self.horizontalLayout.addWidget(self.label)
-        # self.horizontalLayout.addWidget(self.label_2)
+        self.horizontalLayout.addWidget(self.label)
+        self.horizontalLayout.addWidget(self.label_2)
 
         self.tabWidget = QtGui.QTabWidget(Dialog)
         self.tabWidget.setGeometry(QtCore.QRect(0, 0, 1350, 1000))

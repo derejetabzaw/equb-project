@@ -98,7 +98,7 @@ class Ui_Dialog(object):
         self.day_box.setCurrentIndex(self.day_of_week - 1)
         self.month_box.setCurrentIndex(self.todays_date.month -1)
         self.date_box.setCurrentIndex(self.todays_date.day - 1)
-        self.year_box.setCurrentIndex(self.year - 2000)
+        self.year_box.setCurrentIndex(self.year - 2000  )
 
         
         self.horizontalLayoutWidget = QtGui.QWidget(Dialog)
